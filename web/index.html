@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>PROJECT 3 WHEEL</title>
+  
+  <!-- Google Fonts: Hind Siliguri (Bengali), Inter, Outfit, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons, SheetJS & jsPDF -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="lang-en">
+  <!-- Ambient Mesh Background Lights -->
+  <div class="mesh-orb mesh-blue"></div>
+  <div class="mesh-orb mesh-purple"></div>
+  <div class="mesh-orb mesh-emerald"></div>
+
+  <!-- Mobile Drawer Overlay Backdrop -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+
+  <div class="app-layout">
+    <!-- Translucent Glass Sidebar -->
+    <aside class="glass-sidebar" id="sidebar">
+      <div class="brand-header">
+        <div class="brand-icon">
+          <i class="fa-solid fa-dharmachakra"></i>
+        </div>
+        <div class="brand-text">
+          <h2>PROJECT 3 WHEEL</h2>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" onclick="switchTab('dashboard')">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span data-i18n="nav_dashboard">Dashboard</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('collections')">
+          <i class="fa-solid fa-receipt"></i>
+          <span data-i18n="nav_collections">Collections</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('expenses')">
+          <i class="fa-solid fa-wallet"></i>
+          <span data-i18n="nav_expenses">Expenses</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('drivers')">
+          <i class="fa-solid fa-users"></i>
+          <span data-i18n="nav_drivers">Driver Directory</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('reports')">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span data-i18n="nav_reports">P&L Reports</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('gps')">
+          <i class="fa-solid fa-satellite"></i>
+          <span data-i18n="nav_gps">GPS Telematics</span>
+          <span class="badge-pill badge-amber" data-i18n="badge_soon">SOON</span>
+        </button>
+      </nav>
+
+      <!-- User Profile & Role Switcher -->
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="avatar" id="userAvatar">H</div>
+          <div class="user-info">
+            <h4 id="userName">Habib Rahman</h4>
+            <span class="badge-pill" id="userRoleBadge">OWNER</span>
+          </div>
+        </div>
+        <div class="role-actions">
+          <button class="btn-role-switch" onclick="toggleRole()">
+            <i class="fa-solid fa-repeat"></i>
+            <span id="roleSwitchText" data-i18n="btn_switch_role">Switch to Manager</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Glass Navigation Bar -->
+      <header class="top-nav">
+        <div class="nav-left">
+          <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="greeting-box">
+            <h1 id="pageTitle" data-i18n="page_title_dashboard">Fleet Overview</h1>
+            <p id="pageSubtitle" data-i18n="page_subtitle_dashboard">Real-time collections, garage rent, and net profit</p>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <!-- 100% In-Theme Custom Glass Calendar Picker -->
+          <div class="date-picker-wrapper">
+            <button class="glass-date-trigger" id="glassDateTrigger" onclick="toggleCustomCalendar()">
+              <i class="fa-regular fa-calendar-days"></i>
+              <span id="selectedDateLabel">Today</span>
+              <i class="fa-solid fa-chevron-down" style="font-size: 9px; opacity: 0.7;"></i>
+            </button>
+
+            <!-- Custom In-Theme Glass Calendar Dropdown -->
+            <div class="glass-calendar-modal" id="customCalendarModal" onclick="event.stopPropagation()">
+              <div class="cal-presets">
+                <button type="button" class="btn-cal-preset active" id="btnCalToday" onclick="pickCalPreset('today')" data-i18n="cal_today">Today</button>
+                <button type="button" class="btn-cal-preset" id="btnCalYest" onclick="pickCalPreset('yesterday')" data-i18n="cal_yesterday">Yesterday</button>
+                <button type="button" class="btn-cal-preset" id="btnCalAll" onclick="pickCalPreset('all')" data-i18n="cal_all_time">All Time</button>
+              </div>
+
+              <div class="cal-header">
+                <button class="cal-nav-btn" onclick="changeCalMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="cal-month-title" id="calMonthTitle">August 2026</div>
+                <button class="cal-nav-btn" onclick="changeCalMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+
+              <div class="cal-weekdays">
+                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+              </div>
+
+              <div class="cal-grid" id="calDayGrid">
+                <!-- Injected via custom calendar JS engine -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Bilingual Mode Switcher (English / বাংলা) -->
+          <button class="lang-toggle-btn" onclick="toggleLanguage()" id="langToggleBtn" title="Change Language / ভাষা পরিবর্তন">
+            <i class="fa-solid fa-globe"></i>
+            <span id="langLabel">EN / বাংলা</span>
+          </button>
+
+          <!-- Live Sync Status Orb -->
+          <div class="sync-status-pill" onclick="toggleNetworkSim()" id="syncPill" title="Toggle Online/Offline simulation">
+            <span class="status-dot online" id="syncDot"></span>
+            <span id="syncText">Live Firestore</span>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <button class="btn-glass btn-emerald" onclick="openModal('collectionModal')">
+            <i class="fa-solid fa-plus"></i>
+            <span data-i18n="btn_deposit">Deposit</span>
+          </button>
+
+          <button class="btn-glass btn-crimson" onclick="openModal('expenseModal')">
+            <i class="fa-solid fa-receipt"></i>
+            <span data-i18n="btn_expense">Expense</span>
+          </button>
+
+          <button class="btn-glass btn-amber" onclick="openModal('addDriverModal')">
+            <i class="fa-solid fa-user-plus"></i>
+            <span data-i18n="btn_add_driver">Driver</span>
+          </button>
+
+          <button class="btn-glass btn-primary" onclick="openModal('qrModal')">
+            <i class="fa-solid fa-qrcode"></i>
+            <span data-i18n="btn_scan_qr">Scan QR</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic Tab Views -->
+      <div class="content-body">
+        
+        <!-- 1. DASHBOARD VIEW -->
+        <section class="tab-pane active" id="tab-dashboard">
+
+          <!-- 5 Metric Cards Grid -->
+          <div class="metric-grid">
+            <!-- 1. Rickshaw Joma -->
+            <div class="glass-card metric-card glow-emerald">
+              <div class="card-header">
+                <span class="card-label" data-i18n="metric_rickshaw_joma">Rickshaw Collections</span>
+                <div class="icon-circle icon-emerald"><i class="fa-solid fa-coins"></i></div>
+              </div>
+              <div class="metric-val text-emerald" id="metricTodayRev">৳0</div>
+              <div class="card-footer">
+                <span class="trend-pill trend-up"><i class="fa-solid fa-arrow-trend-up"></i> <span id="metricCollectionRate">0%</span> <span data-i18n="lbl_rate">Rate</span></span>
+                <span class="sub-label" id="metricDepositCount">0 deposits</span>
+              </div>
+            </div>
+
+            <!-- 2. Daily Garage Rent -->
+            <div class="glass-card metric-card glow-purple">
+              <div class="card-header">
+                <span class="card-label" data-i18n="metric_garage_rent">Garage Rent Cost</span>
+                <div class="icon-circle icon-purple"><i class="fa-solid fa-warehouse"></i></div>
+              </div>
+              <div class="metric-val text-purple" id="metricGarageRent">৳0</div>
+              <div class="card-footer">
+                <span class="garage-rent-badge"><i class="fa-solid fa-dharmachakra"></i> <span data-i18n="lbl_daily_rent">Daily Fixed</span></span>
+                <span class="sub-label" id="metricGarageCount">0 vehicles</span>
+              </div>
+            </div>
+
+            <!-- 3. Other Expenses -->
+            <div class="glass-card metric-card glow-crimson">
+              <div class="card-header">
+                <span class="card-label" data-i18n="metric_other_expenses">Other Expenses</span>
+                <div class="icon-circle icon-crimson"><i class="fa-solid fa-wrench"></i></div>
+              </div>
+              <div class="metric-val text-crimson" id="metricOtherExp">৳0</div>
+              <div class="card-footer">
+                <span class="trend-pill trend-down"><i class="fa-solid fa-clock"></i> <span data-i18n="lbl_repairs">Repairs</span></span>
+                <span class="sub-label" id="metricExpCount">0 logs</span>
+              </div>
+            </div>
+
+            <!-- 4. Owner Net Profit -->
+            <div class="glass-card metric-card glow-blue">
+              <div class="card-header">
+                <span class="card-label" data-i18n="metric_net_profit">Owner Net Profit</span>
+                <div class="icon-circle icon-blue"><i class="fa-solid fa-scale-balanced"></i></div>
+              </div>
+              <div class="metric-val text-blue" id="metricTodayNet">৳0</div>
+              <div class="card-footer">
+                <span class="trend-pill" id="trendNetPill"><i class="fa-solid fa-check"></i> <span data-i18n="lbl_surplus">Net Surplus</span></span>
+                <span class="sub-label" data-i18n="lbl_formula">Joma - Costs</span>
+              </div>
+            </div>
+
+            <!-- 5. Cumulative Dues -->
+            <div class="glass-card metric-card glow-amber">
+              <div class="card-header">
+                <span class="card-label" data-i18n="metric_cumulative_dues">Total Pending Dues</span>
+                <div class="icon-circle icon-amber"><i class="fa-solid fa-triangle-exclamation"></i></div>
+              </div>
+              <div class="metric-val text-amber" id="metricTotalDues">৳0</div>
+              <div class="card-footer">
+                <span class="trend-pill trend-warning"><i class="fa-solid fa-users"></i> <span id="metricDefaulterCount">0</span> <span data-i18n="lbl_debtors">Debtors</span></span>
+                <span class="sub-label" data-i18n="lbl_receivable">Receivable</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle Section: 7-Day Velocity Chart & Fleet Availability -->
+          <div class="grid-2-col">
+            <!-- 7-Day Velocity Chart -->
+            <div class="glass-card chart-card">
+              <div class="card-header">
+                <div>
+                  <h3 data-i18n="chart_revenue_velocity">7-Day Revenue Velocity</h3>
+                </div>
+                <div class="chart-legend">
+                  <span class="legend-item"><i class="legend-dot dot-emerald"></i> <span data-i18n="legend_collections">Collections</span></span>
+                  <span class="legend-item"><i class="legend-dot dot-crimson"></i> <span data-i18n="legend_expenses">Expenses</span></span>
+                </div>
+              </div>
+              
+              <div class="bar-chart-container" id="velocityBars">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Fleet Health Status -->
+            <div class="glass-card fleet-status-card">
+              <div class="card-header">
+                <div>
+                  <h3 data-i18n="fleet_health_title">Fleet Status</h3>
+                </div>
+                <button class="btn-glass btn-sm btn-primary" onclick="openModal('addRickshawModal')">
+                  <i class="fa-solid fa-plus"></i> <span data-i18n="btn_add_rickshaw">Add Rickshaw</span>
+                </button>
+              </div>
+
+              <div class="fleet-health-list">
+                <div class="health-row">
+                  <span><i class="fa-solid fa-van-shuttle text-blue"></i> <span data-i18n="lbl_total_fleet">Registered Fleet</span></span>
+                  <strong id="statTotalFleet">10 Vehicles</strong>
+                </div>
+                <div class="health-row">
+                  <span><i class="fa-solid fa-circle-check text-emerald"></i> <span data-i18n="lbl_active_road">Active on Road</span></span>
+                  <strong class="text-emerald" id="statActiveFleet">8 Active</strong>
+                </div>
+                <div class="health-row">
+                  <span><i class="fa-solid fa-screwdriver-wrench text-amber"></i> <span data-i18n="lbl_in_maintenance">In Maintenance</span></span>
+                  <strong class="text-amber" id="statMaintFleet">2 In Repair</strong>
+                </div>
+                <div class="health-row">
+                  <span><i class="fa-solid fa-id-card text-purple"></i> <span data-i18n="lbl_total_drivers">Registered Drivers</span></span>
+                  <strong id="statTotalDrivers">8 Drivers</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TODAY'S DRIVER COLLECTION TRACKER WITH STATUS DROPDOWNS -->
+          <div class="glass-card table-card">
+            <div class="table-header-row">
+              <div>
+                <h3 data-i18n="today_joma_tracker_title">Today's Collections Status</h3>
+              </div>
+              <button class="btn-glass btn-sm" onclick="exportDailyCollectionsPdf()">
+                <i class="fa-solid fa-file-pdf"></i> <span data-i18n="btn_export_pdf">Export PDF</span>
+              </button>
+            </div>
+
+            <div class="glass-table-wrapper">
+              <table class="glass-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="th_driver">Driver</th>
+                    <th data-i18n="th_rickshaw">Rickshaw</th>
+                    <th data-i18n="th_agreed_rate">Target Joma</th>
+                    <th data-i18n="th_joma_status">Deposit Status</th>
+                    <th data-i18n="th_deposited">Deposited</th>
+                    <th data-i18n="th_due">Due</th>
+                    <th style="text-align: right;" data-i18n="th_actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="todayJomaTableBody">
+                  <!-- Injected via JS with interactive status dropdowns -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. COLLECTIONS LEDGER VIEW -->
+        <section class="tab-pane" id="tab-collections">
+          <div class="glass-card table-card">
+            <div class="table-header-row">
+              <div>
+                <h3 data-i18n="collections_ledger_title">Collections Ledger</h3>
+              </div>
+              <div class="actions-group">
+                <button class="btn-glass btn-sm btn-emerald" onclick="openModal('collectionModal')">
+                  <i class="fa-solid fa-plus"></i> <span data-i18n="btn_new_deposit">New Deposit</span>
+                </button>
+                <button class="btn-glass btn-sm btn-primary" onclick="exportDailyCollectionsPdf()">
+                  <i class="fa-solid fa-file-pdf"></i> <span data-i18n="btn_pdf_report">PDF Report</span>
+                </button>
+                <button class="btn-glass btn-sm btn-emerald" onclick="exportFullExcel()">
+                  <i class="fa-solid fa-file-excel"></i> <span data-i18n="btn_excel_export">Excel Export</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-filters">
+              <div class="search-input-glass">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="collectionSearch" placeholder="Search driver or rickshaw..." oninput="renderCollectionsTable()">
+              </div>
+              <select class="glass-select" id="collectionStatusFilter" onchange="renderCollectionsTable()" style="max-width: 200px;">
+                <option value="all" data-i18n="opt_all_status">All Statuses</option>
+                <option value="paid" data-i18n="opt_paid">Fully Paid</option>
+                <option value="due" data-i18n="opt_due">Partial Due</option>
+                <option value="unpaid" data-i18n="opt_unpaid">Unpaid</option>
+              </select>
+            </div>
+
+            <div class="glass-table-wrapper">
+              <table class="glass-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="th_date_time">Date & Time</th>
+                    <th data-i18n="th_rickshaw">Rickshaw</th>
+                    <th data-i18n="th_driver">Driver</th>
+                    <th data-i18n="th_expected">Target</th>
+                    <th data-i18n="th_deposited">Deposited</th>
+                    <th data-i18n="th_due">Due</th>
+                    <th data-i18n="th_garage_rent">Garage Rent</th>
+                    <th data-i18n="th_status">Status</th>
+                    <th data-i18n="th_logged_by">Logged By</th>
+                    <th style="text-align: right;" data-i18n="th_actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="collectionsTableBody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. EXPENSES VIEW -->
+        <section class="tab-pane" id="tab-expenses">
+          <div class="glass-card table-card">
+            <div class="table-header-row">
+              <div>
+                <h3 data-i18n="expenses_tracker_title">Garage & Fleet Expenses</h3>
+              </div>
+              <button class="btn-glass btn-crimson btn-sm" onclick="openModal('expenseModal')">
+                <i class="fa-solid fa-plus"></i> <span data-i18n="btn_add_expense">Add Expense</span>
+              </button>
+            </div>
+
+            <div class="glass-table-wrapper">
+              <table class="glass-table">
+                <thead>
+                  <tr>
+                    <th data-i18n="th_date">Date</th>
+                    <th data-i18n="th_category">Category</th>
+                    <th data-i18n="th_amount">Amount</th>
+                    <th data-i18n="th_description">Description</th>
+                    <th data-i18n="th_logged_by">Logged By</th>
+                    <th style="text-align: right;" data-i18n="th_actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="expensesTableBody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. DRIVERS DIRECTORY (Company Teammates Style) -->
+        <section class="tab-pane" id="tab-drivers">
+          <div class="glass-card table-card">
+            <div class="table-header-row">
+              <div>
+                <h3 data-i18n="driver_directory_title">Driver Directory & Profiles</h3>
+              </div>
+              <div class="actions-group">
+                <button class="btn-glass btn-amber btn-sm" onclick="openModal('addDriverModal')">
+                  <i class="fa-solid fa-user-plus"></i> <span data-i18n="btn_add_new_driver">Add New Driver</span>
+                </button>
+                <button class="btn-glass btn-sm" onclick="exportDefaultersPdf()">
+                  <i class="fa-solid fa-file-pdf"></i> <span data-i18n="btn_defaulters_pdf">Defaulters PDF</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="table-filters">
+              <div class="search-input-glass">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="driverSearch" placeholder="Search driver, phone, NID..." oninput="renderDriversGrid()">
+              </div>
+              <label class="glass-checkbox">
+                <input type="checkbox" id="onlyDefaultersCheckbox" onchange="renderDriversGrid()">
+                <span data-i18n="chk_only_defaulters">Only Defaulters</span>
+              </label>
+            </div>
+
+            <div class="driver-teammates-grid" id="driversGrid">
+              <!-- Injected via JS as Company Teammates Profile Cards -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. FINANCIAL REPORTS & P&L VIEW -->
+        <section class="tab-pane" id="tab-reports">
+          <div class="glass-card">
+            <div class="table-header-row">
+              <div>
+                <h3 data-i18n="pnl_statement_title">Profit & Loss Statement (P&L)</h3>
+              </div>
+              <div class="actions-group">
+                <button class="btn-glass btn-primary btn-sm" onclick="exportMonthlyPnlPdf()">
+                  <i class="fa-solid fa-file-pdf"></i> <span data-i18n="btn_pnl_pdf">P&L PDF</span>
+                </button>
+                <button class="btn-glass btn-emerald btn-sm" onclick="exportFullExcel()">
+                  <i class="fa-solid fa-file-excel"></i> <span data-i18n="btn_excel_audit">Excel Audit</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="pnl-summary-banner">
+              <div class="pnl-item">
+                <span data-i18n="pnl_gross_collections">Gross Collections</span>
+                <strong class="text-emerald" id="pnlTotalRev">৳0</strong>
+              </div>
+              <div class="pnl-divider"></div>
+              <div class="pnl-item">
+                <span data-i18n="pnl_total_expenses">Total Expenses (Rent + Repair)</span>
+                <strong class="text-crimson" id="pnlTotalExp">৳0</strong>
+              </div>
+              <div class="pnl-divider"></div>
+              <div class="pnl-item">
+                <span data-i18n="pnl_net_profit">Owner's Net Profit</span>
+                <strong class="text-blue" id="pnlNetProfit">৳0</strong>
+              </div>
+            </div>
+
+            <div class="expense-breakdown-section">
+              <h4 style="margin-bottom: 14px; font-size: 13px;" data-i18n="pnl_cat_distribution">Expenditure Distribution</h4>
+              <div id="expenseCategoryBars">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. GPS FLEET TELEMATICS (COMING SOON) -->
+        <section class="tab-pane" id="tab-gps">
+          <div class="gps-placeholder-container">
+            <div class="gps-orb-visual">
+              <div class="radar-circle radar-outer"></div>
+              <div class="radar-circle radar-inner"></div>
+              <div class="glass-orb-center">
+                <i class="fa-solid fa-dharmachakra"></i>
+              </div>
+              <div class="orbiting-satellite">
+                <i class="fa-solid fa-satellite-dish"></i>
+              </div>
+            </div>
+
+            <span class="badge-pill badge-amber">FIRMWARE V2.0 PENDING</span>
+            <h2 class="gps-title" data-i18n="gps_title">GPS Fleet Tracking</h2>
+            <p class="gps-subtitle" data-i18n="gps_desc">Real-time live location, speed monitoring, and telemetry will be available in the upcoming firmware release.</p>
+
+            <div class="schema-code-glass">
+              <div class="code-header"><i class="fa-solid fa-code"></i> IoT Telematics Schema Ready</div>
+              <code>
+rickshaws.last_location: {
+  lat: 23.8103,
+  lng: 90.4125,
+  speed: 18.5,
+  updated_at: "2026-08-31T18:00:00Z"
+}
+              </code>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- FLOATING MOBILE BOTTOM BAR -->
+  <div class="floating-mobile-bar" id="mobileBar">
+    <button class="mobile-nav-item active" onclick="switchTab('dashboard')">
+      <i class="fa-solid fa-gauge-high"></i>
+      <span data-i18n="nav_dashboard">Home</span>
+    </button>
+    <button class="mobile-nav-item" onclick="switchTab('expenses')">
+      <i class="fa-solid fa-wallet"></i>
+      <span data-i18n="nav_expenses">Expense</span>
+    </button>
+    <div class="mobile-fab" onclick="openModal('qrModal')">
+      <i class="fa-solid fa-qrcode"></i>
+    </div>
+    <button class="mobile-nav-item" onclick="switchTab('drivers')">
+      <i class="fa-solid fa-users"></i>
+      <span data-i18n="nav_drivers">Drivers</span>
+    </button>
+    <button class="mobile-nav-item" onclick="switchTab('gps')">
+      <i class="fa-solid fa-satellite"></i>
+      <span data-i18n="nav_gps">GPS</span>
+    </button>
+  </div>
+
+  <!-- ==================== CENTERED MODALS ==================== -->
+
+  <!-- 1. LIQUID GLASS QR SCANNER MODAL -->
+  <div class="modal-backdrop" id="qrModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-qrcode text-blue"></i> <span data-i18n="modal_qr_title">QR Scanner</span></h3>
+        <button class="close-btn" onclick="closeModal('qrModal')">&times;</button>
+      </div>
+
+      <div class="qr-viewfinder-box">
+        <div class="corner-bracket top-left"></div>
+        <div class="corner-bracket top-right"></div>
+        <div class="corner-bracket bottom-left"></div>
+        <div class="corner-bracket bottom-right"></div>
+        <div class="laser-scanner-line"></div>
+        <div class="viewfinder-content">
+          <i class="fa-solid fa-dharmachakra viewfinder-icon"></i>
+          <span data-i18n="qr_align_text">Align QR code in frame</span>
+        </div>
+      </div>
+
+      <div class="qr-sim-buttons">
+        <p style="font-size: 11px; color: var(--text-tertiary);" data-i18n="qr_quick_presets">Test Scanner Presets:</p>
+        <div class="preset-row">
+          <button class="btn-tag" onclick="simulateScan('R-01')">Scan R-01</button>
+          <button class="btn-tag" onclick="simulateScan('R-02')">Scan R-02</button>
+          <button class="btn-tag" onclick="simulateScan('R-03')">Scan R-03</button>
+          <button class="btn-tag" onclick="simulateScan('R-04')">Scan R-04</button>
+          <button class="btn-tag" onclick="simulateScan('R-05')">Scan R-05</button>
+        </div>
+      </div>
+
+      <!-- Scanned Result Bottom View -->
+      <div class="scanned-result-card" id="scannedResultCard" style="display: none;">
+        <div class="result-header">
+          <div>
+            <h4 id="scannedRickshawTitle">Rickshaw R-01</h4>
+            <span id="scannedRickshawModel" class="text-secondary">Mishuk Classic 48V</span>
+          </div>
+          <span class="badge-pill badge-emerald" id="scannedStatusBadge">ACTIVE</span>
+        </div>
+
+        <div class="result-body">
+          <div class="info-line">
+            <span data-i18n="lbl_driver">Driver:</span>
+            <strong id="scannedDriverName">Karim Ullah</strong>
+          </div>
+          <div class="info-line">
+            <span data-i18n="lbl_agreed_rate">Agreed Joma:</span>
+            <strong id="scannedDriverAgreedRate" class="text-blue">৳350 / day</strong>
+          </div>
+          <div class="info-line">
+            <span data-i18n="lbl_due">Due Balance:</span>
+            <strong id="scannedDriverDue" class="text-emerald">৳0</strong>
+          </div>
+        </div>
+
+        <button class="btn-glass btn-emerald btn-block" onclick="openDepositFromScan()">
+          <i class="fa-solid fa-plus-circle"></i> <span data-i18n="btn_record_deposit">Record Deposit</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. DAILY COLLECTION FORM MODAL -->
+  <div class="modal-backdrop" id="collectionModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-hand-holding-dollar text-emerald"></i> <span data-i18n="modal_deposit_title">Record Rental Deposit</span></h3>
+        <button class="close-btn" onclick="closeModal('collectionModal')">&times;</button>
+      </div>
+
+      <div class="calculation-preview-card">
+        <div class="calc-col">
+          <span data-i18n="lbl_target">Target</span>
+          <strong id="calcExpected">৳350</strong>
+        </div>
+        <div class="calc-col">
+          <span data-i18n="lbl_deposited">Deposited</span>
+          <strong class="text-emerald" id="calcPaid">৳350</strong>
+        </div>
+        <div class="calc-col">
+          <span data-i18n="lbl_remaining_due">Remaining Due</span>
+          <strong id="calcDue" class="text-secondary">৳0</strong>
+        </div>
+      </div>
+
+      <form id="collectionForm" onsubmit="submitCollection(event)">
+        <div class="form-group">
+          <label data-i18n="lbl_select_rickshaw">Select Rickshaw</label>
+          <select class="glass-select" id="formRickshawSelect" onchange="onFormRickshawChange()">
+            <!-- Injected via JS -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_driver_info">Driver Information</label>
+          <div class="driver-readonly-card" id="formDriverInfo">
+            <span id="formDriverName">Karim Ullah (৳350/day)</span>
+            <span id="formDriverDueBadge" class="badge-pill badge-emerald">DUE: ৳0</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_agreed_joma_rate">Agreed Joma Target (৳)</label>
+          <input type="number" class="glass-input" id="formExpectedRate" value="350" oninput="recalcCollection()">
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_amount_deposited">Amount Deposited (৳)</label>
+          <input type="number" class="glass-input" id="formPaidAmount" value="350" oninput="recalcCollection()">
+        </div>
+
+        <div class="quick-chips">
+          <span data-i18n="lbl_quick_presets">Quick Presets:</span>
+          <div class="chip-row">
+            <button type="button" class="btn-chip" onclick="setPresetAmount(350)">Full (৳350)</button>
+            <button type="button" class="btn-chip" onclick="setPresetAmount(200)">Partial (৳200)</button>
+            <button type="button" class="btn-chip" onclick="setPresetAmount(0)">Zero (৳0)</button>
+          </div>
+        </div>
+
+        <!-- Garage Rent Deduction -->
+        <div class="form-group" style="margin-top: 16px;">
+          <div style="background: rgba(94, 92, 230, 0.12); border: 1px solid rgba(94, 92, 230, 0.35); border-radius: var(--radius-md); padding: 10px 14px;">
+            <label class="glass-checkbox" style="font-weight: 600; color: white;">
+              <input type="checkbox" id="includeGarageRentCheck" checked onchange="toggleGarageRentInput()">
+              <span data-i18n="lbl_deduct_garage_rent">Deduct Daily Garage Rent</span>
+            </label>
+            <div id="garageRentInputGroup" style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 11px; color: var(--text-secondary);" data-i18n="lbl_rent_amount">Rent Amount:</span>
+              <input type="number" class="glass-input" id="formGarageRentAmount" value="100" style="width: 90px; padding: 4px 8px; font-size: 11px;">
+              <span style="font-size: 11px; color: var(--purple-light);">৳/day</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-glass btn-emerald btn-block" style="margin-top: 20px;">
+          <i class="fa-solid fa-circle-check"></i> <span data-i18n="btn_save_deposit">Confirm Deposit</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. ADD EXPENSE FORM MODAL -->
+  <div class="modal-backdrop" id="expenseModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-receipt text-crimson"></i> <span data-i18n="modal_expense_title">Track Expense</span></h3>
+        <button class="close-btn" onclick="closeModal('expenseModal')">&times;</button>
+      </div>
+
+      <form id="expenseForm" onsubmit="submitExpense(event)">
+        <div class="form-group">
+          <label data-i18n="lbl_category">Category</label>
+          <div class="category-chips-grid">
+            <button type="button" class="cat-chip active" onclick="selectExpenseCat('parts', this)">
+              <i class="fa-solid fa-wrench"></i> <span data-i18n="cat_parts">Parts & Battery</span>
+            </button>
+            <button type="button" class="cat-chip" onclick="selectExpenseCat('mechanic', this)">
+              <i class="fa-solid fa-user-gear"></i> <span data-i18n="cat_mechanic">Mechanic Labor</span>
+            </button>
+            <button type="button" class="cat-chip" onclick="selectExpenseCat('rent', this)">
+              <i class="fa-solid fa-warehouse"></i> <span data-i18n="cat_rent">Garage Rent & Power</span>
+            </button>
+            <button type="button" class="cat-chip" onclick="selectExpenseCat('line_fee', this)">
+              <i class="fa-solid fa-id-badge"></i> <span data-i18n="cat_line_fee">Line / Union Fee</span>
+            </button>
+            <button type="button" class="cat-chip" onclick="selectExpenseCat('other', this)">
+              <i class="fa-solid fa-ellipsis"></i> <span data-i18n="cat_other">Miscellaneous</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_amount">Amount (৳)</label>
+          <input type="number" class="glass-input" id="formExpAmount" placeholder="e.g. 1200" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_description">Description / Note</label>
+          <input type="text" class="glass-input" id="formExpNote" placeholder="e.g. Front brake shoe servicing" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_receipt">Receipt / Voucher (Optional)</label>
+          <div class="receipt-attach-box" onclick="simulateReceiptAttach()">
+            <i class="fa-solid fa-camera" id="receiptIcon"></i>
+            <span id="receiptText" data-i18n="lbl_attach_receipt">Attach receipt photo</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-glass btn-crimson btn-block" style="margin-top: 20px;">
+          <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn_save_expense">Save Expense</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. ADD NEW DRIVER MODAL -->
+  <div class="modal-backdrop" id="addDriverModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-plus text-amber"></i> <span data-i18n="modal_add_driver_title">Add Driver</span></h3>
+        <button class="close-btn" onclick="closeModal('addDriverModal')">&times;</button>
+      </div>
+
+      <form id="addDriverForm" onsubmit="submitNewDriver(event)">
+        <div class="form-group">
+          <label data-i18n="lbl_full_name">Full Name</label>
+          <input type="text" class="glass-input" id="newDriverName" placeholder="e.g. Monirul Haque" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_phone">Mobile Number</label>
+          <input type="tel" class="glass-input" id="newDriverPhone" placeholder="e.g. 01712345678" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_agreed_daily_rate">Agreed Daily Joma Rate (৳/day)</label>
+          <input type="number" class="glass-input" id="newDriverDailyRate" value="350" min="100" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_nid">National ID (NID)</label>
+          <input type="text" class="glass-input" id="newDriverNid" placeholder="e.g. 19902698765432100" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_address">Residential Address</label>
+          <input type="text" class="glass-input" id="newDriverAddress" placeholder="e.g. Gabtoli, Dhaka" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_assign_rickshaw">Assign Rickshaw</label>
+          <select class="glass-select" id="newDriverRickshaw">
+            <!-- Injected via JS -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_initial_due">Opening Due Balance (৳)</label>
+          <input type="number" class="glass-input" id="newDriverInitialDue" value="0" min="0">
+        </div>
+
+        <button type="submit" class="btn-glass btn-amber btn-block" style="margin-top: 20px;">
+          <i class="fa-solid fa-user-check"></i> <span data-i18n="btn_register_driver">Register Driver</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. EDIT DRIVER PROFILE MODAL -->
+  <div class="modal-backdrop" id="editDriverModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-pen text-blue"></i> <span data-i18n="modal_edit_driver_title">Edit Driver Profile</span></h3>
+        <button class="close-btn" onclick="closeModal('editDriverModal')">&times;</button>
+      </div>
+
+      <form id="editDriverForm" onsubmit="submitEditDriver(event)">
+        <input type="hidden" id="editDriverId">
+
+        <div class="form-group">
+          <label data-i18n="lbl_full_name">Full Name</label>
+          <input type="text" class="glass-input" id="editDriverName" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_phone">Mobile Number</label>
+          <input type="tel" class="glass-input" id="editDriverPhone" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_agreed_daily_rate">Agreed Daily Joma Rate (৳/day)</label>
+          <input type="number" class="glass-input" id="editDriverDailyRate" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_nid">National ID (NID)</label>
+          <input type="text" class="glass-input" id="editDriverNid" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_address">Residential Address</label>
+          <input type="text" class="glass-input" id="editDriverAddress" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_assign_rickshaw">Assigned Rickshaw</label>
+          <select class="glass-select" id="editDriverRickshaw">
+            <!-- Injected via JS -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_due">Outstanding Due Balance (৳)</label>
+          <input type="number" class="glass-input" id="editDriverDue" min="0">
+        </div>
+
+        <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 20px;">
+          <i class="fa-solid fa-check"></i> <span data-i18n="btn_update_profile">Update Profile</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. ADD NEW RICKSHAW MODAL -->
+  <div class="modal-backdrop" id="addRickshawModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-van-shuttle text-blue"></i> <span data-i18n="modal_add_rickshaw_title">Add Rickshaw</span></h3>
+        <button class="close-btn" onclick="closeModal('addRickshawModal')">&times;</button>
+      </div>
+
+      <form id="addRickshawForm" onsubmit="submitNewRickshaw(event)">
+        <div class="form-group">
+          <label data-i18n="lbl_rickshaw_id">Rickshaw ID</label>
+          <input type="text" class="glass-input" id="newRickshawId" placeholder="e.g. R-11" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_model_type">Model & Specs</label>
+          <input type="text" class="glass-input" id="newRickshawModel" placeholder="e.g. Mishuk Classic 48V" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_standard_rate">Standard Rent Rate (৳/day)</label>
+          <input type="number" class="glass-input" id="newRickshawRate" value="350" required>
+        </div>
+
+        <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 20px;">
+          <i class="fa-solid fa-circle-check"></i> <span data-i18n="btn_save_rickshaw">Add Rickshaw</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. QUICK DIRECT DUE COLLECTION MODAL -->
+  <div class="modal-backdrop" id="quickCollectModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-coins text-emerald"></i> <span data-i18n="modal_collect_due_title">Collect Due</span></h3>
+        <button class="close-btn" onclick="closeModal('quickCollectModal')">&times;</button>
+      </div>
+
+      <div class="sms-preview-box">
+        <div class="sms-recipient-info">
+          <span data-i18n="lbl_driver">Driver:</span>
+          <strong id="quickCollectDriverName">Rafiqul Islam</strong>
+        </div>
+        <div class="sms-recipient-info">
+          <span data-i18n="lbl_current_due">Current Due:</span>
+          <strong id="quickCollectCurrentDue" class="text-crimson">৳700</strong>
+        </div>
+      </div>
+
+      <form onsubmit="submitQuickCollection(event)">
+        <div class="form-group">
+          <label data-i18n="lbl_payment_amount">Payment Amount (৳)</label>
+          <input type="number" class="glass-input" id="quickCollectAmount" value="700" min="1" required>
+        </div>
+
+        <button type="submit" class="btn-glass btn-emerald btn-block" style="margin-top: 18px;">
+          <i class="fa-solid fa-check"></i> <span data-i18n="btn_confirm_payment">Submit Payment</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. BENGALI SMS DISPATCH CONFIRMATION MODAL -->
+  <div class="modal-backdrop" id="smsModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-message text-amber"></i> <span data-i18n="modal_sms_title">Send SMS Reminder</span></h3>
+        <button class="close-btn" onclick="closeModal('smsModal')">&times;</button>
+      </div>
+
+      <div class="sms-preview-box">
+        <div class="sms-recipient-info">
+          <span data-i18n="lbl_recipient">Recipient:</span>
+          <strong id="smsRecipient">Rafiqul Islam (01812345678)</strong>
+        </div>
+        <div class="bangla-sms-card">
+          <p id="smsBengaliText">শ্রদ্ধেয় রফিকুল ইসলাম ভাই, প্রজেক্ট ৩ হুইল গ্যারেজে আপনার বকেয়া পাওনা ৳৭০০ টাকা। অনুগ্রহ করে দ্রুত পরিশোধ করুন। ধন্যবাদ।</p>
+        </div>
+        <div class="gateway-tag">
+          <i class="fa-solid fa-satellite-dish"></i> Gateway: Greenweb / BdSMS API
+        </div>
+      </div>
+
+      <div class="modal-actions-row">
+        <button class="btn-glass" onclick="closeModal('smsModal')" data-i18n="btn_cancel">Cancel</button>
+        <button class="btn-glass btn-amber" onclick="executeSendSms()">
+          <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btn_send_now">Send Now</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
