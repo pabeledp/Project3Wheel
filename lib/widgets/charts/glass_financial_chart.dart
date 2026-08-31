@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_dimensions.dart';
 import '../../core/constants/app_typography.dart';
-import '../../core/utils/currency_formatter.dart';
 import '../glass/glass_card.dart';
 
 class GlassFinancialChart extends StatelessWidget {

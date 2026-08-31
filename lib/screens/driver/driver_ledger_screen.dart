@@ -10,7 +10,6 @@ import '../../services/sms/sms_gateway_service.dart';
 import '../../services/sms/bangla_sms_templates.dart';
 import '../../services/export/pdf_report_service.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
-import '../../widgets/glass/glass_button.dart';
 import '../../widgets/glass/glass_pill_badge.dart';
 import '../../widgets/glass/glass_modal_bottom_sheet.dart';
 import '../../widgets/layout/responsive_layout_builder.dart';
@@ -157,11 +156,11 @@ class _DriverLedgerScreenState extends ConsumerState<DriverLedgerScreen> {
                     child: TextField(
                       onChanged: (val) => setState(() => _searchQuery = val),
                       style: AppTypography.bodyMedium.copyWith(color: Colors.white),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Search driver name, phone, NID...',
                         hintStyle: TextStyle(color: AppColors.textTertiary, fontSize: 13),
-                        icon: const Icon(Icons.search_rounded, color: AppColors.textSecondary, size: 18),
+                        icon: Icon(Icons.search_rounded, color: AppColors.textSecondary, size: 18),
                       ),
                     ),
                   ),
@@ -226,7 +225,7 @@ class _DriverLedgerScreenState extends ConsumerState<DriverLedgerScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.people_outline_rounded, size: 48, color: AppColors.textTertiary),
+                          const Icon(Icons.people_outline_rounded, size: 48, color: AppColors.textTertiary),
                           const SizedBox(height: 12),
                           Text('No matching drivers found', style: AppTypography.bodyMedium),
                         ],

@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_dimensions.dart';
 import '../../core/constants/app_typography.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
 import '../../widgets/glass/glass_button.dart';
@@ -114,7 +113,7 @@ class _GpsTrackingPlaceholderScreenState extends State<GpsTrackingPlaceholderScr
                         animation: _rotationController,
                         builder: (context, child) {
                           final angle = _rotationController.value * 2 * math.pi;
-                          final radius = 95.0;
+                          const radius = 95.0;
                           final x = radius * math.cos(angle);
                           final y = radius * math.sin(angle);
 
@@ -183,7 +182,7 @@ class _GpsTrackingPlaceholderScreenState extends State<GpsTrackingPlaceholderScr
                         ],
                       ),
                       const SizedBox(height: 8),
-                      Text(
+                      const Text(
                         'rickshaws.last_location: { lat, lng, speed, updated_at }\nBackend ready for SIM800L / GPS tracker packets.',
                         style: TextStyle(
                           fontFamily: 'monospace',
@@ -197,7 +196,7 @@ class _GpsTrackingPlaceholderScreenState extends State<GpsTrackingPlaceholderScr
                 ),
                 const SizedBox(height: 28),
                 // Disabled Apple-style glass button
-                GlassButton(
+                const GlassButton(
                   text: 'View Live Map (Disabled)',
                   icon: Icons.map_outlined,
                   variant: GlassButtonVariant.secondary,

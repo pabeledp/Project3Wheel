@@ -1,9 +1,7 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_dimensions.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../models/rickshaw_model.dart';
@@ -11,7 +9,6 @@ import '../../models/driver_model.dart';
 import '../../models/collection_model.dart';
 import '../../providers/fleet_provider.dart';
 import '../../providers/collection_provider.dart';
-import '../../providers/auth_provider.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
 import '../../widgets/glass/glass_button.dart';
 import '../../widgets/glass/glass_pill_badge.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import '../../models/user_model.dart';
 import '../../models/rickshaw_model.dart';
 import '../../models/driver_model.dart';
 import '../../models/collection_model.dart';

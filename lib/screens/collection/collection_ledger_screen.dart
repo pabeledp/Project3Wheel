@@ -11,7 +11,6 @@ import '../../providers/auth_provider.dart';
 import '../../services/export/pdf_report_service.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
 import '../../widgets/glass/glass_pill_badge.dart';
-import '../../widgets/glass/glass_button.dart';
 import '../../widgets/layout/responsive_layout_builder.dart';
 import 'daily_collection_form_screen.dart';
 
@@ -84,11 +83,11 @@ class _CollectionLedgerScreenState extends ConsumerState<CollectionLedgerScreen>
                     child: TextField(
                       onChanged: (val) => setState(() => _searchQuery = val),
                       style: AppTypography.bodyMedium.copyWith(color: Colors.white),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Search rickshaw or driver...',
                         hintStyle: TextStyle(color: AppColors.textTertiary, fontSize: 13),
-                        icon: const Icon(Icons.search_rounded, color: AppColors.textSecondary, size: 18),
+                        icon: Icon(Icons.search_rounded, color: AppColors.textSecondary, size: 18),
                       ),
                     ),
                   ),
@@ -139,7 +138,7 @@ class _CollectionLedgerScreenState extends ConsumerState<CollectionLedgerScreen>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.receipt_long_outlined, size: 48, color: AppColors.textTertiary),
+                          const Icon(Icons.receipt_long_outlined, size: 48, color: AppColors.textTertiary),
                           const SizedBox(height: 12),
                           Text('No collection entries found', style: AppTypography.bodyMedium),
                         ],

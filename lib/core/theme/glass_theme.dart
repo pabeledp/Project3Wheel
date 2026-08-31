@@ -73,7 +73,6 @@ class GlassTheme {
         primary: AppColors.primaryBlue,
         secondary: AppColors.primaryPurple,
         surface: AppColors.backgroundCard,
-        background: AppColors.backgroundDark,
         error: AppColors.crimsonRed,
       ),
       appBarTheme: const AppBarTheme(

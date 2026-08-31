@@ -19,8 +19,8 @@ class ConnectivityService {
 
   Future<void> initialize() async {
     try {
-      final results = await _connectivity.checkConnectivity();
-      _updateStatus(results);
+      final result = await _connectivity.checkConnectivity();
+      _updateStatus(result);
       _connectivity.onConnectivityChanged.listen(_updateStatus);
     } catch (e) {
       debugPrint('ConnectivityService initialization error: $e');
@@ -28,11 +28,19 @@ class ConnectivityService {
     }
   }
 
-  void _updateStatus(List<ConnectivityResult> results) {
-    final hasConnection = results.any((result) =>
-        result == ConnectivityResult.mobile ||
-        result == ConnectivityResult.wifi ||
-        result == ConnectivityResult.ethernet);
+  void _updateStatus(dynamic result) {
+    bool hasConnection = false;
+
+    if (result is List) {
+      hasConnection = result.any((r) =>
+          r == ConnectivityResult.mobile ||
+          r == ConnectivityResult.wifi ||
+          r == ConnectivityResult.ethernet);
+    } else if (result is ConnectivityResult) {
+      hasConnection = result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi ||
+          result == ConnectivityResult.ethernet;
+    }
 
     _currentStatus = hasConnection ? NetworkStatus.online : NetworkStatus.offline;
     _controller.add(_currentStatus);

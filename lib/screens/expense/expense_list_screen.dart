@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_dimensions.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_utils.dart';
@@ -92,7 +91,7 @@ class _ExpenseListScreenState extends ConsumerState<ExpenseListScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.receipt_outlined, size: 48, color: AppColors.textTertiary),
+                          const Icon(Icons.receipt_outlined, size: 48, color: AppColors.textTertiary),
                           const SizedBox(height: 12),
                           Text('No expense records logged', style: AppTypography.bodyMedium),
                         ],

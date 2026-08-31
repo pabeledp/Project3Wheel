@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_dimensions.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_utils.dart';
@@ -10,7 +9,6 @@ import '../../providers/collection_provider.dart';
 import '../../providers/expense_provider.dart';
 import '../../providers/fleet_provider.dart';
 import '../../providers/report_provider.dart';
-import '../../providers/auth_provider.dart';
 import '../../services/export/pdf_report_service.dart';
 import '../../services/export/excel_report_service.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
@@ -27,7 +25,7 @@ class FinancialReportsScreen extends ConsumerStatefulWidget {
 }
 
 class _FinancialReportsScreenState extends ConsumerState<FinancialReportsScreen> {
-  DateTime _selectedMonth = DateTime.now();
+  final DateTime _selectedMonth = DateTime.now();
   bool _isGeneratingPdf = false;
   bool _isGeneratingExcel = false;
 
@@ -224,7 +222,7 @@ class _FinancialReportsScreenState extends ConsumerState<FinancialReportsScreen>
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),

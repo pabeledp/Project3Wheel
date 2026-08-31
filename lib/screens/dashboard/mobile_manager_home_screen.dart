@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_dimensions.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/currency_formatter.dart';
-import '../../core/utils/date_utils.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/fleet_provider.dart';
 import '../../providers/collection_provider.dart';
-import '../../providers/expense_provider.dart';
 import '../../providers/report_provider.dart';
 import '../../providers/sync_provider.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
 import '../../widgets/glass/glass_metric_card.dart';
 import '../../widgets/glass/glass_pill_badge.dart';
-import '../../widgets/glass/glass_button.dart';
 import '../scanner/qr_scanner_screen.dart';
 import '../collection/daily_collection_form_screen.dart';
-import '../collection/collection_ledger_screen.dart';
 import '../expense/add_expense_screen.dart';
-import '../expense/expense_list_screen.dart';
 import '../driver/driver_ledger_screen.dart';
 
 class MobileManagerHomeScreen extends ConsumerWidget {

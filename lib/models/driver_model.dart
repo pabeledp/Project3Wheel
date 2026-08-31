@@ -23,6 +23,12 @@ class DriverModel {
     required this.joinedDate,
   });
 
+  // Aliases for compatibility
+  String get id => driverId;
+  double get due => totalDue;
+  String? get activeRickshaw => activeRickshawId;
+  DateTime get joinDate => joinedDate;
+
   bool get hasDue => totalDue > 0;
 
   DriverModel copyWith({
@@ -68,18 +74,18 @@ class DriverModel {
 
   factory DriverModel.fromMap(Map<String, dynamic> map) {
     return DriverModel(
-      driverId: map['driver_id'] as String? ?? '',
+      driverId: map['driver_id'] as String? ?? map['id'] as String? ?? '',
       name: map['name'] as String? ?? '',
       phone: map['phone'] as String? ?? '',
       nid: map['nid'] as String? ?? '',
       agreedDailyRate: (map['agreed_daily_rate'] as num?)?.toDouble() ?? 350.0,
-      totalDue: (map['total_due'] as num?)?.toDouble() ?? 0.0,
-      activeRickshawId: map['active_rickshaw_id'] as String?,
+      totalDue: (map['total_due'] as num?)?.toDouble() ?? (map['due'] as num?)?.toDouble() ?? 0.0,
+      activeRickshawId: map['active_rickshaw_id'] as String? ?? map['activeRickshaw'] as String?,
       avatarUrl: map['avatar_url'] as String?,
-      address: map['address'] as String? ?? 'Mirpur, Dhaka',
+      address: map['address'] as String? ?? 'Mirpur-10, Dhaka',
       joinedDate: map['joined_date'] != null
           ? DateTime.tryParse(map['joined_date'].toString()) ?? DateTime.now()
-          : DateTime.now(),
+          : (map['joinDate'] != null ? DateTime.tryParse(map['joinDate'].toString()) ?? DateTime.now() : DateTime.now()),
     );
   }
 }

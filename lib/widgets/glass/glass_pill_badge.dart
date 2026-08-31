@@ -44,6 +44,12 @@ class GlassPillBadge extends StatelessWidget {
           variant: GlassPillVariant.crimson,
           showDot: true,
         );
+      case PaymentStatus.off:
+        return const GlassPillBadge(
+          text: 'OFF DAY',
+          variant: GlassPillVariant.neutral,
+          showDot: true,
+        );
     }
   }
 
