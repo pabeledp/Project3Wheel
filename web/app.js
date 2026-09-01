@@ -1203,6 +1203,9 @@ function renderDriversGrid() {
           <i class="fa-solid fa-location-dot"></i> ${d.address}
         </div>
         <div class="teammate-actions">
+          <button class="btn-glass btn-blue btn-sm" onclick="openDriverIdCardModal('${d.id}')" title="Generate Driver Smart ID Card">
+            <i class="fa-solid fa-id-card"></i>
+          </button>
           <button class="btn-glass btn-sm" onclick="openEditDriverModal('${d.id}')" title="Edit Profile">
             <i class="fa-solid fa-user-pen"></i>
           </button>
@@ -2057,4 +2060,86 @@ function showToast(message, type = 'emerald') {
     toast.style.opacity = '0';
     setTimeout(() => toast.remove(), 300);
   }, 3000);
+}
+
+// --- DRIVER SMART ID CARD GENERATOR & PDF ENGINE ---
+let currentSelectedIdCardDriver = null;
+
+function openDriverIdCardModal(driverId) {
+  const driver = state.drivers.find(d => d.id === driverId);
+  if (!driver) return;
+
+  currentSelectedIdCardDriver = driver;
+
+  document.getElementById('idCardDriverName').textContent = driver.name;
+  document.getElementById('idCardDriverId').textContent = driver.id;
+  document.getElementById('idCardDriverPhone').textContent = driver.phone;
+  document.getElementById('idCardDriverRickshaw').textContent = driver.activeRickshaw || 'Unassigned';
+  document.getElementById('idCardDriverNid').textContent = driver.nid;
+
+  // Generate Real Dynamic QR Code image for the driver & assigned rickshaw
+  const qrData = encodeURIComponent(`DRIVER:${driver.name}|ID:${driver.id}|RICKSHAW:${driver.activeRickshaw || 'NONE'}|PHONE:${driver.phone}|RATE:${driver.agreedDailyRate || 350}`);
+  const qrBox = document.getElementById('idCardQrContainer');
+  if (qrBox) {
+    qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${qrData}" alt="Driver QR" style="width: 100%; height: 100%; object-fit: contain;">`;
+  }
+
+  openModal('driverIdCardModal');
+}
+
+function downloadDriverIdCardPdf() {
+  if (!currentSelectedIdCardDriver) return;
+  const driver = currentSelectedIdCardDriver;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({
+    orientation: 'landscape',
+    unit: 'mm',
+    format: [85.6, 54] // Standard CR80 ID Card dimensions (Credit Card size)
+  });
+
+  // Deep Premium Dark Glass Background
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, 85.6, 54, 'F');
+
+  // Blue Accent Top Stripe
+  doc.setFillColor(10, 132, 255);
+  doc.rect(0, 0, 85.6, 6, 'F');
+
+  doc.setFontSize(8);
+  doc.setTextColor(255, 255, 255);
+  doc.setFont(undefined, 'bold');
+  doc.text('PROJECT 3 WHEEL • PILOT SMART ID', 5, 4.2);
+
+  // Driver Information
+  doc.setFontSize(10);
+  doc.setTextColor(255, 255, 255);
+  doc.text(driver.name, 5, 14);
+
+  doc.setFontSize(7);
+  doc.setFont(undefined, 'normal');
+  doc.setTextColor(148, 163, 184);
+  doc.text(`ID: ${driver.id}`, 5, 20);
+  doc.text(`Phone: ${driver.phone}`, 5, 25);
+  doc.text(`Rickshaw: ${driver.activeRickshaw || 'None'} (Rate: Tk ${driver.agreedDailyRate || 350})`, 5, 30);
+  doc.text(`NID: ${driver.nid}`, 5, 35);
+  doc.text(`Garage: Habib Electric Garage`, 5, 40);
+
+  // QR Code on right side
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(56, 12, 25, 25, 2, 2, 'F');
+
+  doc.setFontSize(6);
+  doc.setTextColor(10, 132, 255);
+  doc.text('QR VERIFIED', 61, 41);
+
+  // Footer bar
+  doc.setFillColor(30, 41, 59);
+  doc.rect(0, 48, 85.6, 6, 'F');
+  doc.setFontSize(5.5);
+  doc.setTextColor(148, 163, 184);
+  doc.text('Authorized Driver Pass • Cloud Verified by Fleet Hub', 18, 52);
+
+  doc.save(`Driver_ID_${driver.id}_${driver.name.replace(/\s+/g, '_')}.pdf`);
+  showToast(state.lang === 'bn' ? `${driver.name}-এর স্মার্ট আইডি কার্ড ডাউনলোড হয়েছে!` : `ID Card PDF downloaded for ${driver.name}`, 'emerald');
 }

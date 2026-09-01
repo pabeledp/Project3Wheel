@@ -2258,3 +2258,200 @@ body.lang-bn {
 .btn-download-app-banner:hover {
   background: rgba(16, 185, 129, 0.3);
 }
+
+/* =========================================================
+   ENHANCED APPLE SPECULAR GLASS, HOVER LIFT & GPS ORB RADAR
+   ========================================================= */
+
+/* High-clarity Frosted Glass & Specular Gloss */
+.glass-card, .metric-card, .teammate-card, .glass-modal-sheet {
+  background: rgba(18, 24, 38, 0.72) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Smooth Interactive Hover Lift & Glow */
+.glass-card:hover, .metric-card:hover, .teammate-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: rgba(255, 255, 255, 0.28) !important;
+  box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+.metric-card.glow-emerald:hover { box-shadow: 0 12px 35px rgba(16, 185, 129, 0.25), inset 0 1px 0 rgba(16, 185, 129, 0.4) !important; border-color: rgba(16, 185, 129, 0.5) !important; }
+.metric-card.glow-purple:hover { box-shadow: 0 12px 35px rgba(94, 92, 230, 0.25), inset 0 1px 0 rgba(94, 92, 230, 0.4) !important; border-color: rgba(94, 92, 230, 0.5) !important; }
+.metric-card.glow-crimson:hover { box-shadow: 0 12px 35px rgba(255, 59, 48, 0.25), inset 0 1px 0 rgba(255, 59, 48, 0.4) !important; border-color: rgba(255, 59, 48, 0.5) !important; }
+.metric-card.glow-blue:hover { box-shadow: 0 12px 35px rgba(10, 132, 255, 0.25), inset 0 1px 0 rgba(10, 132, 255, 0.4) !important; border-color: rgba(10, 132, 255, 0.5) !important; }
+.metric-card.glow-amber:hover { box-shadow: 0 12px 35px rgba(255, 149, 0, 0.25), inset 0 1px 0 rgba(255, 149, 0, 0.4) !important; border-color: rgba(255, 149, 0, 0.5) !important; }
+
+/* In-Theme Specular Search Input & Select Dropdowns */
+.search-input-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-input-wrapper:focus-within {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--blue-light);
+  box-shadow: 0 0 12px rgba(10, 132, 255, 0.4);
+}
+
+.search-input-wrapper input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 12px;
+  outline: none;
+  min-width: 170px;
+}
+
+.search-input-wrapper input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.search-input-wrapper i {
+  color: var(--blue-light);
+  font-size: 12px;
+}
+
+.glass-select-filter {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-select-filter:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.glass-select-filter option {
+  background: #141A26;
+  color: white;
+}
+
+/* GPS Radar Pulse & Live Hologram Animation */
+.gps-pulse-orb {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(10, 132, 255, 0.35) 0%, rgba(10, 132, 255, 0.05) 70%);
+  border: 2px solid var(--blue-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 0 30px rgba(10, 132, 255, 0.45);
+}
+
+.gps-pulse-orb i {
+  font-size: 38px;
+  color: white;
+  animation: floatOrb 3s ease-in-out infinite;
+}
+
+.gps-pulse-orb::before, .gps-pulse-orb::after {
+  content: '';
+  position: absolute;
+  top: -12px; left: -12px; right: -12px; bottom: -12px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(10, 132, 255, 0.5);
+  animation: radarWave 2.5s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+.gps-pulse-orb::after {
+  animation-delay: 1.25s;
+}
+
+@keyframes radarWave {
+  0% { transform: scale(0.85); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes floatOrb {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Driver ID Card Visual Styles */
+.driver-id-card-preview {
+  background: linear-gradient(145deg, rgba(20, 28, 45, 0.95), rgba(10, 14, 24, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 20px;
+  color: white;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.id-card-badge-chip {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: var(--grad-primary);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.id-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+
+.id-card-body {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.id-card-qr-box {
+  background: white;
+  padding: 8px;
+  border-radius: 12px;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.id-card-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.id-card-info-grid strong {
+  font-size: 15px;
+  color: white;
+}
