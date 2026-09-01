@@ -199,4 +199,26 @@ class HiveService {
   }
 
   int get pendingSyncCount => Hive.box(boxSyncQueue).length;
+
+  // --- Account Credentials ---
+  Future<void> saveAccountCredential(String identifier, String password, String name, String role) async {
+    final box = Hive.box(boxSettings);
+    final accounts = Map<String, dynamic>.from(box.get('registered_accounts', defaultValue: <String, dynamic>{}));
+    accounts[identifier.toLowerCase().trim()] = {
+      'password': password,
+      'name': name,
+      'role': role,
+    };
+    await box.put('registered_accounts', accounts);
+  }
+
+  Map<String, dynamic>? getAccountCredential(String identifier) {
+    final box = Hive.box(boxSettings);
+    final accounts = Map<String, dynamic>.from(box.get('registered_accounts', defaultValue: <String, dynamic>{}));
+    final acc = accounts[identifier.toLowerCase().trim()];
+    if (acc is Map) {
+      return Map<String, dynamic>.from(acc);
+    }
+    return null;
+  }
 }

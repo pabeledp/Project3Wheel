@@ -5,6 +5,7 @@ import '../../core/constants/app_dimensions.dart';
 import '../../core/constants/app_typography.dart';
 import '../../models/user_model.dart';
 import '../../providers/auth_provider.dart';
+import '../../services/storage/hive_service.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
 import '../../widgets/glass/glass_button.dart';
 import '../../widgets/glass/glass_text_field.dart';
@@ -41,26 +42,64 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       return;
     }
 
-    // Strict Password & Credentials Security Check
+    // Default Seed Accounts
     final knownAccounts = {
-      'owner@project3wheel.com': 'admin123',
-      'manager@project3wheel.com': 'admin123',
-      '01710001122': 'admin123',
-      '01815556677': 'admin123',
+      'owner@project3wheel.com': {'pass': 'admin123', 'name': 'Habib Rahman', 'role': 'owner'},
+      'manager@project3wheel.com': {'pass': 'admin123', 'name': 'Selim Mia', 'role': 'manager'},
+      '01710001122': {'pass': 'admin123', 'name': 'Habib Rahman', 'role': 'owner'},
+      '01815556677': {'pass': 'admin123', 'name': 'Selim Mia', 'role': 'manager'},
     };
 
+    final hive = HiveService();
+    final registeredCred = hive.getAccountCredential(identifier);
+
     if (!_isRegisterMode) {
-      // In Sign In mode: verify credentials against registered account or standard pin
-      final expectedPass = knownAccounts[identifier.toLowerCase()];
-      if (expectedPass != null && pin != expectedPass) {
+      // In Sign In mode: user MUST be registered
+      String? expectedPass;
+      String? savedName;
+
+      if (registeredCred != null) {
+        expectedPass = registeredCred['password']?.toString();
+        savedName = registeredCred['name']?.toString();
+      } else if (knownAccounts.containsKey(identifier.toLowerCase())) {
+        expectedPass = knownAccounts[identifier.toLowerCase()]!['pass'];
+        savedName = knownAccounts[identifier.toLowerCase()]!['name'];
+      }
+
+      if (expectedPass == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Invalid password/PIN! Please enter the correct password.'),
+            content: Text('Account not found! Please register first or enter a registered email.'),
             backgroundColor: AppColors.crimsonRed,
           ),
         );
         return;
-      } else if (expectedPass == null && pin.length < 6) {
+      }
+
+      if (pin != expectedPass) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Wrong password! Please enter the correct password.'),
+            backgroundColor: AppColors.crimsonRed,
+          ),
+        );
+        return;
+      }
+
+      setState(() => _isLoading = true);
+      await Future.delayed(const Duration(milliseconds: 400));
+
+      final user = UserModel(
+        uid: identifier.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_'),
+        name: (savedName != null && savedName.isNotEmpty) ? savedName : (_selectedRole == UserRole.owner ? 'Habib Rahman' : 'Selim Mia'),
+        role: _selectedRole,
+        phone: identifier,
+      );
+
+      ref.read(authProvider.notifier).setUser(user);
+    } else {
+      // In Register mode: validate and save new user account
+      if (pin.length < 6) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Password must be at least 6 characters long.'),
@@ -69,32 +108,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
         return;
       }
-    } else {
-      // In Register mode: validate password length
-      if (pin.length < 6) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Security password must be at least 6 characters long.'),
-            backgroundColor: AppColors.crimsonRed,
-          ),
-        );
-        return;
-      }
-    }
 
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 400));
-
-    final user = UserModel(
-      uid: identifier.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_'),
-      name: _isRegisterMode && _nameController.text.trim().isNotEmpty
+      final regName = _nameController.text.trim().isNotEmpty
           ? _nameController.text.trim()
-          : (_selectedRole == UserRole.owner ? 'Habib Rahman' : 'Selim Mia'),
-      role: _selectedRole,
-      phone: identifier,
-    );
+          : (_selectedRole == UserRole.owner ? 'Habib Rahman' : 'Selim Mia');
 
-    ref.read(authProvider.notifier).setUser(user);
+      await hive.saveAccountCredential(
+        identifier,
+        pin,
+        regName,
+        _selectedRole == UserRole.owner ? 'owner' : 'manager',
+      );
+
+      setState(() => _isLoading = true);
+      await Future.delayed(const Duration(milliseconds: 400));
+
+      final user = UserModel(
+        uid: identifier.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_'),
+        name: regName,
+        role: _selectedRole,
+        phone: identifier,
+      );
+
+      ref.read(authProvider.notifier).setUser(user);
+    }
   }
 
   @override

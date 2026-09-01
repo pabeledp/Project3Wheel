@@ -656,33 +656,62 @@ function submitLogin(e) {
     return;
   }
 
-  // Strict Password & Credentials Verification
+  // Strict Registered Account & Password Verification
   const knownAccounts = {
-    'owner@project3wheel.com': 'admin123',
-    'manager@project3wheel.com': 'admin123',
-    '01711223344': 'admin123',
-    '01812345678': 'admin123',
+    'owner@project3wheel.com': { pass: 'admin123', name: 'Habib Rahman', role: 'owner' },
+    'manager@project3wheel.com': { pass: 'admin123', name: 'Selim Mia', role: 'manager' },
+    '01711223344': { pass: 'admin123', name: 'Habib Rahman', role: 'owner' },
+    '01812345678': { pass: 'admin123', name: 'Selim Mia', role: 'manager' },
   };
 
   const storedAccounts = loadFromStorage('registered_accounts', {});
 
   if (state.authMode === 'login') {
-    const expectedPass = storedAccounts[idVal.toLowerCase()] || knownAccounts[idVal.toLowerCase()];
-    if (expectedPass && passVal !== expectedPass) {
-      showToast(state.lang === 'bn' ? 'ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে চেষ্টা করুন।' : 'Invalid password! Please enter the correct password.', 'crimson');
-      return;
-    } else if (!expectedPass && passVal.length < 6) {
-      showToast(state.lang === 'bn' ? 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।' : 'Password must be at least 6 characters.', 'crimson');
+    const accKey = idVal.toLowerCase();
+    const stored = storedAccounts[accKey];
+    const known = knownAccounts[accKey];
+
+    let expectedPass = null;
+    let savedName = '';
+    let savedRole = state.selectedAuthRole || 'owner';
+
+    if (stored) {
+      expectedPass = typeof stored === 'object' ? stored.pass : stored;
+      savedName = typeof stored === 'object' ? stored.name : '';
+      savedRole = typeof stored === 'object' ? stored.role : savedRole;
+    } else if (known) {
+      expectedPass = known.pass;
+      savedName = known.name;
+      savedRole = known.role;
+    }
+
+    if (!expectedPass) {
+      showToast(state.lang === 'bn' ? 'অ্যাকাউন্ট খুঁজে পাওয়া যায়নি! অনুগ্রহ করে আগে রেজিস্টার করুন।' : 'Account not found! Please register first or use a registered email.', 'crimson');
       return;
     }
+
+    if (passVal !== expectedPass) {
+      showToast(state.lang === 'bn' ? 'ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে চেষ্টা করুন।' : 'Wrong password! Please enter the correct password.', 'crimson');
+      return;
+    }
+
+    state.selectedAuthRole = savedRole;
+    if (savedName) state.currentUserName = savedName;
   } else {
-    // Register mode: store password
+    // Register mode: store password & name
     if (passVal.length < 6) {
       showToast(state.lang === 'bn' ? 'নিরাপত্তা পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।' : 'Password must be at least 6 characters long.', 'crimson');
       return;
     }
-    storedAccounts[idVal.toLowerCase()] = passVal;
+    const role = state.selectedAuthRole || 'owner';
+    const regName = nameVal || (role === 'owner' ? 'Habib Rahman' : 'Selim Mia');
+    storedAccounts[idVal.toLowerCase()] = {
+      pass: passVal,
+      name: regName,
+      role: role
+    };
     saveToStorage('registered_accounts', storedAccounts);
+    state.currentUserName = regName;
   }
 
   const role = state.selectedAuthRole || 'owner';
