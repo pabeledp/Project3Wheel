@@ -6,32 +6,18 @@
 
 const todayIso = new Date().toISOString().split('T')[0];
 
-// Clean Real Assigned Initial State (Clean Fleet & Clean Ledgers)
-const defaultRickshaws = [
-  { id: 'R-01', model: 'Mishuk Classic 48V', rate: 350, status: 'active', driverId: 'D-101' },
-  { id: 'R-02', model: 'Speedy Eco 60V', rate: 350, status: 'active', driverId: 'D-102' },
-  { id: 'R-03', model: 'Runner Turbo 48V', rate: 350, status: 'maintenance', driverId: null },
-];
-
-const defaultDrivers = [
-  { id: 'D-101', name: 'Karim Ullah', phone: '01711223344', nid: '19882691234567890', agreedDailyRate: 350, due: 0, activeRickshaw: 'R-01', address: 'Mirpur-10, Dhaka', joinDate: todayIso },
-  { id: 'D-102', name: 'Rafiqul Islam', phone: '01812345678', nid: '19922699876543210', agreedDailyRate: 350, due: 0, activeRickshaw: 'R-02', address: 'Kalyanpur, Dhaka', joinDate: todayIso },
-];
-
-const defaultShareholders = [
-  { id: 'SH-01', name: 'Al-Haj Moksed Ali', phone: '01712345678', equity: 35, investment: 700000, rickshaws: 'R-01, R-02', joinDate: '2026-01-10' },
-  { id: 'SH-02', name: 'Enamul Haque', phone: '01898765432', equity: 20, investment: 400000, rickshaws: 'R-03', joinDate: '2026-03-01' },
-];
-
-// Clean initial empty state for collections and expenses
+// Zero Dummy Initial State (Starts 100% clean for every real account)
+const defaultRickshaws = [];
+const defaultDrivers = [];
+const defaultShareholders = [];
 const defaultCollections = [];
 const defaultExpenses = [];
 
 const defaultUserProfile = {
-  name: 'Habib Rahman',
-  garageName: 'Habib Electric Garage',
-  phone: '01711223344',
-  email: 'owner@project3wheel.com',
+  name: '',
+  garageName: '',
+  phone: '',
+  email: '',
   role: 'owner',
   isAuthenticated: false
 };
@@ -462,10 +448,6 @@ function toggleAppsMenu(e) {
 
 function openModalAndCloseApps(modalId) {
   const popup = document.getElementById('appsPopup');
-  if (popup) popup.classList.remove('open');
-  openModal(modalId);
-}
-
 // --- Cloud-First Firestore Real-Time Synchronization Engine ---
 let lastLocalMutationTime = 0;
 let activeFirestoreUnsubscribe = null;
@@ -514,7 +496,7 @@ function syncStateFromRemote(remoteData, isInitial = false) {
 }
 
 function setupFirestoreLiveListeners() {
-  if (typeof firebase === 'undefined' || !window.firebaseDb) return;
+  if (typeof firebase === 'undefined' || !window.firebaseDb || !state.currentUser || !state.currentUser.isAuthenticated) return;
 
   try {
     if (activeFirestoreUnsubscribe) {
@@ -568,7 +550,7 @@ function broadcastFirestoreUpdate() {
 
   lastLocalMutationTime = Date.now();
 
-  if (typeof firebase === 'undefined' || !window.firebaseDb) return;
+  if (typeof firebase === 'undefined' || !window.firebaseDb || !state.currentUser || !state.currentUser.isAuthenticated) return;
   try {
     const db = window.firebaseDb;
     const docKey = getSyncDocKey();
@@ -579,10 +561,10 @@ function broadcastFirestoreUpdate() {
       collections: state.collections,
       expenses: state.expenses,
       userProfile: {
-        name: state.currentUser.name || 'Habib Rahman',
-        garageName: state.currentUser.garageName || 'Habib Electric Garage',
-        phone: state.currentUser.phone || '01711223344',
-        email: state.currentUser.email || 'owner@project3wheel.com',
+        name: state.currentUser.name || '',
+        garageName: state.currentUser.garageName || '',
+        phone: state.currentUser.phone || '',
+        email: state.currentUser.email || '',
         role: state.currentUser.role || 'owner'
       },
       updatedBy: state.currentUser.name || 'Admin',
@@ -603,7 +585,6 @@ function checkAuthSession() {
     updateUserProfileDisplay();
   } else {
     authOverlay.style.display = 'flex';
-    autofillCredentials();
   }
 }
 
@@ -613,7 +594,138 @@ function switchAuthMode(mode) {
   document.getElementById('tabModeRegister')?.classList.toggle('active', mode === 'register');
 
   const nameGroup = document.getElementById('groupRegisterName');
+  const garageGroup = document.getElementById('groupRegisterGarage');
   const btnSubmit = document.getElementById('btnAuthSubmit');
+
+  if (nameGroup) nameGroup.style.display = mode === 'register' ? 'block' : 'none';
+  if (garageGroup) garageGroup.style.display = mode === 'register' ? 'block' : 'none';
+
+  if (btnSubmit) {
+    btnSubmit.innerHTML = mode === 'register'
+      ? `<i class="fa-solid fa-user-plus"></i> <span>${state.lang === 'bn' ? 'অ্যাকাউন্ট তৈরি করুন' : 'Create Fleet Account'}</span>`
+      : `<i class="fa-solid fa-right-to-bracket"></i> <span>${state.lang === 'bn' ? 'লগইন করুন' : 'Sign In to Fleet Hub'}</span>`;
+  }
+}
+
+function selectAuthRole(role) {
+  state.selectedAuthRole = role;
+  document.getElementById('authRoleOwner')?.classList.toggle('active', role === 'owner');
+  document.getElementById('authRoleManager')?.classList.toggle('active', role === 'manager');
+}
+
+function toggleWebPasswordVisibility() {
+  const passInput = document.getElementById('authPassword');
+  const icon = document.getElementById('passwordToggleIcon');
+  if (!passInput) return;
+  if (passInput.type === 'password') {
+    passInput.type = 'text';
+    if (icon) {
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    }
+  } else {
+    passInput.type = 'password';
+    if (icon) {
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
+  }
+}
+
+function submitLogin(e) {
+  e.preventDefault();
+  const idVal = document.getElementById('authIdentifier').value.trim();
+  const passVal = document.getElementById('authPassword').value.trim();
+  const nameVal = document.getElementById('authFullName')?.value.trim() || '';
+  const garageVal = document.getElementById('authGarageName')?.value.trim() || '';
+  const remember = document.getElementById('rememberMeCheck')?.checked || false;
+
+  if (!idVal || !passVal) {
+    showToast(state.lang === 'bn' ? 'অনুগ্রহ করে ইমেইল ও পাসওয়ার্ড দিন' : 'Please enter your email and password', 'crimson');
+    return;
+  }
+
+  // Validate real email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(idVal)) {
+    showToast(state.lang === 'bn' ? 'অনুগ্রহ করে সঠিক ইমেইল অ্যাড্রেস দিন (যেমন name@gmail.com)' : 'Please enter a valid email address (e.g. name@gmail.com)', 'crimson');
+    return;
+  }
+
+  const storedAccounts = loadFromStorage('registered_accounts', {});
+  const accKey = idVal.toLowerCase();
+
+  let activeUserName = nameVal || 'Fleet Admin';
+  let activeGarageName = garageVal || 'Electric Fleet Hub';
+  let activeRole = state.selectedAuthRole || 'owner';
+
+  if (state.authMode === 'login') {
+    const stored = storedAccounts[accKey];
+
+    if (!stored) {
+      showToast(state.lang === 'bn' ? 'অ্যাকাউন্ট খুঁজে পাওয়া যায়নি! অনুগ্রহ করে Register New থেকে অ্যাকাউন্ট খুলুন।' : 'Account not found! Please create an account via Register New first.', 'crimson');
+      return;
+    }
+
+    const expectedPass = typeof stored === 'object' ? stored.pass : stored;
+    if (passVal !== expectedPass) {
+      showToast(state.lang === 'bn' ? 'ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে চেষ্টা করুন।' : 'Wrong password! Please enter the correct password.', 'crimson');
+      return;
+    }
+
+    if (typeof stored === 'object') {
+      activeUserName = stored.name || activeUserName;
+      activeGarageName = stored.garageName || activeGarageName;
+      activeRole = stored.role || activeRole;
+    }
+  } else {
+    // Register mode: require min 6 chars password
+    if (passVal.length < 6) {
+      showToast(state.lang === 'bn' ? 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।' : 'Password must be at least 6 characters long.', 'crimson');
+      return;
+    }
+
+    activeUserName = nameVal || idVal.split('@')[0];
+    activeGarageName = garageVal || `${activeUserName}'s Garage`;
+    activeRole = state.selectedAuthRole || 'owner';
+
+    storedAccounts[accKey] = {
+      pass: passVal,
+      name: activeUserName,
+      garageName: activeGarageName,
+      role: activeRole
+    };
+    saveToStorage('registered_accounts', storedAccounts);
+  }
+
+  state.currentUser = {
+    name: activeUserName,
+    garageName: activeGarageName,
+    phone: '',
+    email: idVal,
+    role: activeRole,
+    isAuthenticated: true
+  };
+
+  state.rememberMe = remember;
+  saveToStorage('remember_me', remember);
+  saveToStorage('user_profile', state.currentUser);
+
+  // Clear previous session's in-memory data so new account starts with zero data
+  state.rickshaws = [];
+  state.drivers = [];
+  state.collections = [];
+  state.expenses = [];
+  state.shareholders = [];
+
+  checkAuthSession();
+  renderAll();
+
+  // Connect real-time Firestore listener and pull cloud data for this specific user account
+  setupFirestoreLiveListeners();
+
+  showToast(state.lang === 'bn' ? `স্বাগতম, ${state.currentUser.name}!` : `Welcome, ${state.currentUser.name}!`, 'emerald');
+}t');
   const hintBox = document.getElementById('authHintBox');
 
   if (nameGroup) nameGroup.style.display = mode === 'register' ? 'block' : 'none';

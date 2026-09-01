@@ -35,20 +35,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (identifier.isEmpty || pin.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please enter your email/phone and password'),
+          content: Text('Please enter your email and password'),
           backgroundColor: AppColors.crimsonRed,
         ),
       );
       return;
     }
 
-    // Default Seed Accounts
-    final knownAccounts = {
-      'owner@project3wheel.com': {'pass': 'admin123', 'name': 'Habib Rahman', 'role': 'owner'},
-      'manager@project3wheel.com': {'pass': 'admin123', 'name': 'Selim Mia', 'role': 'manager'},
-      '01710001122': {'pass': 'admin123', 'name': 'Habib Rahman', 'role': 'owner'},
-      '01815556677': {'pass': 'admin123', 'name': 'Selim Mia', 'role': 'manager'},
-    };
+    if (!identifier.contains('@') || !identifier.contains('.')) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a valid email address (e.g. name@gmail.com)'),
+          backgroundColor: AppColors.crimsonRed,
+        ),
+      );
+      return;
+    }
 
     final hive = HiveService();
     final registeredCred = hive.getAccountCredential(identifier);
@@ -61,9 +63,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (registeredCred != null) {
         expectedPass = registeredCred['password']?.toString();
         savedName = registeredCred['name']?.toString();
-      } else if (knownAccounts.containsKey(identifier.toLowerCase())) {
-        expectedPass = knownAccounts[identifier.toLowerCase()]!['pass'];
-        savedName = knownAccounts[identifier.toLowerCase()]!['name'];
       }
 
       if (expectedPass == null) {
@@ -91,7 +90,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final user = UserModel(
         uid: identifier.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_'),
-        name: (savedName != null && savedName.isNotEmpty) ? savedName : (_selectedRole == UserRole.owner ? 'Habib Rahman' : 'Selim Mia'),
+        name: (savedName != null && savedName.isNotEmpty) ? savedName : identifier.split('@')[0],
         role: _selectedRole,
         phone: identifier,
       );
@@ -111,7 +110,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       final regName = _nameController.text.trim().isNotEmpty
           ? _nameController.text.trim()
-          : (_selectedRole == UserRole.owner ? 'Habib Rahman' : 'Selim Mia');
+          : identifier.split('@')[0];
 
       await hive.saveAccountCredential(
         identifier,
