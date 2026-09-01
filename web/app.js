@@ -700,6 +700,33 @@ function submitLogin(e) {
       role: activeRole
     };
     saveToStorage('registered_accounts', storedAccounts);
+
+    // Save auth directly to Firebase Firestore Cloud
+    if (typeof firebase !== 'undefined' && window.firebaseDb) {
+      try {
+        const docKey = idVal.toLowerCase().replace(/[^a-z0-9]/g, '_');
+        window.firebaseDb.collection('fleet_accounts').doc(docKey).set({
+          auth: {
+            email: idVal.toLowerCase(),
+            password: passVal
+          },
+          userProfile: {
+            name: activeUserName,
+            garageName: activeGarageName,
+            email: idVal.toLowerCase(),
+            role: activeRole
+          },
+          rickshaws: [],
+          drivers: [],
+          collections: [],
+          expenses: [],
+          shareholders: [],
+          updatedAt: new Date().toISOString()
+        }, { merge: true });
+      } catch (e) {
+        console.warn('Cloud registration sync note:', e);
+      }
+    }
   }
 
   state.currentUser = {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_dimensions.dart';
 import '../../core/constants/app_typography.dart';
@@ -53,19 +54,53 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
 
     final hive = HiveService();
-    final registeredCred = hive.getAccountCredential(identifier);
+    var registeredCred = hive.getAccountCredential(identifier);
 
     if (!_isRegisterMode) {
-      // In Sign In mode: user MUST be registered
+      // In Sign In mode: user MUST be registered in local Hive or Cloud Firestore
+      setState(() => _isLoading = true);
+
       String? expectedPass;
       String? savedName;
+      String? savedGarage;
+      String? savedRole;
 
       if (registeredCred != null) {
         expectedPass = registeredCred['password']?.toString();
         savedName = registeredCred['name']?.toString();
+        savedGarage = registeredCred['garageName']?.toString();
+        savedRole = registeredCred['role']?.toString();
+      } else {
+        // Fetch from Cloud Firestore
+        try {
+          final docKey = identifier.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '_');
+          final doc = await FirebaseFirestore.instance.collection('fleet_accounts').doc(docKey).get();
+          if (doc.exists) {
+            final data = doc.data();
+            final profile = data?['userProfile'] as Map<String, dynamic>?;
+            final creds = data?['auth'] as Map<String, dynamic>?;
+            expectedPass = creds?['password']?.toString();
+            savedName = profile?['name']?.toString();
+            savedGarage = profile?['garageName']?.toString();
+            savedRole = profile?['role']?.toString();
+
+            if (expectedPass != null) {
+              await hive.saveAccountCredential(
+                identifier,
+                expectedPass,
+                savedName ?? identifier.split('@')[0],
+                savedRole ?? 'owner',
+              );
+            }
+          }
+        } catch (e) {
+          debugPrint('Firestore auth lookup note: $e');
+        }
       }
 
       if (expectedPass == null) {
+        if (!mounted) return;
+        setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Account not found! Please register first or enter a registered email.'),
@@ -76,6 +111,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
 
       if (pin != expectedPass) {
+        if (!mounted) return;
+        setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Wrong password! Please enter the correct password.'),
@@ -85,19 +122,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         return;
       }
 
-      setState(() => _isLoading = true);
-      await Future.delayed(const Duration(milliseconds: 400));
+      await Future.delayed(const Duration(milliseconds: 300));
 
+      final userRole = savedRole == 'manager' ? UserRole.manager : UserRole.owner;
       final user = UserModel(
         uid: identifier.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_'),
         name: (savedName != null && savedName.isNotEmpty) ? savedName : identifier.split('@')[0],
-        role: _selectedRole,
+        role: userRole,
         phone: identifier,
       );
 
       ref.read(authProvider.notifier).setUser(user);
     } else {
-      // In Register mode: validate and save new user account
+      // In Register mode: validate and save new user account both locally and to Cloud Firestore
       if (pin.length < 6) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -107,6 +144,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         );
         return;
       }
+
+      setState(() => _isLoading = true);
 
       final regName = _nameController.text.trim().isNotEmpty
           ? _nameController.text.trim()
@@ -119,8 +158,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _selectedRole == UserRole.owner ? 'owner' : 'manager',
       );
 
-      setState(() => _isLoading = true);
-      await Future.delayed(const Duration(milliseconds: 400));
+      // Save to Firestore Cloud
+      try {
+        final docKey = identifier.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '_');
+        await FirebaseFirestore.instance.collection('fleet_accounts').doc(docKey).set({
+          'auth': {
+            'email': identifier.toLowerCase(),
+            'password': pin,
+          },
+          'userProfile': {
+            'name': regName,
+            'garageName': '${regName}\'s Electric Garage',
+            'email': identifier.toLowerCase(),
+            'role': _selectedRole == UserRole.owner ? 'owner' : 'manager',
+          },
+          'rickshaws': [],
+          'drivers': [],
+          'collections': [],
+          'expenses': [],
+          'shareholders': [],
+          'updatedAt': DateTime.now().toIso8601String(),
+        }, SetOptions(merge: true));
+      } catch (e) {
+        debugPrint('Firestore register note: $e');
+      }
+
+      await Future.delayed(const Duration(milliseconds: 300));
 
       final user = UserModel(
         uid: identifier.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_'),
