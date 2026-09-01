@@ -1670,17 +1670,22 @@ function renderRickshawsManageList() {
   container.innerHTML = state.rickshaws.map(r => {
     const driver = state.drivers.find(d => d.id === r.driverId);
     return `
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <span class="badge-pill badge-blue" style="font-weight: 800; font-size: 11px;">${r.id}</span>
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(10, 132, 255, 0.15); border: 1px solid rgba(10, 132, 255, 0.35); display: flex; align-items: center; justify-content: center; padding: 4px;">
+            <img src="assets/rickshaw_white.png" alt="Rickshaw" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
           <div>
-            <div style="font-size: 12px; font-weight: 600; color: white;">${r.model}</div>
-            <div style="font-size: 10px; color: var(--text-tertiary);">
-              Rate: ৳${r.rate}/day • Driver: ${driver ? driver.name : (state.lang === 'bn' ? 'বরাদ্দ নেই' : 'Unassigned')}
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge-pill badge-blue" style="font-weight: 800; font-size: 11px;">${r.id}</span>
+              <span style="font-size: 13px; font-weight: 600; color: white;">${r.model}</span>
+            </div>
+            <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 2px;">
+              Rate: <strong style="color: var(--emerald-light);">৳${r.rate}/day</strong> • Driver: <span>${driver ? driver.name : (state.lang === 'bn' ? 'বরাদ্দ নেই' : 'Unassigned')}</span>
             </div>
           </div>
         </div>
-        <button class="btn-glass btn-sm" style="color: var(--crimson-light); padding: 4px 8px;" onclick="deleteRickshaw('${r.id}')" title="Delete Rickshaw">
+        <button class="btn-glass btn-sm" style="color: var(--crimson-light); padding: 6px 10px;" onclick="deleteRickshaw('${r.id}')" title="Delete Rickshaw">
           <i class="fa-solid fa-trash-can"></i>
         </button>
       </div>

@@ -201,6 +201,7 @@ class _RickshawListScreenState extends ConsumerState<RickshawListScreen> {
                       Container(
                         width: 48,
                         height: 48,
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           gradient: AppColors.primaryGradient,
                           borderRadius: BorderRadius.circular(14),
@@ -212,8 +213,11 @@ class _RickshawListScreenState extends ConsumerState<RickshawListScreen> {
                             ),
                           ],
                         ),
-                        child: const Center(
-                          child: Icon(Icons.electric_rickshaw, color: Colors.white, size: 24),
+                        child: Center(
+                          child: Image.asset(
+                            'assets/icons/rickshaw_white.png',
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 14),

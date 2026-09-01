@@ -84,8 +84,20 @@ class _ManageRickshawsDialogState extends ConsumerState<ManageRickshawsDialog> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.electric_rickshaw, color: AppColors.primaryBlue),
-                      const SizedBox(width: 8),
+                      Container(
+                        width: 28,
+                        height: 28,
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryBlue.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Image.asset(
+                          'assets/icons/rickshaw_white.png',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
                       Text('Manage Rickshaws', style: AppTypography.titleMedium),
                     ],
                   ),
