@@ -34,12 +34,13 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDemoWebApiKeyPlaceholderProject3Wheel',
-    appId: '1:1234567890:web:project3wheels',
-    messagingSenderId: '1234567890',
+    apiKey: 'AIzaSyCfymdIAsV4yKTHQ8Ar5QPVqYSm_spI-78',
+    appId: '1:622271015701:web:5daf76d18ead25acd8971c',
+    messagingSenderId: '622271015701',
     projectId: 'project3wheels',
     authDomain: 'project3wheels.firebaseapp.com',
-    storageBucket: 'project3wheels.appspot.com',
+    storageBucket: 'project3wheels.firebasestorage.app',
+    measurementId: 'G-4EMLBC0T1W',
   );
 
   static const FirebaseOptions android = FirebaseOptions(

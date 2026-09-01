@@ -956,8 +956,33 @@ rickshaws.last_location: {
     </div>
   </div>
 
-  <!-- Toast Notification Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <!-- Firebase Web SDK Integration -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCfymdIAsV4yKTHQ8Ar5QPVqYSm_spI-78",
+      authDomain: "project3wheels.firebaseapp.com",
+      projectId: "project3wheels",
+      storageBucket: "project3wheels.firebasestorage.app",
+      messagingSenderId: "622271015701",
+      appId: "1:622271015701:web:5daf76d18ead25acd8971c",
+      measurementId: "G-4EMLBC0T1W"
+    };
+    try {
+      if (typeof firebase !== 'undefined') {
+        firebase.initializeApp(firebaseConfig);
+        if (typeof firebase.analytics === 'function') {
+          firebase.analytics();
+        }
+        window.firebaseDb = firebase.firestore();
+        console.log("Firebase Web SDK initialized successfully with project3wheels.");
+      }
+    } catch (e) {
+      console.warn("Firebase Web initialization notice:", e);
+    }
+  </script>
 
   <script src="app.js"></script>
 </body>
