@@ -1977,3 +1977,140 @@ body.lang-bn {
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
+
+/* =========================================================
+   COLLECTION MODAL - QUICK PRESETS & GARAGE RENT GLASS THEME
+   ========================================================= */
+
+.quick-preset-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 16px;
+  flex-wrap: wrap;
+}
+
+.quick-preset-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.preset-btn-group {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+
+.preset-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary);
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.preset-btn:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: var(--emerald-light);
+  transform: translateY(-1px);
+}
+
+.preset-btn:active {
+  transform: scale(0.97);
+}
+
+/* Garage Rent Checkbox Row & Input Card */
+.form-group-checkbox {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-top: 10px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.custom-checkbox-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.custom-checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--purple);
+  cursor: pointer;
+}
+
+.garage-rent-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(94, 92, 230, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  animation: fadeIn 0.2s ease;
+}
+
+.garage-rent-input-wrapper span.lbl {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.garage-rent-input-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.glass-input-sm {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: white;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  width: 80px;
+  text-align: right;
+  outline: none;
+}
+
+.glass-input-sm:focus {
+  border-color: var(--purple-light);
+  box-shadow: 0 0 8px rgba(94, 92, 230, 0.4);
+}
+
+.garage-unit-tag {
+  font-size: 11px;
+  color: var(--purple-light);
+  font-weight: 600;
+}

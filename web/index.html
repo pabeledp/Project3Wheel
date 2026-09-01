@@ -768,23 +768,28 @@
         </div>
 
         <div class="quick-preset-row">
-          <span data-i18n="lbl_quick_presets">Quick Presets:</span>
-          <button type="button" class="preset-btn" onclick="setPresetAmount(350)">৳350 (Full)</button>
-          <button type="button" class="preset-btn" onclick="setPresetAmount(200)">৳200 (Half)</button>
-          <button type="button" class="preset-btn" onclick="setPresetAmount(0)">৳0 (Unpaid)</button>
+          <span class="quick-preset-label" data-i18n="lbl_quick_presets">Presets:</span>
+          <div class="preset-btn-group">
+            <button type="button" class="preset-btn" onclick="setPresetAmount(350)">৳350 (Full)</button>
+            <button type="button" class="preset-btn" onclick="setPresetAmount(200)">৳200 (Half)</button>
+            <button type="button" class="preset-btn" onclick="setPresetAmount(0)">৳0 (Unpaid)</button>
+          </div>
         </div>
 
         <div class="form-group-checkbox">
-          <label class="custom-checkbox">
-            <input type="checkbox" id="includeGarageRentCheck" checked onchange="toggleGarageRentInput()">
-            <span class="checkbox-mark"></span>
-            <span data-i18n="lbl_deduct_garage_rent">Deduct Daily Garage Rent</span>
-          </label>
-          <div id="garageRentInputGroup" style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 11px; color: var(--text-secondary);" data-i18n="lbl_rent_amount">Rent Amount:</span>
-            <div class="input-with-suffix">
+          <div class="custom-checkbox-row" onclick="document.getElementById('includeGarageRentCheck').click()">
+            <label class="custom-checkbox-label" onclick="event.stopPropagation()">
+              <input type="checkbox" id="includeGarageRentCheck" checked onchange="toggleGarageRentInput()">
+              <span data-i18n="lbl_deduct_garage_rent">Deduct Daily Garage Rent</span>
+            </label>
+            <i class="fa-solid fa-warehouse text-purple" style="font-size: 13px;"></i>
+          </div>
+
+          <div class="garage-rent-input-wrapper" id="garageRentInputGroup">
+            <span class="lbl" data-i18n="lbl_rent_amount">Garage Rent Amount:</span>
+            <div class="garage-rent-input-box">
               <input type="number" class="glass-input-sm" id="formGarageRentAmount" value="100" min="0">
-              <span style="font-size: 11px; color: var(--purple-light);">৳/day</span>
+              <span class="garage-unit-tag">৳/day</span>
             </div>
           </div>
         </div>
