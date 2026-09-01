@@ -52,10 +52,10 @@ class FloatingGlassBottomBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildNavItem(0, Icons.grid_view_rounded, 'Dashboard'),
-                    _buildNavItem(1, Icons.account_balance_wallet_rounded, 'Expense'),
+                    _buildNavItem(1, Icons.electric_rickshaw_rounded, 'Vehicles'),
                     const SizedBox(width: 56), // Spacer for center floating QR button
                     _buildNavItem(2, Icons.people_alt_rounded, 'Drivers'),
-                    _buildNavItem(3, Icons.radar_rounded, 'GPS Live'),
+                    _buildNavItem(3, Icons.more_horiz_rounded, 'More'),
                   ],
                 ),
               ),

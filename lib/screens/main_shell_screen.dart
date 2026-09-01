@@ -9,6 +9,7 @@ import '../../widgets/glass/liquid_glass_container.dart';
 import '../../widgets/glass/glass_button.dart';
 import '../../widgets/glass/glass_text_field.dart';
 import '../../core/constants/app_colors.dart';
+import '../../core/constants/app_typography.dart';
 import 'auth/login_screen.dart';
 import 'dashboard/web_owner_dashboard_screen.dart';
 import 'dashboard/mobile_manager_home_screen.dart';
@@ -18,6 +19,8 @@ import 'expense/expense_list_screen.dart';
 import 'driver/driver_ledger_screen.dart';
 import 'reports/financial_reports_screen.dart';
 import 'gps/gps_tracking_placeholder_screen.dart';
+import 'rickshaw/rickshaw_list_screen.dart';
+import 'shareholder/shareholder_list_screen.dart';
 
 class MainShellScreen extends ConsumerStatefulWidget {
   const MainShellScreen({super.key});
@@ -29,6 +32,97 @@ class MainShellScreen extends ConsumerStatefulWidget {
 class _MainShellScreenState extends ConsumerState<MainShellScreen> {
   int _selectedWebIndex = 0;
   int _selectedMobileIndex = 0;
+
+  void _showMoreMobileMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => LiquidGlassContainer(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('More Hub Features & Tools', style: AppTypography.titleMedium),
+                IconButton(
+                  icon: const Icon(Icons.close, color: Colors.white70),
+                  onPressed: () => Navigator.pop(ctx),
+                ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.crimsonRed.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.account_balance_wallet_rounded, color: AppColors.crimsonRedLight),
+              ),
+              title: const Text('Garage Expenses', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+              subtitle: const Text('Record repair, power & labor costs', style: TextStyle(fontSize: 12, color: AppColors.textTertiary)),
+              onTap: () {
+                Navigator.pop(ctx);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const ExpenseListScreen()));
+              },
+            ),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryPurple.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.handshake_rounded, color: AppColors.primaryPurple),
+              ),
+              title: const Text('Shareholders & Equity', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+              subtitle: const Text('Partner investments and dividend share', style: TextStyle(fontSize: 12, color: AppColors.textTertiary)),
+              onTap: () {
+                Navigator.pop(ctx);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const ShareholderListScreen()));
+              },
+            ),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.emeraldGreen.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.assessment_rounded, color: AppColors.emeraldGreenLight),
+              ),
+              title: const Text('Financial P&L Reports', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+              subtitle: const Text('Audit ledgers, Excel & PDF export', style: TextStyle(fontSize: 12, color: AppColors.textTertiary)),
+              onTap: () {
+                Navigator.pop(ctx);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const FinancialReportsScreen()));
+              },
+            ),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBlue.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.radar_rounded, color: AppColors.primaryBlue),
+              ),
+              title: const Text('GPS Fleet Tracking', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+              subtitle: const Text('Live vehicle telematics & firmware', style: TextStyle(fontSize: 12, color: AppColors.textTertiary)),
+              onTap: () {
+                Navigator.pop(ctx);
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const GpsTrackingPlaceholderScreen()));
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   void _showEditProfileDialog(BuildContext context, UserModel user) {
     final nameController = TextEditingController(text: user.name);
@@ -149,7 +243,13 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
         body: _buildMobileScreen(_selectedMobileIndex),
         bottomNavigationBar: FloatingGlassBottomBar(
           currentIndex: _selectedMobileIndex,
-          onTap: (index) => setState(() => _selectedMobileIndex = index),
+          onTap: (index) {
+            if (index == 3) {
+              _showMoreMobileMenu(context);
+            } else {
+              setState(() => _selectedMobileIndex = index);
+            }
+          },
           onScanPressed: () {
             Navigator.push(
               context,
@@ -174,7 +274,7 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
       case 4:
         return const FinancialReportsScreen();
       case 5:
-        return const FinancialReportsScreen(); // Shareholders & PnL
+        return const ShareholderListScreen();
       case 6:
         return const GpsTrackingPlaceholderScreen();
       default:
@@ -187,11 +287,11 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
       case 0:
         return const MobileManagerHomeScreen();
       case 1:
-        return const ExpenseListScreen();
+        return const RickshawListScreen();
       case 2:
         return const DriverLedgerScreen();
       case 3:
-        return const GpsTrackingPlaceholderScreen();
+        return const MobileManagerHomeScreen();
       default:
         return const MobileManagerHomeScreen();
     }
