@@ -616,7 +616,7 @@ function switchAuthMode(mode) {
   const btnSubmit = document.getElementById('btnAuthSubmit');
   const hintBox = document.getElementById('authHintBox');
 
-  if (nameGroup) nameGroup.style.display = mode === 'register' ? 'flex' : 'none';
+  if (nameGroup) nameGroup.style.display = mode === 'register' ? 'block' : 'none';
   if (hintBox) hintBox.style.display = mode === 'login' ? 'flex' : 'none';
 
   if (btnSubmit) {
