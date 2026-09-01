@@ -166,7 +166,7 @@
         </button>
         <button class="nav-item" onclick="openModal('addRickshawModal')">
           <i class="fa-solid fa-van-shuttle text-blue"></i>
-          <span>Add Rickshaw</span>
+          <span data-i18n="btn_manage_rickshaws">Manage Rickshaws</span>
         </button>
       </nav>
 
@@ -197,7 +197,7 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <!-- Top Glass Navigation Bar (Sticky Stacked, Clean Single Date + Google-style Apps Menu) -->
+      <!-- Top Glass Navigation Bar (Sticky Stacked, Clean In-Theme Date + Google Apps Menu) -->
       <header class="top-nav">
         <div class="nav-left">
           <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">
@@ -210,17 +210,17 @@
         </div>
 
         <div class="nav-right">
-          <!-- 100% In-Theme Custom Glass Calendar Picker -->
+          <!-- 100% In-Theme Custom Glass Calendar Picker (Clean Specular Glass Design) -->
           <div class="date-picker-wrapper">
-            <button class="date-picker-trigger" onclick="toggleCustomCalendar()">
-              <i class="fa-solid fa-calendar-days text-blue"></i>
+            <button class="glass-date-trigger" onclick="toggleCustomCalendar()">
+              <i class="fa-solid fa-calendar-days"></i>
               <span id="selectedDateLabel">Today</span>
-              <i class="fa-solid fa-chevron-down" style="font-size: 10px; color: var(--text-tertiary);"></i>
+              <i class="fa-solid fa-chevron-down" style="font-size: 9px; opacity: 0.7;"></i>
             </button>
 
             <!-- Custom Liquid Glass Calendar Dropdown Dialog -->
             <div class="glass-calendar-modal" id="customCalendarModal">
-              <div class="cal-preset-row">
+              <div class="cal-presets">
                 <button class="btn-cal-preset active" id="btnCalToday" onclick="pickCalPreset('today')" data-i18n="cal_today">Today</button>
                 <button class="btn-cal-preset" id="btnCalYest" onclick="pickCalPreset('yesterday')" data-i18n="cal_yesterday">Yesterday</button>
                 <button class="btn-cal-preset" id="btnCalAll" onclick="pickCalPreset('all')" data-i18n="cal_all_time">All Time</button>
@@ -280,7 +280,7 @@
                 </div>
                 <div class="app-card-item" onclick="openModalAndCloseApps('addRickshawModal')">
                   <div class="app-card-icon icon-blue"><i class="fa-solid fa-van-shuttle"></i></div>
-                  <span>Rickshaw</span>
+                  <span>Rickshaws</span>
                 </div>
                 <div class="app-card-item" onclick="openModalAndCloseApps('addShareholderModal')">
                   <div class="app-card-icon icon-purple"><i class="fa-solid fa-handshake"></i></div>
@@ -401,26 +401,26 @@
                   <h3 data-i18n="fleet_health_title">Fleet Status</h3>
                 </div>
                 <button class="btn-glass btn-sm btn-primary" onclick="openModal('addRickshawModal')">
-                  <i class="fa-solid fa-plus"></i> <span data-i18n="btn_add_rickshaw">Add Rickshaw</span>
+                  <i class="fa-solid fa-van-shuttle"></i> <span data-i18n="btn_manage_rickshaws">Manage Rickshaws</span>
                 </button>
               </div>
 
               <div class="fleet-health-list">
                 <div class="health-row">
                   <span><i class="fa-solid fa-van-shuttle text-blue"></i> <span data-i18n="lbl_total_fleet">Registered Fleet</span></span>
-                  <strong id="statTotalFleet">10 Vehicles</strong>
+                  <strong id="statTotalFleet">3 Vehicles</strong>
                 </div>
                 <div class="health-row">
                   <span><i class="fa-solid fa-circle-check text-emerald"></i> <span data-i18n="lbl_active_road">Active on Road</span></span>
-                  <strong class="text-emerald" id="statActiveFleet">8 Active</strong>
+                  <strong class="text-emerald" id="statActiveFleet">2 Active</strong>
                 </div>
                 <div class="health-row">
                   <span><i class="fa-solid fa-screwdriver-wrench text-amber"></i> <span data-i18n="lbl_in_maintenance">In Maintenance</span></span>
-                  <strong class="text-amber" id="statMaintFleet">2 in Garage</strong>
+                  <strong class="text-amber" id="statMaintFleet">1 in Garage</strong>
                 </div>
                 <div class="health-row">
                   <span><i class="fa-solid fa-id-card text-purple"></i> <span data-i18n="lbl_total_drivers">Registered Drivers</span></span>
-                  <strong id="statTotalDrivers">12 Drivers</strong>
+                  <strong id="statTotalDrivers">2 Drivers</strong>
                 </div>
               </div>
             </div>
@@ -957,34 +957,49 @@
     </div>
   </div>
 
-  <!-- 6. ADD NEW RICKSHAW MODAL -->
+  <!-- 6. MANAGE RICKSHAWS MODAL (ADD & DELETE FLEET VEHICLES) -->
   <div class="modal-backdrop" id="addRickshawModal">
-    <div class="glass-modal-sheet">
+    <div class="glass-modal-sheet" style="max-width: 520px;">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-van-shuttle text-blue"></i> <span data-i18n="modal_add_rickshaw_title">Add Rickshaw</span></h3>
+        <h3><i class="fa-solid fa-van-shuttle text-blue"></i> <span data-i18n="modal_manage_rickshaws_title">Manage Rickshaw Fleet</span></h3>
         <button class="close-btn" onclick="closeModal('addRickshawModal')">&times;</button>
       </div>
 
-      <form id="addRickshawForm" onsubmit="submitNewRickshaw(event)">
-        <div class="form-group">
-          <label data-i18n="lbl_rickshaw_id">Rickshaw ID</label>
-          <input type="text" class="glass-input" id="newRickshawId" placeholder="e.g. R-04" required>
+      <!-- Add New Vehicle Form -->
+      <form id="addRickshawForm" onsubmit="submitNewRickshaw(event)" style="background: rgba(255, 255, 255, 0.04); padding: 14px; border-radius: 12px; border: var(--specular-border-light); margin-bottom: 18px;">
+        <h4 style="font-size: 13px; font-weight: 700; color: var(--blue-light); margin-bottom: 12px;">
+          <i class="fa-solid fa-plus-circle"></i> Add New Rickshaw
+        </h4>
+        <div class="form-row" style="display: flex; gap: 8px;">
+          <div class="form-group" style="flex: 1;">
+            <label data-i18n="lbl_rickshaw_id">Rickshaw ID</label>
+            <input type="text" class="glass-input" id="newRickshawId" placeholder="e.g. R-04" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label data-i18n="lbl_standard_rate">Rate (৳/day)</label>
+            <input type="number" class="glass-input" id="newRickshawRate" value="350" required>
+          </div>
         </div>
 
         <div class="form-group">
-          <label data-i18n="lbl_model_type">Model & Specs</label>
+          <label data-i18n="lbl_model_type">Model & Battery Specs</label>
           <input type="text" class="glass-input" id="newRickshawModel" placeholder="e.g. Mishuk Classic 60V Lithium" required>
         </div>
 
-        <div class="form-group">
-          <label data-i18n="lbl_standard_rate">Standard Rent Rate (৳/day)</label>
-          <input type="number" class="glass-input" id="newRickshawRate" value="350" required>
-        </div>
-
-        <button type="submit" class="btn-glass btn-blue btn-block" style="margin-top: 20px;">
-          <i class="fa-solid fa-plus"></i> <span data-i18n="btn_save_rickshaw">Add Rickshaw</span>
+        <button type="submit" class="btn-glass btn-blue btn-block" style="margin-top: 8px;">
+          <i class="fa-solid fa-plus"></i> <span data-i18n="btn_save_rickshaw">Add to Fleet</span>
         </button>
       </form>
+
+      <!-- Existing Rickshaws Fleet List with Delete Option -->
+      <div>
+        <h4 style="font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 10px;">
+          <i class="fa-solid fa-list-check"></i> Registered Fleet Units
+        </h4>
+        <div class="rickshaws-manage-list" id="rickshawsManageList" style="display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto;">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
     </div>
   </div>
 

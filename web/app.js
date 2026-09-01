@@ -101,6 +101,8 @@ const i18n = {
     legend_expenses: "Expenses",
     fleet_health_title: "Fleet Status",
     btn_add_rickshaw: "Add Rickshaw",
+    btn_manage_rickshaws: "Manage Rickshaws",
+    modal_manage_rickshaws_title: "Manage Rickshaw Fleet",
     lbl_total_fleet: "Registered Fleet",
     lbl_active_road: "Active on Road",
     lbl_in_maintenance: "In Maintenance",
@@ -267,6 +269,8 @@ const i18n = {
     legend_expenses: "মোট খরচ",
     fleet_health_title: "ফ্লিট স্ট্যাটাস",
     btn_add_rickshaw: "রিকশা যুক্ত করুন",
+    btn_manage_rickshaws: "রিকশা ব্যবস্থাপনা",
+    modal_manage_rickshaws_title: "রিকশা ফ্লিট ব্যবস্থাপনা ও তালিকা",
     lbl_total_fleet: "নিবন্ধিত মোট রিকশা",
     lbl_active_road: "রাস্তায় সচল",
     lbl_in_maintenance: "গ্যারেজে মেরামত চলছে",
@@ -655,6 +659,7 @@ function renderAll() {
   populateFormRickshaws();
   populateDriverRickshaws('newDriverRickshaw');
   populateDriverRickshaws('editDriverRickshaw');
+  renderRickshawsManageList();
 }
 
 // --- Bilingual Language Switcher ---
@@ -1456,6 +1461,36 @@ function submitNewDriver(e) {
   showToast(state.lang === 'bn' ? `নতুন চালক ${name} নিবন্ধিত হয়েছেন` : `Driver ${name} registered successfully`, 'emerald');
 }
 
+function renderRickshawsManageList() {
+  const container = document.getElementById('rickshawsManageList');
+  if (!container) return;
+
+  if (state.rickshaws.length === 0) {
+    container.innerHTML = `<div style="text-align: center; color: var(--text-tertiary); padding: 12px; font-size: 12px;">${state.lang === 'bn' ? 'কোনো রিকশা নিবন্ধিত নেই।' : 'No rickshaws registered yet.'}</div>`;
+    return;
+  }
+
+  container.innerHTML = state.rickshaws.map(r => {
+    const driver = state.drivers.find(d => d.id === r.driverId);
+    return `
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="badge-pill badge-blue" style="font-weight: 800; font-size: 11px;">${r.id}</span>
+          <div>
+            <div style="font-size: 12px; font-weight: 600; color: white;">${r.model}</div>
+            <div style="font-size: 10px; color: var(--text-tertiary);">
+              Rate: ৳${r.rate}/day • Driver: ${driver ? driver.name : (state.lang === 'bn' ? 'বরাদ্দ নেই' : 'Unassigned')}
+            </div>
+          </div>
+        </div>
+        <button class="btn-glass btn-sm" style="color: var(--crimson-light); padding: 4px 8px;" onclick="deleteRickshaw('${r.id}')" title="Delete Rickshaw">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
 // --- Add New Rickshaw ---
 function submitNewRickshaw(e) {
   e.preventDefault();
@@ -1477,11 +1512,29 @@ function submitNewRickshaw(e) {
   };
 
   state.rickshaws.push(newR);
-  closeModal('addRickshawModal');
   document.getElementById('addRickshawForm').reset();
   renderAll();
   broadcastFirestoreUpdate();
-  showToast(state.lang === 'bn' ? `রিকশা ${id} ফ্লিটে যুক্ত হয়েছে` : `Rickshaw ${id} added to fleet`, 'emerald');
+  showToast(state.lang === 'bn' ? `রিকশা ${id} যুক্ত হয়েছে` : `Rickshaw ${id} added to fleet`, 'emerald');
+}
+
+function deleteRickshaw(id) {
+  const index = state.rickshaws.findIndex(r => r.id === id);
+  if (index === -1) return;
+
+  const r = state.rickshaws[index];
+  if (!confirm(`Delete Rickshaw "${r.id} (${r.model})"?`)) return;
+
+  // Unassign any driver assigned to this rickshaw
+  const driver = state.drivers.find(d => d.activeRickshaw === r.id || d.id === r.driverId);
+  if (driver) {
+    driver.activeRickshaw = null;
+  }
+
+  state.rickshaws.splice(index, 1);
+  renderAll();
+  broadcastFirestoreUpdate();
+  showToast(state.lang === 'bn' ? `রিকশা ${r.id} মুছে ফেলা হয়েছে` : `Rickshaw ${r.id} deleted`, 'crimson');
 }
 
 // --- Delete Functions ---
