@@ -420,10 +420,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById('customCalendarModal');
       if (modal) modal.classList.remove('open');
     }
+    if (!e.target.closest('.apps-launcher-wrapper')) {
+      const apps = document.getElementById('appsPopup');
+      if (apps) apps.classList.remove('open');
+    }
   });
 
   renderAll();
 });
+
+// --- Google-Style Apps Menu Trigger ---
+function toggleAppsMenu(e) {
+  e.stopPropagation();
+  const popup = document.getElementById('appsPopup');
+  if (popup) popup.classList.toggle('open');
+}
+
+function openModalAndCloseApps(modalId) {
+  const popup = document.getElementById('appsPopup');
+  if (popup) popup.classList.remove('open');
+  openModal(modalId);
+}
 
 // --- Firestore Real-Time Synchronization Listener ---
 function setupFirestoreLiveListeners() {

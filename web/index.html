@@ -106,7 +106,7 @@
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
 
   <div class="app-layout">
-    <!-- Translucent Glass Sidebar -->
+    <!-- Translucent Glass Sidebar (Sticky & Stacked) -->
     <aside class="glass-sidebar" id="sidebar">
       <div class="brand-header">
         <div class="brand-icon">
@@ -147,6 +147,27 @@
           <span data-i18n="nav_gps">GPS Telematics</span>
           <span class="badge-pill badge-amber" data-i18n="badge_soon">SOON</span>
         </button>
+
+        <!-- Sidebar Quick Action Drawer / More Menu -->
+        <div class="sidebar-section-divider">
+          <span>QUICK ACTIONS</span>
+        </div>
+        <button class="nav-item" onclick="openModal('collectionModal')">
+          <i class="fa-solid fa-hand-holding-dollar text-emerald"></i>
+          <span>New Deposit</span>
+        </button>
+        <button class="nav-item" onclick="openModal('expenseModal')">
+          <i class="fa-solid fa-receipt text-crimson"></i>
+          <span>Track Expense</span>
+        </button>
+        <button class="nav-item" onclick="openModal('addDriverModal')">
+          <i class="fa-solid fa-user-plus text-amber"></i>
+          <span>Register Driver</span>
+        </button>
+        <button class="nav-item" onclick="openModal('addRickshawModal')">
+          <i class="fa-solid fa-van-shuttle text-blue"></i>
+          <span>Add Rickshaw</span>
+        </button>
       </nav>
 
       <!-- User Profile & Role Switcher -->
@@ -176,7 +197,7 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-      <!-- Top Glass Navigation Bar -->
+      <!-- Top Glass Navigation Bar (Sticky Stacked, Clean Single Date + Google-style Apps Menu) -->
       <header class="top-nav">
         <div class="nav-left">
           <button class="mobile-menu-btn" onclick="toggleMobileSidebar()">
@@ -233,37 +254,51 @@
             <span id="syncText">Live Firestore</span>
           </div>
 
-          <!-- Quick Action Buttons -->
-          <button class="btn-glass btn-emerald" onclick="openModal('collectionModal')">
-            <i class="fa-solid fa-plus"></i>
-            <span data-i18n="btn_deposit">Deposit</span>
-          </button>
+          <!-- Google-Style 9-Dot Quick Apps Launcher Button -->
+          <div class="apps-launcher-wrapper">
+            <button class="btn-apps-grid" id="btnAppsLauncher" onclick="toggleAppsMenu(event)" title="Quick Actions & Operations Menu">
+              <i class="fa-solid fa-grip"></i>
+            </button>
 
-          <button class="btn-glass btn-crimson" onclick="openModal('expenseModal')">
-            <i class="fa-solid fa-receipt"></i>
-            <span data-i18n="btn_expense">Expense</span>
-          </button>
+            <!-- Google-Style Glass 9-Dot Apps Popup Menu -->
+            <div class="glass-apps-popup" id="appsPopup">
+              <div class="apps-popup-header">
+                <span>Fleet Actions & Hub Tools</span>
+              </div>
+              <div class="apps-grid-cards">
+                <div class="app-card-item" onclick="openModalAndCloseApps('collectionModal')">
+                  <div class="app-card-icon icon-emerald"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                  <span>Deposit</span>
+                </div>
+                <div class="app-card-item" onclick="openModalAndCloseApps('expenseModal')">
+                  <div class="app-card-icon icon-crimson"><i class="fa-solid fa-receipt"></i></div>
+                  <span>Expense</span>
+                </div>
+                <div class="app-card-item" onclick="openModalAndCloseApps('addDriverModal')">
+                  <div class="app-card-icon icon-amber"><i class="fa-solid fa-user-plus"></i></div>
+                  <span>Driver</span>
+                </div>
+                <div class="app-card-item" onclick="openModalAndCloseApps('addRickshawModal')">
+                  <div class="app-card-icon icon-blue"><i class="fa-solid fa-van-shuttle"></i></div>
+                  <span>Rickshaw</span>
+                </div>
+                <div class="app-card-item" onclick="openModalAndCloseApps('addShareholderModal')">
+                  <div class="app-card-icon icon-purple"><i class="fa-solid fa-handshake"></i></div>
+                  <span>Shareholder</span>
+                </div>
+                <div class="app-card-item" onclick="openModalAndCloseApps('qrModal')">
+                  <div class="app-card-icon icon-blue"><i class="fa-solid fa-qrcode"></i></div>
+                  <span>Scan QR</span>
+                </div>
+              </div>
+              <div class="apps-popup-footer">
+                <a href="Project3Wheel-v1.0.0.apk" download="Project3Wheel-v1.0.0.apk" class="btn-download-app-banner">
+                  <i class="fa-brands fa-android"></i> Download Android APK
+                </a>
+              </div>
+            </div>
+          </div>
 
-          <button class="btn-glass btn-amber" onclick="openModal('addDriverModal')">
-            <i class="fa-solid fa-user-plus"></i>
-            <span data-i18n="btn_add_driver">Driver</span>
-          </button>
-
-          <button class="btn-glass btn-blue" style="background: rgba(10, 132, 255, 0.2); border-color: rgba(10, 132, 255, 0.4); color: var(--blue-light);" onclick="openModal('addRickshawModal')">
-            <i class="fa-solid fa-van-shuttle"></i>
-            <span data-i18n="btn_add_rickshaw">Rickshaw</span>
-          </button>
-
-          <button class="btn-glass btn-primary" onclick="openModal('qrModal')">
-            <i class="fa-solid fa-qrcode"></i>
-            <span data-i18n="btn_scan_qr">Scan QR</span>
-          </button>
-
-          <!-- Direct 1-Click APK Download Link -->
-          <a href="Project3Wheel-v1.0.0.apk" download="Project3Wheel-v1.0.0.apk" class="btn-glass" style="background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: var(--emerald-light); text-decoration: none;" title="Download Android App (APK)">
-            <i class="fa-brands fa-android"></i>
-            <span data-i18n="btn_download_apk">Download App</span>
-          </a>
         </div>
       </header>
 
@@ -272,7 +307,7 @@
         
         <!-- 1. DASHBOARD OVERVIEW -->
         <section class="tab-pane active" id="tab-dashboard">
-          <!-- Top Row KPI Metrics -->
+          <!-- Top Row KPI Metrics (Clean Horizontal Liquid Glass Row) -->
           <div class="metrics-grid">
             <!-- 1. Rickshaw Joma -->
             <div class="glass-card metric-card glow-emerald">
