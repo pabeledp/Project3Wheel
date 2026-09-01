@@ -5,6 +5,7 @@ import '../../core/constants/app_typography.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_utils.dart';
 import '../../models/expense_model.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/collection_provider.dart';
 import '../../providers/expense_provider.dart';
 import '../../providers/fleet_provider.dart';
@@ -34,11 +35,12 @@ class _FinancialReportsScreenState extends ConsumerState<FinancialReportsScreen>
     final collections = ref.read(collectionProvider).collections;
     final expenses = ref.read(expenseProvider).expenses;
 
+    final user = ref.read(authProvider).currentUser;
     final bytes = await PdfReportService.generateMonthlyPnlPdf(
       month: _selectedMonth,
       collections: collections,
       expenses: expenses,
-      garageName: 'Project 3 Wheel - Central Fleet Hub',
+      garageName: user.garageName.isNotEmpty ? user.garageName : 'Project 3 Wheel Fleet Hub',
     );
 
     if (!mounted) return;
