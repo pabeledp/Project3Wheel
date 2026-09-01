@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/user_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/layout/responsive_layout_builder.dart';
@@ -53,7 +54,25 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 18),
+            ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBlue.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.manage_accounts_rounded, color: AppColors.primaryBlue),
+              ),
+              title: const Text('User Profile & Garage Settings', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+              subtitle: const Text('Edit name, garage/fleet title & mobile number', style: TextStyle(fontSize: 12, color: AppColors.textTertiary)),
+              trailing: const Icon(Icons.chevron_right_rounded, color: Colors.white54),
+              onTap: () {
+                Navigator.pop(ctx);
+                final user = ref.read(authProvider).currentUser;
+                _showEditProfileDialog(context, user);
+              },
+            ),
+            const Divider(color: Colors.white12, height: 16),
             ListTile(
               leading: Container(
                 padding: const EdgeInsets.all(8),
@@ -126,6 +145,7 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
 
   void _showEditProfileDialog(BuildContext context, UserModel user) {
     final nameController = TextEditingController(text: user.name);
+    final garageController = TextEditingController(text: user.garageName.isNotEmpty ? user.garageName : 'My Electric Garage');
     final phoneController = TextEditingController(text: user.phone);
 
     showDialog(
@@ -145,13 +165,26 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Edit Profile Details',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryBlue.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Icon(Icons.manage_accounts_rounded, color: AppColors.primaryBlue, size: 20),
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Edit Profile & Garage',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
                         IconButton(
                           icon: const Icon(Icons.close, color: Colors.white70),
@@ -168,6 +201,13 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
                     ),
                     const SizedBox(height: 14),
                     GlassTextField(
+                      controller: garageController,
+                      labelText: 'Garage / Fleet Name',
+                      hintText: 'e.g. Dhaka Express Fleet Hub',
+                      prefixIcon: Icons.warehouse_outlined,
+                    ),
+                    const SizedBox(height: 14),
+                    GlassTextField(
                       controller: phoneController,
                       labelText: 'Mobile Number',
                       hintText: 'Enter your phone number',
@@ -179,19 +219,53 @@ class _MainShellScreenState extends ConsumerState<MainShellScreen> {
                       text: 'Save Changes',
                       icon: Icons.save_rounded,
                       variant: GlassButtonVariant.primary,
-                      onPressed: () {
+                      onPressed: () async {
+                        final newName = nameController.text.trim();
+                        final newGarage = garageController.text.trim();
+                        final newPhone = phoneController.text.trim();
+
+                        if (newName.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please enter your name'), backgroundColor: AppColors.crimsonRed),
+                          );
+                          return;
+                        }
+
                         final updated = user.copyWith(
-                          name: nameController.text.trim(),
-                          phone: phoneController.text.trim(),
+                          name: newName,
+                          garageName: newGarage.isNotEmpty ? newGarage : 'My Electric Garage',
+                          phone: newPhone,
                         );
+
                         ref.read(authProvider.notifier).setUser(updated);
-                        Navigator.pop(dialogCtx);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Profile updated successfully!'),
-                            backgroundColor: AppColors.emeraldGreen,
-                          ),
-                        );
+
+                        // Sync to Cloud Firestore
+                        try {
+                          final email = user.phone.contains('@') ? user.phone : '${user.uid}@project3wheel.com';
+                          final docKey = email.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '_');
+                          await FirebaseFirestore.instance.collection('fleet_accounts').doc(docKey).set({
+                            'userProfile': {
+                              'name': newName,
+                              'garageName': newGarage,
+                              'phone': newPhone,
+                              'email': email,
+                              'role': user.isOwner ? 'owner' : 'manager',
+                            },
+                            'updatedAt': DateTime.now().toIso8601String(),
+                          }, SetOptions(merge: true));
+                        } catch (e) {
+                          debugPrint('Firestore profile update: $e');
+                        }
+
+                        if (context.mounted) Navigator.pop(dialogCtx);
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Profile and Garage Name updated!'),
+                              backgroundColor: AppColors.emeraldGreen,
+                            ),
+                          );
+                        }
                       },
                     ),
                   ],

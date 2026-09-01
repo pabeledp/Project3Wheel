@@ -42,52 +42,60 @@ class MobileManagerHomeScreen extends ConsumerWidget {
             elevation: 0,
             floating: false,
             pinned: true,
+            leadingWidth: 56,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 14, top: 8, bottom: 8),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  _showMobileEditProfileDialog(context, ref, currentUser);
+                },
+                child: Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    CircleAvatar(
+                      radius: 18,
+                      backgroundColor: AppColors.primaryBlue.withOpacity(0.35),
+                      child: Text(
+                        currentUser.name.isNotEmpty ? currentUser.name[0].toUpperCase() : 'U',
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primaryBlue,
+                      ),
+                      child: const Icon(Icons.edit, size: 8, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             title: GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () {
                 _showMobileEditProfileDialog(context, ref, currentUser);
               },
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Stack(
-                    alignment: Alignment.bottomRight,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      CircleAvatar(
-                        radius: 18,
-                        backgroundColor: AppColors.primaryBlue.withOpacity(0.35),
-                        child: Text(
-                          currentUser.name.isNotEmpty ? currentUser.name[0].toUpperCase() : 'U',
-                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                        ),
+                      Text(
+                        currentUser.name.isNotEmpty ? currentUser.name : 'Fleet User',
+                        style: AppTypography.titleSmall,
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primaryBlue,
-                        ),
-                        child: const Icon(Icons.edit, size: 8, color: Colors.white),
-                      ),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.edit_outlined, size: 12, color: AppColors.primaryBlue),
                     ],
                   ),
-                  const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            currentUser.name.isNotEmpty ? currentUser.name : 'Fleet User',
-                            style: AppTypography.titleSmall,
-                          ),
-                          const SizedBox(width: 4),
-                          const Icon(Icons.edit_outlined, size: 12, color: AppColors.primaryBlue),
-                        ],
-                      ),
-                      Text(
-                        currentUser.garageName.isNotEmpty ? currentUser.garageName : currentUser.roleDisplayName,
-                        style: AppTypography.bodySmall.copyWith(color: AppColors.electricAmber, fontSize: 10),
-                      ),
-                    ],
+                  Text(
+                    currentUser.garageName.isNotEmpty ? currentUser.garageName : currentUser.roleDisplayName,
+                    style: AppTypography.bodySmall.copyWith(color: AppColors.electricAmber, fontSize: 10),
                   ),
                 ],
               ),
