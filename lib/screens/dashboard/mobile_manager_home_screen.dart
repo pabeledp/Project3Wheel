@@ -15,6 +15,7 @@ import '../scanner/qr_scanner_screen.dart';
 import '../collection/daily_collection_form_screen.dart';
 import '../expense/add_expense_screen.dart';
 import '../driver/driver_ledger_screen.dart';
+import 'manage_rickshaws_dialog.dart';
 
 class MobileManagerHomeScreen extends ConsumerWidget {
   const MobileManagerHomeScreen({super.key});
@@ -31,11 +32,12 @@ class MobileManagerHomeScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       body: CustomScrollView(
         slivers: [
-          // Top Sliver App Bar with Liquid Glass Styling
+          // Top Sliver App Bar with Liquid Glass Styling (Pinned Sticky)
           SliverAppBar(
-            backgroundColor: Colors.transparent,
+            backgroundColor: AppColors.backgroundDark,
             elevation: 0,
-            floating: true,
+            floating: false,
+            pinned: true,
             title: Row(
               children: [
                 CircleAvatar(
@@ -227,10 +229,30 @@ class MobileManagerHomeScreen extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text('Fleet Status Overview', style: AppTypography.titleSmall),
-                            GlassPillBadge(
-                              text: '${fleetState.activeRickshaws} ACTIVE',
-                              variant: GlassPillVariant.emerald,
-                              showDot: true,
+                            InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (c) => const ManageRickshawsDialog(),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(12),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryBlue.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: AppColors.primaryBlue.withOpacity(0.4)),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.electric_rickshaw, size: 14, color: AppColors.primaryBlue),
+                                    SizedBox(width: 4),
+                                    Text('Manage Fleet', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.primaryBlue)),
+                                  ],
+                                ),
+                              ),
                             ),
                           ],
                         ),

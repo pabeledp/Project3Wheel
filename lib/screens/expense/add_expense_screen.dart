@@ -23,6 +23,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
   ExpenseCategory _selectedCategory = ExpenseCategory.parts;
+  String _spender = 'Habib Rahman (Owner)';
   bool _isLoading = false;
   String? _attachedReceiptName;
 
@@ -144,13 +145,41 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       GlassTextField(
                         controller: _amountController,
                         labelText: 'Expense Amount (৳)',
                         hintText: 'e.g. 1250',
                         keyboardType: TextInputType.number,
                         prefixIcon: Icons.payments_rounded,
+                      ),
+                      const SizedBox(height: 16),
+                      // Paid By Spender Selector
+                      Text('Paid By (Spender)', style: AppTypography.labelMedium),
+                      const SizedBox(height: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundElevated,
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(color: Colors.white.withOpacity(0.15)),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: _spender,
+                            isExpanded: true,
+                            dropdownColor: const Color(0xFF141A26),
+                            style: const TextStyle(color: Colors.white, fontSize: 13),
+                            icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.primaryBlue),
+                            items: const [
+                              DropdownMenuItem(value: 'Habib Rahman (Owner)', child: Text('Habib Rahman (Owner)')),
+                              DropdownMenuItem(value: 'Selim Mia (Manager)', child: Text('Selim Mia (Manager)')),
+                              DropdownMenuItem(value: 'Garage Petty Cash', child: Text('Garage Petty Cash')),
+                              DropdownMenuItem(value: 'Al-Haj Moksed Ali (Partner)', child: Text('Al-Haj Moksed Ali (Partner)')),
+                            ],
+                            onChanged: (val) => setState(() => _spender = val ?? 'Habib Rahman (Owner)'),
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 16),
                       GlassTextField(

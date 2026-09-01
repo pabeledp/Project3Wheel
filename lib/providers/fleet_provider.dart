@@ -60,6 +60,16 @@ class FleetNotifier extends StateNotifier<FleetState> {
     refresh();
   }
 
+  Future<void> addRickshaw(RickshawModel rickshaw) async {
+    await _rickshawRepo.save(rickshaw);
+    refresh();
+  }
+
+  Future<void> deleteRickshaw(String rickshawId) async {
+    await _rickshawRepo.delete(rickshawId);
+    refresh();
+  }
+
   Future<void> saveDriver(DriverModel driver) async {
     await _driverRepo.save(driver);
     refresh();

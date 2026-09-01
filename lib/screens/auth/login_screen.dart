@@ -18,23 +18,39 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _nameController = TextEditingController(text: 'Habib Rahman');
-  final _phoneController = TextEditingController(text: '01710001122');
-  final _pinController = TextEditingController(text: 'admin123');
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _pinController = TextEditingController();
   UserRole _selectedRole = UserRole.owner;
   bool _isRegisterMode = false;
   bool _rememberMe = true;
   bool _isLoading = false;
+  bool _obscurePassword = true;
 
   void _handleLogin() async {
+    final identifier = _phoneController.text.trim();
+    final pin = _pinController.text.trim();
+
+    if (identifier.isEmpty || pin.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter your email/phone and password'),
+          backgroundColor: AppColors.crimsonRed,
+        ),
+      );
+      return;
+    }
+
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 400));
 
     final user = UserModel(
-      uid: _selectedRole == UserRole.owner ? 'OWNER-001' : 'MGR-SELIM',
-      name: _isRegisterMode ? _nameController.text.trim() : (_selectedRole == UserRole.owner ? 'Habib Rahman' : 'Selim Mia'),
+      uid: identifier.replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_'),
+      name: _isRegisterMode && _nameController.text.trim().isNotEmpty
+          ? _nameController.text.trim()
+          : (_selectedRole == UserRole.owner ? 'Habib Rahman' : 'Selim Mia'),
       role: _selectedRole,
-      phone: _phoneController.text.trim(),
+      phone: identifier,
     );
 
     ref.read(authProvider.notifier).setUser(user);
@@ -192,9 +208,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       GlassTextField(
                         controller: _pinController,
                         labelText: 'Security PIN / Password',
-                        hintText: '••••••••',
+                        hintText: 'Enter your password',
                         prefixIcon: Icons.lock_outline_rounded,
-                        obscureText: true,
+                        obscureText: _obscurePassword,
+                        suffix: IconButton(
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility_off_rounded : Icons.visibility_rounded,
+                            color: AppColors.textSecondary,
+                            size: 20,
+                          ),
+                          onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                        ),
                       ),
                       const SizedBox(height: 10),
                       // Remember Me Row
@@ -245,11 +269,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       onTap: () {
         setState(() {
           _selectedRole = role;
-          if (role == UserRole.owner) {
-            _phoneController.text = '01710001122';
-          } else {
-            _phoneController.text = '01815556677';
-          }
         });
       },
       child: AnimatedContainer(

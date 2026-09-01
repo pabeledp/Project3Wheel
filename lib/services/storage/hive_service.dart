@@ -145,6 +145,16 @@ class HiveService {
     return null;
   }
 
+  Future<void> deleteRickshaw(String rickshawId) async {
+    final box = Hive.box(boxRickshaws);
+    await box.delete(rickshawId);
+  }
+
+  Future<void> deleteDriver(String driverId) async {
+    final box = Hive.box(boxDrivers);
+    await box.delete(driverId);
+  }
+
   // --- SMS Logs ---
   Future<void> saveSmsLog(SmsLogModel log) async {
     final box = Hive.box(boxSmsLogs);

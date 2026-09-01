@@ -14,6 +14,7 @@ import '../../widgets/glass/glass_pill_badge.dart';
 import '../../widgets/glass/glass_modal_bottom_sheet.dart';
 import '../../widgets/layout/responsive_layout_builder.dart';
 import 'driver_detail_modal.dart';
+import 'add_driver_dialog.dart';
 
 class DriverLedgerScreen extends ConsumerStatefulWidget {
   const DriverLedgerScreen({super.key});
@@ -127,6 +128,16 @@ class _DriverLedgerScreenState extends ConsumerState<DriverLedgerScreen> {
       appBar: AppBar(
         title: Text('Driver Roster & Ledger', style: AppTypography.titleMedium),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.person_add_alt_1_rounded, color: AppColors.electricAmberLight),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (c) => const AddDriverDialog(),
+              );
+            },
+            tooltip: 'Register Driver',
+          ),
           IconButton(
             icon: const Icon(Icons.picture_as_pdf_rounded, color: AppColors.electricAmber),
             tooltip: 'Export Defaulters PDF',

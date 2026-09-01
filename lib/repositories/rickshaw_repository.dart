@@ -38,6 +38,16 @@ class RickshawRepository {
     }
   }
 
+  Future<void> delete(String rickshawId) async {
+    await _hive.deleteRickshaw(rickshawId);
+    await _syncEngine.enqueueOperation(
+      id: rickshawId,
+      collectionName: 'rickshaws',
+      action: SyncAction.delete,
+      payload: {'id': rickshawId},
+    );
+  }
+
   Future<void> updateLocation(String rickshawId, LastLocation location) async {
     final rickshaw = _hive.getRickshaw(rickshawId);
     if (rickshaw != null) {

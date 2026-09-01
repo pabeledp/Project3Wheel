@@ -5,10 +5,12 @@ import '../../core/constants/app_typography.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_utils.dart';
 import '../../models/driver_model.dart';
+import '../../providers/fleet_provider.dart';
 import '../../services/sms/sms_gateway_service.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
 import '../../widgets/glass/glass_button.dart';
 import '../../widgets/glass/glass_pill_badge.dart';
+import 'driver_id_card_dialog.dart';
 
 class DriverDetailModal extends ConsumerStatefulWidget {
   final DriverModel driver;
@@ -115,26 +117,70 @@ class _DriverDetailModalState extends ConsumerState<DriverDetailModal> {
             ),
           ),
           const SizedBox(height: 20),
-          // Action Buttons
-          Row(
+          // Action Buttons: ID Card, SMS, Delete, Close
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (driver.hasDue)
-                Expanded(
-                  child: GlassButton(
-                    text: 'Send SMS Reminder',
-                    icon: Icons.sms_outlined,
-                    variant: GlassButtonVariant.amber,
-                    isLoading: _isSendingSms,
-                    onPressed: _sendSms,
+              GlassButton(
+                text: 'Driver Smart ID Card',
+                icon: Icons.badge_rounded,
+                variant: GlassButtonVariant.primary,
+                onPressed: () {
+                  Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (c) => DriverIdCardDialog(driver: driver),
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  if (driver.hasDue)
+                    Expanded(
+                      child: GlassButton(
+                        text: 'Send SMS',
+                        icon: Icons.sms_outlined,
+                        variant: GlassButtonVariant.amber,
+                        isLoading: _isSendingSms,
+                        onPressed: _sendSms,
+                      ),
+                    ),
+                  if (driver.hasDue) const SizedBox(width: 8),
+                  Expanded(
+                    child: GlassButton(
+                      text: 'Delete Driver',
+                      icon: Icons.delete_outline_rounded,
+                      variant: GlassButtonVariant.crimson,
+                      onPressed: () async {
+                        final confirm = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            backgroundColor: AppColors.backgroundElevated,
+                            title: const Text('Delete Driver Profile?'),
+                            content: Text('Are you sure you want to remove ${driver.name}?'),
+                            actions: [
+                              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(backgroundColor: AppColors.crimsonRed),
+                                onPressed: () => Navigator.pop(ctx, true),
+                                child: const Text('Delete'),
+                              ),
+                            ],
+                          ),
+                        );
+                        if (confirm == true) {
+                          await ref.read(fleetProvider.notifier).deleteDriver(driver.driverId);
+                          if (!mounted) return;
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('${driver.name} removed from fleet'), backgroundColor: AppColors.crimsonRed),
+                          );
+                        }
+                      },
+                    ),
                   ),
-                ),
-              if (driver.hasDue) const SizedBox(width: 12),
-              Expanded(
-                child: GlassButton(
-                  text: 'Close',
-                  variant: GlassButtonVariant.secondary,
-                  onPressed: () => Navigator.pop(context),
-                ),
+                ],
               ),
             ],
           ),
