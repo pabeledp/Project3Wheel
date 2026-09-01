@@ -468,6 +468,12 @@ function openModalAndCloseApps(modalId) {
 
 // --- Cloud-First Firestore Real-Time Synchronization Engine ---
 let lastLocalMutationTime = 0;
+let activeFirestoreUnsubscribe = null;
+
+function getSyncDocKey() {
+  const email = (state.currentUser && state.currentUser.email) ? state.currentUser.email.toLowerCase().replace(/[^a-z0-9]/g, '_') : 'global_fleet';
+  return email;
+}
 
 function syncStateFromRemote(remoteData, isInitial = false) {
   if (!remoteData) return;
@@ -492,6 +498,13 @@ function syncStateFromRemote(remoteData, isInitial = false) {
     state.expenses = remoteData.expenses;
     saveToStorage('expenses', state.expenses);
   }
+  if (remoteData.userProfile && isInitial) {
+    state.currentUser.name = remoteData.userProfile.name || state.currentUser.name;
+    state.currentUser.garageName = remoteData.userProfile.garageName || state.currentUser.garageName;
+    state.currentUser.phone = remoteData.userProfile.phone || state.currentUser.phone;
+    saveToStorage('user_profile', state.currentUser);
+    updateUserProfileDisplay();
+  }
 
   renderAll();
 
@@ -504,8 +517,14 @@ function setupFirestoreLiveListeners() {
   if (typeof firebase === 'undefined' || !window.firebaseDb) return;
 
   try {
+    if (activeFirestoreUnsubscribe) {
+      activeFirestoreUnsubscribe();
+      activeFirestoreUnsubscribe = null;
+    }
+
     const db = window.firebaseDb;
-    const docRef = db.collection('fleet_sync').doc('latest');
+    const docKey = getSyncDocKey();
+    const docRef = db.collection('fleet_accounts').doc(docKey);
 
     // 1. Initial Cloud-First Fetch
     docRef.get().then((doc) => {
@@ -513,20 +532,20 @@ function setupFirestoreLiveListeners() {
         const cloudData = doc.data();
         syncStateFromRemote(cloudData, true);
       } else {
-        // Seed cloud initial data if first time
+        // Seed initial cloud copy for this account if first time
         broadcastFirestoreUpdate();
       }
     }).catch(err => {
       console.warn('Initial cloud fetch note:', err);
     });
 
-    // 2. Real-Time Bidirectional Listener across all active devices
-    docRef.onSnapshot((doc) => {
+    // 2. Real-Time Bidirectional Listener across all active devices for this account
+    activeFirestoreUnsubscribe = docRef.onSnapshot((doc) => {
       if (doc.exists) {
         const remoteData = doc.data();
         const remoteTime = new Date(remoteData.updatedAt || 0).getTime();
         
-        // Only accept remote update if it happened after local mutation or from another user/device
+        // Accept remote update if from cloud or other device
         if (remoteTime > lastLocalMutationTime) {
           syncStateFromRemote(remoteData, false);
         }
@@ -552,12 +571,20 @@ function broadcastFirestoreUpdate() {
   if (typeof firebase === 'undefined' || !window.firebaseDb) return;
   try {
     const db = window.firebaseDb;
-    db.collection('fleet_sync').doc('latest').set({
+    const docKey = getSyncDocKey();
+    db.collection('fleet_accounts').doc(docKey).set({
       rickshaws: state.rickshaws,
       drivers: state.drivers,
       shareholders: state.shareholders,
       collections: state.collections,
       expenses: state.expenses,
+      userProfile: {
+        name: state.currentUser.name || 'Habib Rahman',
+        garageName: state.currentUser.garageName || 'Habib Electric Garage',
+        phone: state.currentUser.phone || '01711223344',
+        email: state.currentUser.email || 'owner@project3wheel.com',
+        role: state.currentUser.role || 'owner'
+      },
       updatedBy: state.currentUser.name || 'Admin',
       updatedAt: new Date().toISOString(),
     }, { merge: true }).catch(e => {
@@ -648,14 +675,8 @@ function submitLogin(e) {
   checkAuthSession();
   renderAll();
 
-  // Immediately pull authoritative cloud data for this newly logged-in device
-  if (typeof firebase !== 'undefined' && window.firebaseDb) {
-    window.firebaseDb.collection('fleet_sync').doc('latest').get().then(doc => {
-      if (doc.exists) {
-        syncStateFromRemote(doc.data(), true);
-      }
-    }).catch(e => {});
-  }
+  // Connect real-time Firestore listener and pull cloud data for this specific user account
+  setupFirestoreLiveListeners();
 
   showToast(state.lang === 'bn' ? `স্বাগতম, ${state.currentUser.name}!` : `Welcome back, ${state.currentUser.name}!`, 'emerald');
 }
