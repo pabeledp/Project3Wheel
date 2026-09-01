@@ -60,6 +60,10 @@
           <i class="fa-solid fa-chart-pie"></i>
           <span data-i18n="nav_reports">P&L Reports</span>
         </button>
+        <button class="nav-item" onclick="switchTab('shareholders')">
+          <i class="fa-solid fa-handshake"></i>
+          <span data-i18n="nav_shareholders">Shareholders</span>
+        </button>
         <button class="nav-item" onclick="switchTab('gps')">
           <i class="fa-solid fa-satellite"></i>
           <span data-i18n="nav_gps">GPS Telematics</span>
@@ -503,7 +507,30 @@
           </div>
         </section>
 
-        <!-- 6. GPS FLEET TELEMATICS (COMING SOON) -->
+        <!-- 6. SHAREHOLDERS & PROFIT DISTRIBUTION -->
+        <section class="tab-pane" id="tab-shareholders">
+          <div class="table-container-glass">
+            <div class="table-header-row">
+              <div>
+                <h3 data-i18n="shareholders_title">Shareholders & Profit Distribution</h3>
+                <p style="font-size: 11px; color: var(--text-secondary);" data-i18n="shareholders_subtitle">Manage investors, equity shares, and automatic dividend payouts</p>
+              </div>
+              <div class="table-actions">
+                <button class="btn-glass btn-primary" onclick="openModal('addShareholderModal')">
+                  <i class="fa-solid fa-user-plus"></i>
+                  <span data-i18n="btn_add_shareholder">Add Shareholder</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Shareholders Grid -->
+            <div class="driver-cards-grid" id="shareholdersGrid" style="margin-top: 18px;">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. GPS FLEET TELEMATICS (COMING SOON) -->
         <section class="tab-pane" id="tab-gps">
           <div class="gps-placeholder-container">
             <div class="gps-orb-visual">
@@ -1007,7 +1034,49 @@ rickshaws.last_location: {
     </div>
   </div>
 
-  <!-- ==================== FULL-SCREEN AUTH & LOGIN OVERLAY ==================== -->
+  <!-- 10. ADD SHAREHOLDER MODAL -->
+  <div class="modal-backdrop" id="addShareholderModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-handshake text-blue"></i> <span data-i18n="modal_add_shareholder">Add New Shareholder / Investor</span></h3>
+        <button class="close-btn" onclick="closeModal('addShareholderModal')">&times;</button>
+      </div>
+
+      <form id="addShareholderForm" onsubmit="submitNewShareholder(event)">
+        <div class="form-group">
+          <label data-i18n="lbl_shareholder_name">Shareholder Name</label>
+          <input type="text" class="glass-input" id="newShareholderName" placeholder="e.g. Al-Haj Moksed Ali" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_phone">Mobile Number</label>
+          <input type="tel" class="glass-input" id="newShareholderPhone" placeholder="017xxxxxxxx" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label data-i18n="lbl_equity_share">Equity Share (%)</label>
+            <input type="number" step="0.1" min="1" max="100" class="glass-input" id="newShareholderEquity" placeholder="25" required>
+          </div>
+          <div class="form-group">
+            <label data-i18n="lbl_invested_amount">Invested Capital (৳)</label>
+            <input type="number" class="glass-input" id="newShareholderInvestment" placeholder="500000" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_assigned_units">Financed Rickshaws (Optional)</label>
+          <input type="text" class="glass-input" id="newShareholderRickshaws" placeholder="e.g. R-01, R-02">
+        </div>
+
+        <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 16px;">
+          <i class="fa-solid fa-check"></i> <span data-i18n="btn_save_shareholder">Register Shareholder</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== FULL-SCREEN AUTH & LOGIN/REGISTER OVERLAY ==================== -->
   <div class="auth-overlay" id="authOverlay">
     <!-- Ambient Background Mesh Lights for Login -->
     <div class="mesh-orb mesh-blue"></div>
@@ -1023,6 +1092,13 @@ rickshaws.last_location: {
         <p data-i18n="auth_tagline">Electric Rickshaw Fleet Hub & Financial Ledger</p>
       </div>
 
+      <!-- Auth Action Mode: Sign In vs Register -->
+      <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+        <button type="button" id="tabModeLogin" class="btn-cal-preset active" style="flex: 1; padding: 8px;" onclick="switchAuthMode('login')" data-i18n="tab_login">Sign In</button>
+        <button type="button" id="tabModeRegister" class="btn-cal-preset" style="flex: 1; padding: 8px;" onclick="switchAuthMode('register')" data-i18n="tab_register">Register New</button>
+      </div>
+
+      <!-- Role Selector -->
       <div class="role-tab-group">
         <button type="button" class="role-tab-btn active" id="authRoleOwner" onclick="selectAuthRole('owner')">
           <i class="fa-solid fa-crown"></i> <span data-i18n="role_owner">Fleet Owner</span>
@@ -1033,6 +1109,14 @@ rickshaws.last_location: {
       </div>
 
       <form class="auth-form" id="loginForm" onsubmit="submitLogin(event)">
+        <div class="auth-form-group" id="groupRegisterName" style="display: none;">
+          <label data-i18n="lbl_profile_name">Full Name</label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" class="auth-input" id="authFullName" placeholder="e.g. Habib Rahman">
+          </div>
+        </div>
+
         <div class="auth-form-group">
           <label data-i18n="lbl_email_or_phone">Email or Mobile Number</label>
           <div class="input-icon-wrapper">
@@ -1049,12 +1133,21 @@ rickshaws.last_location: {
           </div>
         </div>
 
-        <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 10px; padding: 12px; font-size: 13px;">
+        <!-- Remember Me Checkbox -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px; font-size: 11px; color: var(--text-secondary);">
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="checkbox" id="rememberMeCheck" checked style="accent-color: var(--blue); cursor: pointer;">
+            <span data-i18n="lbl_remember_me">Remember my login</span>
+          </label>
+          <span style="color: var(--blue-light); cursor: pointer;" onclick="autofillCredentials()" data-i18n="lbl_auto_fill">Auto Fill</span>
+        </div>
+
+        <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 12px; padding: 12px; font-size: 13px;" id="btnAuthSubmit">
           <i class="fa-solid fa-right-to-bracket"></i> <span data-i18n="btn_sign_in">Sign In to Fleet Hub</span>
         </button>
       </form>
 
-      <div class="auth-demo-hint">
+      <div class="auth-demo-hint" id="authHintBox">
         <span>Default Owner: <strong>owner@project3wheel.com</strong></span>
         <span>PIN: <strong>admin123</strong></span>
       </div>

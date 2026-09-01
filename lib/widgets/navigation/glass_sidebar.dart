@@ -12,6 +12,7 @@ class GlassSidebar extends StatelessWidget {
   final UserModel currentUser;
   final VoidCallback onRoleSwitch;
   final VoidCallback onSignOut;
+  final VoidCallback? onEditProfile;
 
   const GlassSidebar({
     super.key,
@@ -20,6 +21,7 @@ class GlassSidebar extends StatelessWidget {
     required this.currentUser,
     required this.onRoleSwitch,
     required this.onSignOut,
+    this.onEditProfile,
   });
 
   @override
@@ -103,88 +105,100 @@ class GlassSidebar extends StatelessWidget {
                     _buildNavItem(2, Icons.account_balance_wallet_rounded, 'Garage Expenses'),
                     _buildNavItem(3, Icons.people_alt_rounded, 'Drivers & Dues'),
                     _buildNavItem(4, Icons.assessment_rounded, 'Financial P&L Reports'),
-                    _buildNavItem(5, Icons.radar_rounded, 'GPS Fleet Tracking'),
+                    _buildNavItem(5, Icons.handshake_rounded, 'Shareholders & Equity'),
+                    _buildNavItem(6, Icons.radar_rounded, 'GPS Fleet Tracking'),
                   ],
                 ),
               ),
               // User Profile & Role Switcher
-              Container(
-                padding: const EdgeInsets.all(16),
-                margin: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppColors.glassWhiteLight,
-                  borderRadius: AppDimensions.borderRadiusMedium,
-                  border: Border.all(color: Colors.white.withOpacity(0.12)),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 18,
-                          backgroundColor: AppColors.primaryBlue.withOpacity(0.25),
-                          child: Text(
-                            currentUser.name.isNotEmpty ? currentUser.name[0] : 'U',
-                            style: const TextStyle(
-                              color: AppColors.primaryBlue,
-                              fontWeight: FontWeight.bold,
+              InkWell(
+                onTap: onEditProfile,
+                borderRadius: AppDimensions.borderRadiusMedium,
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.glassWhiteLight,
+                    borderRadius: AppDimensions.borderRadiusMedium,
+                    border: Border.all(color: Colors.white.withOpacity(0.12)),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 18,
+                            backgroundColor: AppColors.primaryBlue.withOpacity(0.25),
+                            child: Text(
+                              currentUser.name.isNotEmpty ? currentUser.name[0] : 'U',
+                              style: const TextStyle(
+                                color: AppColors.primaryBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                currentUser.name,
-                                style: AppTypography.labelMedium.copyWith(color: Colors.white),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              const SizedBox(height: 2),
-                              GlassPillBadge(
-                                text: currentUser.isOwner ? 'OWNER' : 'MANAGER',
-                                variant: currentUser.isOwner ? GlassPillVariant.blue : GlassPillVariant.amber,
-                                fontSize: 9,
-                              ),
-                            ],
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        currentUser.name,
+                                        style: AppTypography.labelMedium.copyWith(color: Colors.white),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    const Icon(Icons.edit_outlined, size: 14, color: AppColors.primaryBlue),
+                                  ],
+                                ),
+                                const SizedBox(height: 2),
+                                GlassPillBadge(
+                                  text: currentUser.isOwner ? 'OWNER' : 'MANAGER',
+                                  variant: currentUser.isOwner ? GlassPillVariant.blue : GlassPillVariant.amber,
+                                  fontSize: 9,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: onRoleSwitch,
-                            borderRadius: BorderRadius.circular(8),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 6),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.08),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  currentUser.isOwner ? 'Switch to Manager' : 'Switch to Owner',
-                                  style: const TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: onRoleSwitch,
+                              borderRadius: BorderRadius.circular(8),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    currentUser.isOwner ? 'Switch to Manager' : 'Switch to Owner',
+                                    style: const TextStyle(fontSize: 10, color: AppColors.textSecondary),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        IconButton(
-                          icon: const Icon(Icons.logout_rounded, size: 16, color: AppColors.crimsonRed),
-                          onPressed: onSignOut,
-                          tooltip: 'Sign Out',
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(width: 8),
+                          IconButton(
+                            icon: const Icon(Icons.logout_rounded, size: 16, color: AppColors.crimsonRed),
+                            onPressed: onSignOut,
+                            tooltip: 'Sign Out',
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

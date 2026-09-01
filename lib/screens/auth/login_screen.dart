@@ -18,18 +18,21 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final _nameController = TextEditingController(text: 'Habib Rahman');
   final _phoneController = TextEditingController(text: '01710001122');
-  final _pinController = TextEditingController(text: '1234');
+  final _pinController = TextEditingController(text: 'admin123');
   UserRole _selectedRole = UserRole.owner;
+  bool _isRegisterMode = false;
+  bool _rememberMe = true;
   bool _isLoading = false;
 
   void _handleLogin() async {
     setState(() => _isLoading = true);
-    await Future.delayed(const Duration(milliseconds: 600));
+    await Future.delayed(const Duration(milliseconds: 500));
 
     final user = UserModel(
       uid: _selectedRole == UserRole.owner ? 'OWNER-001' : 'MGR-SELIM',
-      name: _selectedRole == UserRole.owner ? 'Habib Rahman' : 'Selim Mia',
+      name: _isRegisterMode ? _nameController.text.trim() : (_selectedRole == UserRole.owner ? 'Habib Rahman' : 'Selim Mia'),
       role: _selectedRole,
       phone: _phoneController.text.trim(),
     );
@@ -39,6 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void dispose() {
+    _nameController.dispose();
     _phoneController.dispose();
     _pinController.dispose();
     super.dispose();
@@ -57,8 +61,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 // Glowing Rickshaw Brand Icon
                 Container(
-                  width: 80,
-                  height: 80,
+                  width: 76,
+                  height: 76,
                   decoration: BoxDecoration(
                     gradient: AppColors.primaryGradient,
                     shape: BoxShape.circle,
@@ -74,97 +78,150 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: const Icon(
                     Icons.electric_rickshaw,
                     color: Colors.white,
-                    size: 44,
+                    size: 40,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
                 Text(
                   'PROJECT 3 WHEEL',
-                  style: AppTypography.displayMedium.copyWith(fontSize: 26),
+                  style: AppTypography.displayMedium.copyWith(fontSize: 24),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 4),
                 Text(
                   'Electric Fleet & Financial Management Hub',
-                  style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+                  style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary, fontSize: 13),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 36),
+                const SizedBox(height: 28),
                 // Frosted Glass Login Container
                 LiquidGlassContainer(
-                  padding: const EdgeInsets.all(28),
+                  padding: const EdgeInsets.all(24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'Select Account Role',
-                        style: AppTypography.labelMedium.copyWith(color: AppColors.textSecondary),
-                      ),
-                      const SizedBox(height: 12),
-                      // Role Selector Tabs
+                      // Switch between Sign In and Register Mode
                       Container(
                         padding: const EdgeInsets.all(4),
                         decoration: BoxDecoration(
                           color: Colors.black.withOpacity(0.3),
-                          borderRadius: AppDimensions.borderRadiusMedium,
+                          borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.white.withOpacity(0.1)),
                         ),
                         child: Row(
                           children: [
                             Expanded(
-                              child: _buildRoleTab(
-                                title: 'Fleet Owner',
-                                subtitle: 'Full Admin Access',
-                                role: UserRole.owner,
-                                icon: Icons.admin_panel_settings_rounded,
+                              child: InkWell(
+                                onTap: () => setState(() => _isRegisterMode = false),
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 8),
+                                  decoration: BoxDecoration(
+                                    gradient: !_isRegisterMode ? AppColors.primaryGradient : null,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Sign In',
+                                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                             Expanded(
-                              child: _buildRoleTab(
-                                title: 'Garage Manager',
-                                subtitle: 'Daily Entry Mode',
-                                role: UserRole.manager,
-                                icon: Icons.storefront_rounded,
+                              child: InkWell(
+                                onTap: () => setState(() => _isRegisterMode = true),
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 8),
+                                  decoration: BoxDecoration(
+                                    gradient: _isRegisterMode ? AppColors.primaryGradient : null,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Register New',
+                                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 18),
+                      // Role Selector Tabs
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildRoleTab(
+                              title: 'Fleet Owner',
+                              role: UserRole.owner,
+                              icon: Icons.admin_panel_settings_rounded,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: _buildRoleTab(
+                              title: 'Garage Manager',
+                              role: UserRole.manager,
+                              icon: Icons.storefront_rounded,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      if (_isRegisterMode) ...[
+                        GlassTextField(
+                          controller: _nameController,
+                          labelText: 'Full Name',
+                          hintText: 'e.g. Habib Rahman',
+                          prefixIcon: Icons.person_outline_rounded,
+                        ),
+                        const SizedBox(height: 14),
+                      ],
                       GlassTextField(
                         controller: _phoneController,
-                        labelText: 'Registered Mobile Number',
-                        hintText: 'e.g. 01710001122',
+                        labelText: 'Email or Mobile Number',
+                        hintText: 'e.g. owner@project3wheel.com',
                         prefixIcon: Icons.phone_android_rounded,
-                        keyboardType: TextInputType.phone,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 14),
                       GlassTextField(
                         controller: _pinController,
                         labelText: 'Security PIN / Password',
-                        hintText: '••••',
+                        hintText: '••••••••',
                         prefixIcon: Icons.lock_outline_rounded,
                         obscureText: true,
-                        keyboardType: TextInputType.number,
                       ),
-                      const SizedBox(height: 28),
+                      const SizedBox(height: 10),
+                      // Remember Me Row
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _rememberMe,
+                            activeColor: AppColors.primaryBlue,
+                            onChanged: (val) => setState(() => _rememberMe = val ?? true),
+                          ),
+                          const Text(
+                            'Remember my login',
+                            style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
                       GlassButton(
-                        text: _selectedRole == UserRole.owner
-                            ? 'Sign In as Owner'
-                            : 'Sign In as Manager',
-                        icon: Icons.login_rounded,
+                        text: _isRegisterMode
+                            ? 'Register Account'
+                            : (_selectedRole == UserRole.owner ? 'Sign In as Owner' : 'Sign In as Manager'),
+                        icon: _isRegisterMode ? Icons.person_add_rounded : Icons.login_rounded,
                         variant: _selectedRole == UserRole.owner
                             ? GlassButtonVariant.primary
                             : GlassButtonVariant.amber,
                         isLoading: _isLoading,
                         onPressed: _handleLogin,
-                      ),
-                      const SizedBox(height: 20),
-                      Center(
-                        child: Text(
-                          'Offline First • Auto-syncing with Cloud Firestore',
-                          style: AppTypography.bodySmall.copyWith(fontSize: 11),
-                        ),
                       ),
                     ],
                   ),
@@ -179,7 +236,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Widget _buildRoleTab({
     required String title,
-    required String subtitle,
     required UserRole role,
     required IconData icon,
   }) {
@@ -200,32 +256,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? (role == UserRole.owner ? AppColors.primaryBlue.withOpacity(0.3) : AppColors.electricAmber.withOpacity(0.3))
-              : Colors.transparent,
+          color: isSelected ? AppColors.primaryBlue.withOpacity(0.25) : Colors.white.withOpacity(0.05),
           borderRadius: BorderRadius.circular(12),
-          border: isSelected
-              ? Border.all(
-                  color: role == UserRole.owner ? AppColors.primaryBlue : AppColors.electricAmber,
-                  width: 1.2,
-                )
-              : null,
+          border: Border.all(
+            color: isSelected ? AppColors.primaryBlue : Colors.white.withOpacity(0.12),
+            width: isSelected ? 1.5 : 1.0,
+          ),
         ),
-        child: Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              size: 20,
-              color: isSelected
-                  ? (role == UserRole.owner ? AppColors.primaryBlue : AppColors.electricAmber)
-                  : AppColors.textSecondary,
+              size: 16,
+              color: isSelected ? Colors.white : AppColors.textSecondary,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(width: 6),
             Text(
               title,
               style: TextStyle(
-                fontSize: 12,
-                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                fontSize: 11,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                 color: isSelected ? Colors.white : AppColors.textSecondary,
               ),
             ),

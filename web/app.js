@@ -1,6 +1,6 @@
 /* =========================================================
    PROJECT 3 WHEEL - LIQUID GLASS REAL-TIME DYNAMIC ENGINE
-   Authentication, User Profile Management & Real Assigned Data
+   Auth, Registration, Remember Me, Profile Edit & Shareholders
    ========================================================= */
 
 const todayIso = new Date().toISOString().split('T')[0];
@@ -17,7 +17,12 @@ const defaultDrivers = [
   { id: 'D-102', name: 'Rafiqul Islam', phone: '01812345678', nid: '19922699876543210', agreedDailyRate: 350, due: 0, activeRickshaw: 'R-02', address: 'Kalyanpur, Dhaka', joinDate: todayIso },
 ];
 
-// Clean empty state for collections and expenses (Only real-time assigned data logged by owner)
+const defaultShareholders = [
+  { id: 'SH-01', name: 'Al-Haj Moksed Ali', phone: '01712345678', equity: 35, investment: 700000, rickshaws: 'R-01, R-02', joinDate: '2026-01-10' },
+  { id: 'SH-02', name: 'Enamul Haque', phone: '01898765432', equity: 20, investment: 400000, rickshaws: 'R-03', joinDate: '2026-03-01' },
+];
+
+// Clean empty state for collections and expenses
 const defaultCollections = [];
 const defaultExpenses = [];
 
@@ -38,6 +43,7 @@ const i18n = {
     nav_expenses: "Expenses",
     nav_drivers: "Driver Directory",
     nav_reports: "P&L Reports",
+    nav_shareholders: "Shareholders",
     nav_gps: "GPS Telematics",
     badge_soon: "SOON",
     btn_switch_role: "Switch to Manager",
@@ -49,11 +55,24 @@ const i18n = {
     lbl_role: "Active Role",
     btn_save_profile: "Save Profile",
     auth_tagline: "Electric Rickshaw Fleet Hub & Financial Ledger",
+    tab_login: "Sign In",
+    tab_register: "Register New",
     role_owner: "Fleet Owner",
     role_manager: "Garage Manager",
     lbl_email_or_phone: "Email or Mobile Number",
     lbl_password: "Security Password / PIN",
+    lbl_remember_me: "Remember my login",
+    lbl_auto_fill: "Auto Fill",
     btn_sign_in: "Sign In to Fleet Hub",
+    shareholders_title: "Shareholders & Equity Distribution",
+    shareholders_subtitle: "Manage investors, capital investment, equity shares and dividend payouts",
+    btn_add_shareholder: "Add Shareholder",
+    modal_add_shareholder: "Add New Shareholder / Investor",
+    lbl_shareholder_name: "Shareholder Name",
+    lbl_equity_share: "Equity Share (%)",
+    lbl_invested_amount: "Invested Capital (৳)",
+    lbl_assigned_units: "Financed Rickshaws (Optional)",
+    btn_save_shareholder: "Register Shareholder",
     page_title_dashboard: "Fleet Overview",
     page_subtitle_dashboard: "Real-time collections, garage rent, and net profit",
     cal_today: "Today",
@@ -188,6 +207,7 @@ const i18n = {
     nav_expenses: "গ্যারেজ খরচ",
     nav_drivers: "ড্রাইভার তালিকা",
     nav_reports: "লাভ-ক্ষতি রিপোর্ট",
+    nav_shareholders: "শেয়ারহোল্ডার",
     nav_gps: "জিপিএস ট্র্যাকিং",
     badge_soon: "শীঘ্রই",
     btn_switch_role: "ম্যানেজার ভিউ",
@@ -199,11 +219,24 @@ const i18n = {
     lbl_role: "অ্যাক্টিভ রোল",
     btn_save_profile: "প্রোফাইল সেভ করুন",
     auth_tagline: "ইলেকট্রিক রিকশা ফ্লিট হাব ও আর্থিক লেজার",
+    tab_login: "লগইন করুন",
+    tab_register: "নতুন অ্যাকাউন্ট খুলুন",
     role_owner: "ফ্লিট মালিক",
     role_manager: "গ্যারেজ ম্যানেজার",
     lbl_email_or_phone: "ইমেইল বা মোবাইল নম্বর",
     lbl_password: "সিকিউরিটি পাসওয়ার্ড / পিন",
+    lbl_remember_me: "পাসওয়ার্ড মনে রাখুন",
+    lbl_auto_fill: "অটো পূরণ",
     btn_sign_in: "লগইন করুন",
+    shareholders_title: "শেয়ারহোল্ডার ও লভ্যাংশ বণ্টন",
+    shareholders_subtitle: "বিনিয়োগকারী, মূলধন বিনিয়োগ, ইকুইটি শেয়ার এবং লভ্যাংশ ব্যবস্থাপনা",
+    btn_add_shareholder: "শেয়ারহোল্ডার যোগ করুন",
+    modal_add_shareholder: "নতুন শেয়ারহোল্ডার নিবন্ধন",
+    lbl_shareholder_name: "শেয়ারহোল্ডারের নাম",
+    lbl_equity_share: "মালিকানা শেয়ার (%)",
+    lbl_invested_amount: "বিনিয়োগকৃত মূলধন (৳)",
+    lbl_assigned_units: "অর্থায়িত রিকশা (ঐচ্ছিক)",
+    btn_save_shareholder: "শেয়ারহোল্ডার সেভ করুন",
     page_title_dashboard: "ফ্লিট ওভারভিউ",
     page_subtitle_dashboard: "দৈনিক জমা, গ্যারেজ ভাড়া এবং প্রকৃত লাভের হিসাব",
     cal_today: "আজ",
@@ -354,13 +387,15 @@ function saveToStorage(key, data) {
 let state = {
   lang: loadFromStorage('lang', 'en'),
   currentUser: loadFromStorage('user_profile', defaultUserProfile),
-  isOnline: true,
+  rememberMe: loadFromStorage('remember_me', true),
+  authMode: 'login',
   selectedAuthRole: 'owner',
   selectedDateFilter: todayIso,
   calYear: new Date().getFullYear(),
   calMonth: new Date().getMonth(),
   rickshaws: loadFromStorage('rickshaws', defaultRickshaws),
   drivers: loadFromStorage('drivers', defaultDrivers),
+  shareholders: loadFromStorage('shareholders', defaultShareholders),
   collections: loadFromStorage('collections', defaultCollections),
   expenses: loadFromStorage('expenses', defaultExpenses),
   currentSmsTarget: null,
@@ -390,10 +425,30 @@ function checkAuthSession() {
   if (!authOverlay) return;
 
   if (state.currentUser && state.currentUser.isAuthenticated) {
-    authOverlay.classList.add('hidden');
+    authOverlay.style.display = 'none';
     updateUserProfileDisplay();
   } else {
-    authOverlay.classList.remove('hidden');
+    authOverlay.style.display = 'flex';
+    autofillCredentials();
+  }
+}
+
+function switchAuthMode(mode) {
+  state.authMode = mode;
+  document.getElementById('tabModeLogin')?.classList.toggle('active', mode === 'login');
+  document.getElementById('tabModeRegister')?.classList.toggle('active', mode === 'register');
+
+  const nameGroup = document.getElementById('groupRegisterName');
+  const btnSubmit = document.getElementById('btnAuthSubmit');
+  const hintBox = document.getElementById('authHintBox');
+
+  if (nameGroup) nameGroup.style.display = mode === 'register' ? 'flex' : 'none';
+  if (hintBox) hintBox.style.display = mode === 'login' ? 'flex' : 'none';
+
+  if (btnSubmit) {
+    btnSubmit.innerHTML = mode === 'register'
+      ? `<i class="fa-solid fa-user-plus"></i> <span>${state.lang === 'bn' ? 'অ্যাকাউন্ট তৈরি করুন' : 'Create Fleet Account'}</span>`
+      : `<i class="fa-solid fa-right-to-bracket"></i> <span>${state.lang === 'bn' ? 'লগইন করুন' : 'Sign In to Fleet Hub'}</span>`;
   }
 }
 
@@ -401,43 +456,54 @@ function selectAuthRole(role) {
   state.selectedAuthRole = role;
   document.getElementById('authRoleOwner')?.classList.toggle('active', role === 'owner');
   document.getElementById('authRoleManager')?.classList.toggle('active', role === 'manager');
+  autofillCredentials();
+}
 
+function autofillCredentials() {
+  const role = state.selectedAuthRole || 'owner';
   const idInput = document.getElementById('authIdentifier');
-  if (idInput && !idInput.value) {
-    idInput.value = role === 'owner' ? 'owner@project3wheel.com' : 'manager@project3wheel.com';
-    document.getElementById('authPassword').value = 'admin123';
-  }
+  const passInput = document.getElementById('authPassword');
+  const nameInput = document.getElementById('authFullName');
+
+  if (idInput) idInput.value = role === 'owner' ? 'owner@project3wheel.com' : 'manager@project3wheel.com';
+  if (passInput) passInput.value = 'admin123';
+  if (nameInput && !nameInput.value) nameInput.value = role === 'owner' ? 'Habib Rahman' : 'Selim Mia';
 }
 
 function submitLogin(e) {
   e.preventDefault();
   const idVal = document.getElementById('authIdentifier').value.trim();
   const passVal = document.getElementById('authPassword').value.trim();
+  const nameVal = document.getElementById('authFullName')?.value.trim() || '';
+  const remember = document.getElementById('rememberMeCheck')?.checked || false;
 
   if (!idVal || !passVal) {
     alert('Please enter credentials');
     return;
   }
 
-  // Set logged in profile
   const role = state.selectedAuthRole || 'owner';
+  const defaultName = role === 'owner' ? 'Habib Rahman' : 'Selim Mia';
+
   state.currentUser = {
-    name: role === 'owner' ? (state.currentUser.name || 'Habib Rahman') : 'Selim Mia',
-    garageName: state.currentUser.garageName || 'Habib Electric Garage',
+    name: nameVal || (state.currentUser.name || defaultName),
+    garageName: state.currentUser.garageName || (role === 'owner' ? 'Habib Electric Garage' : 'Central Hub'),
     phone: state.currentUser.phone || (role === 'owner' ? '01711223344' : '01812345678'),
     email: idVal.includes('@') ? idVal : `${idVal}@project3wheel.com`,
     role: role,
     isAuthenticated: true
   };
 
+  state.rememberMe = remember;
+  saveToStorage('remember_me', remember);
   saveToStorage('user_profile', state.currentUser);
+
   checkAuthSession();
   renderAll();
   showToast(state.lang === 'bn' ? `স্বাগতম, ${state.currentUser.name}!` : `Welcome back, ${state.currentUser.name}!`, 'emerald');
 }
 
 function logoutUser() {
-  if (!confirm(state.lang === 'bn' ? 'আপনি কি নিশ্চিত যে লগআউট করতে চান?' : 'Are you sure you want to log out?')) return;
   state.currentUser.isAuthenticated = false;
   saveToStorage('user_profile', state.currentUser);
   checkAuthSession();
@@ -475,8 +541,11 @@ function updateUserProfileDisplay() {
   const name = state.currentUser.name || 'Habib Rahman';
   const role = state.currentUser.role || 'owner';
 
-  document.getElementById('userName').textContent = name;
-  document.getElementById('userAvatar').textContent = name[0].toUpperCase();
+  const nameEl = document.getElementById('userName');
+  const avatarEl = document.getElementById('userAvatar');
+  if (nameEl) nameEl.textContent = name;
+  if (avatarEl) avatarEl.textContent = name[0].toUpperCase();
+
   const roleBadge = document.getElementById('userRoleBadge');
   if (roleBadge) {
     roleBadge.textContent = role.toUpperCase();
@@ -494,6 +563,7 @@ function updateUserProfileDisplay() {
 function renderAll() {
   saveToStorage('rickshaws', state.rickshaws);
   saveToStorage('drivers', state.drivers);
+  saveToStorage('shareholders', state.shareholders);
   saveToStorage('collections', state.collections);
   saveToStorage('expenses', state.expenses);
 
@@ -507,6 +577,7 @@ function renderAll() {
   renderCollectionsTable();
   renderExpensesTable();
   renderDriversGrid();
+  renderShareholdersGrid();
   renderPnlReports();
   populateFormRickshaws();
   populateDriverRickshaws('newDriverRickshaw');
@@ -674,23 +745,11 @@ function updateMetrics() {
     ? state.expenses
     : state.expenses.filter(e => e.date === filter || (filter === todayIso && e.date === 'Today'));
 
-  // 1. Gross Rickshaw Rental Collections
   const totalRev = filteredCollections.reduce((sum, c) => sum + Number(c.paid || 0), 0);
-
-  // 2. Garage Rent Expenses
-  const garageRentExp = filteredExpenses
-    .filter(e => e.category === 'rent')
-    .reduce((sum, e) => sum + Number(e.amount || 0), 0);
-
-  // 3. Other Expenses
-  const otherExp = filteredExpenses
-    .filter(e => e.category !== 'rent')
-    .reduce((sum, e) => sum + Number(e.amount || 0), 0);
-
-  // 4. Net Profit = Joma - Garage Rent - Other Expenses
+  const garageRentExp = filteredExpenses.filter(e => e.category === 'rent').reduce((sum, e) => sum + Number(e.amount || 0), 0);
+  const otherExp = filteredExpenses.filter(e => e.category !== 'rent').reduce((sum, e) => sum + Number(e.amount || 0), 0);
   const netProfit = totalRev - (garageRentExp + otherExp);
 
-  // 5. Cumulative Dues
   const totalDues = state.drivers.reduce((sum, d) => sum + Number(d.due || 0), 0);
   const defaulterCount = state.drivers.filter(d => d.due > 0).length;
 
@@ -735,6 +794,7 @@ function renderVelocityChart() {
   const expFactors = [0.35, 0.25, 0.45, 0.35, 0.55, 0.2, 0.15];
 
   const container = document.getElementById('velocityBars');
+  if (!container) return;
   container.innerHTML = days.map((day, i) => {
     const revH = totalRev > 0 ? Math.min(100, Math.round(baseRev * revFactors[i])) : 8;
     const expH = totalExp > 0 ? Math.min(100, Math.round(baseExp * expFactors[i])) : 5;
@@ -764,7 +824,7 @@ function renderFleetStatus() {
   document.getElementById('statTotalDrivers').textContent = `${totalDrivers} ${state.lang === 'bn' ? 'জন' : 'Drivers'}`;
 }
 
-// --- TODAY'S DRIVER COLLECTION TRACKER WITH CLEAN VECTOR STATUS SELECT ---
+// --- TODAY'S DRIVER COLLECTION TRACKER ---
 function renderTodayJomaTracker() {
   const tbody = document.getElementById('todayJomaTableBody');
   if (!tbody) return;
@@ -829,7 +889,7 @@ function renderTodayJomaTracker() {
   tbody.innerHTML = rows.join('');
 }
 
-// --- Interactive Status Change Handler (Direct Real-time Recalculation) ---
+// --- Interactive Status Change Handler ---
 function onTodayStatusChange(driverId, newStatus) {
   const driver = state.drivers.find(d => d.id === driverId);
   if (!driver) return;
@@ -863,7 +923,7 @@ function onTodayStatusChange(driverId, newStatus) {
         recordedBy: state.currentUser.name || 'Owner',
       });
     }
-    showToast(state.lang === 'bn' ? `${driver.name}-এর জমা ৳${paid} পরিশোধিত করা হয়েছে` : `Marked ৳${paid} fully paid for ${driver.name}`, 'emerald');
+    showToast(state.lang === 'bn' ? `${driver.name}-এর জমা ৳${paid} পরিশোধিত` : `Marked ৳${paid} paid for ${driver.name}`, 'emerald');
 
   } else if (newStatus === 'due') {
     const paid = Math.round(agreedRate / 2);
@@ -889,7 +949,7 @@ function onTodayStatusChange(driverId, newStatus) {
         recordedBy: state.currentUser.name || 'Owner',
       });
     }
-    showToast(state.lang === 'bn' ? `${driver.name}-এর আংশিক জমা ৳${paid} (বাকি ৳${due})` : `Recorded partial deposit ৳${paid} for ${driver.name}`, 'amber');
+    showToast(state.lang === 'bn' ? `${driver.name}-এর আংশিক জমা ৳${paid} (বাকি ৳${due})` : `Recorded partial ৳${paid} for ${driver.name}`, 'amber');
 
   } else if (newStatus === 'unpaid') {
     const paid = 0;
@@ -921,7 +981,7 @@ function onTodayStatusChange(driverId, newStatus) {
     if (existingIndex >= 0) {
       state.collections.splice(existingIndex, 1);
     }
-    showToast(state.lang === 'bn' ? `${driver.name} আজকের জন্য ছুটিতে রয়েছেন` : `${driver.name} marked on off day`, 'emerald');
+    showToast(state.lang === 'bn' ? `${driver.name} আজকের জন্য ছুটিতে রয়েছেন` : `${driver.name} on off day`, 'emerald');
   }
 
   renderAll();
@@ -1003,7 +1063,7 @@ function renderExpensesTable() {
   `).join('');
 }
 
-// --- DRIVER DIRECTORY (Company Teammates Style UI) ---
+// --- DRIVER DIRECTORY ---
 function renderDriversGrid() {
   const query = (document.getElementById('driverSearch')?.value || '').toLowerCase();
   const onlyDefaulters = document.getElementById('onlyDefaultersCheckbox')?.checked || false;
@@ -1083,6 +1143,108 @@ function renderDriversGrid() {
   `).join('');
 }
 
+// --- SHAREHOLDERS SECTION ENGINE ---
+function renderShareholdersGrid() {
+  const grid = document.getElementById('shareholdersGrid');
+  if (!grid) return;
+
+  const totalRev = state.collections.reduce((sum, c) => sum + Number(c.paid || 0), 0);
+  const totalExp = state.expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
+  const netProfit = Math.max(0, totalRev - totalExp);
+
+  if (state.shareholders.length === 0) {
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-tertiary); padding: 32px;">${state.lang === 'bn' ? 'কোনো শেয়ারহোল্ডার তালিকাভুক্ত নেই।' : 'No shareholders registered yet.'}</div>`;
+    return;
+  }
+
+  grid.innerHTML = state.shareholders.map(sh => {
+    const dividend = Math.round((netProfit * (sh.equity || 0)) / 100);
+
+    return `
+      <div class="teammate-card">
+        <div class="teammate-top">
+          <div class="teammate-identity">
+            <div class="teammate-avatar" style="background: var(--grad-primary);">
+              ${sh.name[0]}
+            </div>
+            <div class="teammate-names">
+              <h4>${sh.name}</h4>
+              <span><i class="fa-solid fa-phone" style="font-size: 10px; margin-right: 4px;"></i>${sh.phone}</span>
+            </div>
+          </div>
+          <span class="badge-pill badge-blue">${sh.equity}% SHARE</span>
+        </div>
+
+        <div class="teammate-details-grid">
+          <div class="teammate-detail-item">
+            <span>${state.lang === 'bn' ? 'বিনিয়োগকৃত মূলধন' : 'Invested Capital'}</span>
+            <strong class="text-emerald">${formatBDT(sh.investment)}</strong>
+          </div>
+          <div class="teammate-detail-item">
+            <span>${state.lang === 'bn' ? 'লভ্যাংশ পাওনা (ডিভিডেন্ড)' : 'Est. Dividend Share'}</span>
+            <strong class="text-blue">${formatBDT(dividend)}</strong>
+          </div>
+          <div class="teammate-detail-item">
+            <span>${state.lang === 'bn' ? 'অর্থায়িত রিকশা' : 'Financed Vehicles'}</span>
+            <strong>${sh.rickshaws || (state.lang === 'bn' ? 'সাধারণ ফ্লিট' : 'General Fleet')}</strong>
+          </div>
+          <div class="teammate-detail-item">
+            <span>${state.lang === 'bn' ? 'যোগদানের তারিখ' : 'Member Since'}</span>
+            <strong>${sh.joinDate || '2026-01-01'}</strong>
+          </div>
+        </div>
+
+        <div class="teammate-footer">
+          <div style="font-size: 10px; color: var(--text-tertiary);">
+            <i class="fa-solid fa-chart-line"></i> Equity: ${sh.equity}% of Net Profits
+          </div>
+          <div class="teammate-actions">
+            <button class="btn-glass btn-sm" style="color: var(--crimson-light);" onclick="deleteShareholder('${sh.id}')" title="Remove">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function submitNewShareholder(e) {
+  e.preventDefault();
+  const name = document.getElementById('newShareholderName').value.trim();
+  const phone = document.getElementById('newShareholderPhone').value.trim();
+  const equity = Number(document.getElementById('newShareholderEquity').value || 0);
+  const investment = Number(document.getElementById('newShareholderInvestment').value || 0);
+  const rickshaws = document.getElementById('newShareholderRickshaws').value.trim();
+
+  const newSh = {
+    id: `SH-${Date.now().toString().slice(-4)}`,
+    name: name,
+    phone: phone,
+    equity: equity,
+    investment: investment,
+    rickshaws: rickshaws || 'General Fleet',
+    joinDate: todayIso,
+  };
+
+  state.shareholders.push(newSh);
+  closeModal('addShareholderModal');
+  document.getElementById('addShareholderForm').reset();
+  renderAll();
+  showToast(state.lang === 'bn' ? `শেয়ারহোল্ডার ${name} নিবন্ধিত হয়েছেন` : `Shareholder ${name} added`, 'emerald');
+}
+
+function deleteShareholder(id) {
+  const index = state.shareholders.findIndex(s => s.id === id);
+  if (index === -1) return;
+
+  if (!confirm(`Remove shareholder "${state.shareholders[index].name}"?`)) return;
+
+  state.shareholders.splice(index, 1);
+  renderAll();
+  showToast('Shareholder removed', 'crimson');
+}
+
 // --- Edit Driver Modal & Submit Engine ---
 function openEditDriverModal(driverId) {
   const driver = state.drivers.find(d => d.id === driverId);
@@ -1151,6 +1313,7 @@ function renderPnlReports() {
   });
 
   const catBars = document.getElementById('expenseCategoryBars');
+  if (!catBars) return;
   catBars.innerHTML = Object.entries(catTotals).map(([name, amt]) => {
     const pct = totalExp > 0 ? Math.round((amt / totalExp) * 100) : 0;
     return `
