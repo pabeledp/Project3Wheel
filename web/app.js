@@ -466,25 +466,73 @@ function openModalAndCloseApps(modalId) {
   openModal(modalId);
 }
 
-// --- Firestore Real-Time Synchronization Listener ---
+// --- Cloud-First Firestore Real-Time Synchronization Engine ---
+let lastLocalMutationTime = 0;
+
+function syncStateFromRemote(remoteData, isInitial = false) {
+  if (!remoteData) return;
+  
+  if (Array.isArray(remoteData.rickshaws)) {
+    state.rickshaws = remoteData.rickshaws;
+    saveToStorage('rickshaws', state.rickshaws);
+  }
+  if (Array.isArray(remoteData.drivers)) {
+    state.drivers = remoteData.drivers;
+    saveToStorage('drivers', state.drivers);
+  }
+  if (Array.isArray(remoteData.shareholders)) {
+    state.shareholders = remoteData.shareholders;
+    saveToStorage('shareholders', state.shareholders);
+  }
+  if (Array.isArray(remoteData.collections)) {
+    state.collections = remoteData.collections;
+    saveToStorage('collections', state.collections);
+  }
+  if (Array.isArray(remoteData.expenses)) {
+    state.expenses = remoteData.expenses;
+    saveToStorage('expenses', state.expenses);
+  }
+
+  renderAll();
+
+  if (!isInitial) {
+    showToast(state.lang === 'bn' ? 'ডাটাবেজে নতুন তথ্য রিয়েল-টাইমে সিঙ্ক হয়েছে!' : 'Live data synced from cloud!', 'blue');
+  }
+}
+
 function setupFirestoreLiveListeners() {
   if (typeof firebase === 'undefined' || !window.firebaseDb) return;
 
   try {
     const db = window.firebaseDb;
-    db.collection('fleet_sync').doc('latest').onSnapshot((doc) => {
+    const docRef = db.collection('fleet_sync').doc('latest');
+
+    // 1. Initial Cloud-First Fetch
+    docRef.get().then((doc) => {
+      if (doc.exists) {
+        const cloudData = doc.data();
+        syncStateFromRemote(cloudData, true);
+      } else {
+        // Seed cloud initial data if first time
+        broadcastFirestoreUpdate();
+      }
+    }).catch(err => {
+      console.warn('Initial cloud fetch note:', err);
+    });
+
+    // 2. Real-Time Bidirectional Listener across all active devices
+    docRef.onSnapshot((doc) => {
       if (doc.exists) {
         const remoteData = doc.data();
-        if (remoteData.updatedAt && remoteData.updatedBy !== (state.currentUser.name || 'Local')) {
-          if (remoteData.rickshaws) state.rickshaws = remoteData.rickshaws;
-          if (remoteData.drivers) state.drivers = remoteData.drivers;
-          if (remoteData.shareholders) state.shareholders = remoteData.shareholders;
-          if (remoteData.collections) state.collections = remoteData.collections;
-          if (remoteData.expenses) state.expenses = remoteData.expenses;
-          renderAll();
-          showToast(state.lang === 'bn' ? 'ফায়ারবেস থেকে নতুন ডাটা রিয়েল-টাইমে সিঙ্ক হয়েছে!' : 'Real-time live update synced from Firestore!', 'blue');
+        const remoteTime = new Date(remoteData.updatedAt || 0).getTime();
+        
+        // Only accept remote update if it happened after local mutation or from another user/device
+        if (remoteTime > lastLocalMutationTime) {
+          syncStateFromRemote(remoteData, false);
         }
       }
+    }, (error) => {
+      console.warn('Firestore snapshot error:', error);
     });
   } catch (e) {
     console.warn('Firestore live listener setup note:', e);
@@ -492,6 +540,15 @@ function setupFirestoreLiveListeners() {
 }
 
 function broadcastFirestoreUpdate() {
+  // Update local storage backup
+  saveToStorage('rickshaws', state.rickshaws);
+  saveToStorage('drivers', state.drivers);
+  saveToStorage('shareholders', state.shareholders);
+  saveToStorage('collections', state.collections);
+  saveToStorage('expenses', state.expenses);
+
+  lastLocalMutationTime = Date.now();
+
   if (typeof firebase === 'undefined' || !window.firebaseDb) return;
   try {
     const db = window.firebaseDb;
@@ -501,9 +558,11 @@ function broadcastFirestoreUpdate() {
       shareholders: state.shareholders,
       collections: state.collections,
       expenses: state.expenses,
-      updatedBy: state.currentUser.name || 'Owner',
+      updatedBy: state.currentUser.name || 'Admin',
       updatedAt: new Date().toISOString(),
-    }, { merge: true });
+    }, { merge: true }).catch(e => {
+      console.warn('Cloud sync error:', e);
+    });
   } catch (e) {}
 }
 
@@ -588,7 +647,16 @@ function submitLogin(e) {
 
   checkAuthSession();
   renderAll();
-  broadcastFirestoreUpdate();
+
+  // Immediately pull authoritative cloud data for this newly logged-in device
+  if (typeof firebase !== 'undefined' && window.firebaseDb) {
+    window.firebaseDb.collection('fleet_sync').doc('latest').get().then(doc => {
+      if (doc.exists) {
+        syncStateFromRemote(doc.data(), true);
+      }
+    }).catch(e => {});
+  }
+
   showToast(state.lang === 'bn' ? `স্বাগতম, ${state.currentUser.name}!` : `Welcome back, ${state.currentUser.name}!`, 'emerald');
 }
 
