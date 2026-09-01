@@ -43,11 +43,11 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDemoAndroidApiKeyPlaceholderProject3Wheel',
-    appId: '1:1234567890:android:project3wheels',
-    messagingSenderId: '1234567890',
+    apiKey: 'AIzaSyDipzLlFN4x2q3R3Qttf2IeUZ-xe-ubzTI',
+    appId: '1:622271015701:android:cc3263b8e8f570dfd8971c',
+    messagingSenderId: '622271015701',
     projectId: 'project3wheels',
-    storageBucket: 'project3wheels.appspot.com',
+    storageBucket: 'project3wheels.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

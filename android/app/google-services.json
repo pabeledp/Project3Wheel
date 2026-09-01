@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "622271015701",
+    "project_id": "project3wheels",
+    "storage_bucket": "project3wheels.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:622271015701:android:cc3263b8e8f570dfd8971c",
+        "android_client_info": {
+          "package_name": "com.project3wheel.app.project_3_wheel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "622271015701-713kt0qfdnentoim5rs2m6mqdb93o0rr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDipzLlFN4x2q3R3Qttf2IeUZ-xe-ubzTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "622271015701-713kt0qfdnentoim5rs2m6mqdb93o0rr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
