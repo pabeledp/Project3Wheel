@@ -171,6 +171,11 @@
             <span data-i18n="btn_add_driver">Driver</span>
           </button>
 
+          <button class="btn-glass btn-blue" style="background: rgba(10, 132, 255, 0.2); border-color: rgba(10, 132, 255, 0.4); color: var(--blue-light);" onclick="openModal('addRickshawModal')">
+            <i class="fa-solid fa-van-shuttle"></i>
+            <span data-i18n="btn_add_rickshaw">Rickshaw</span>
+          </button>
+
           <button class="btn-glass btn-primary" onclick="openModal('qrModal')">
             <i class="fa-solid fa-qrcode"></i>
             <span data-i18n="btn_scan_qr">Scan QR</span>
@@ -417,6 +422,7 @@
                     <th data-i18n="th_date">Date</th>
                     <th data-i18n="th_category">Category</th>
                     <th data-i18n="th_amount">Amount</th>
+                    <th data-i18n="th_paid_by">Paid By (কে খরচ দিয়েছেন)</th>
                     <th data-i18n="th_description">Description</th>
                     <th data-i18n="th_logged_by">Logged By</th>
                     <th style="text-align: right;" data-i18n="th_actions">Actions</th>
@@ -767,6 +773,17 @@ rickshaws.last_location: {
         <div class="form-group">
           <label data-i18n="lbl_amount">Amount (৳)</label>
           <input type="number" class="glass-input" id="formExpAmount" placeholder="e.g. 1200" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_paid_by">Paid By / Spender (কে খরচ দিয়েছেন)</label>
+          <select class="glass-select" id="formExpSpender">
+            <option value="Garage Fund (গ্যারেজ তহবিল)">Garage Fund (গ্যারেজ তহবিল)</option>
+            <option value="Habib Rahman (মালিক)">Habib Rahman (মালিক)</option>
+            <option value="Selim Mia (ম্যানেজার)">Selim Mia (ম্যানেজার)</option>
+            <option value="Driver (চালক নিজে)">Driver (চালক নিজে)</option>
+            <option value="Shareholder - Al-Haj Moksed (শেয়ারহোল্ডার)">Shareholder - Al-Haj Moksed (শেয়ারহোল্ডার)</option>
+          </select>
         </div>
 
         <div class="form-group">

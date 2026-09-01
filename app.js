@@ -1,6 +1,7 @@
 /* =========================================================
    PROJECT 3 WHEEL - LIQUID GLASS REAL-TIME DYNAMIC ENGINE
-   Auth, Registration, Remember Me, Profile Edit & Shareholders
+   Full Auth & Registration, Live Firestore Real-Time Sync,
+   Paid By Spender Tracking, Rickshaw Fleet Mgmt & Shareholders
    ========================================================= */
 
 const todayIso = new Date().toISOString().split('T')[0];
@@ -22,7 +23,7 @@ const defaultShareholders = [
   { id: 'SH-02', name: 'Enamul Haque', phone: '01898765432', equity: 20, investment: 400000, rickshaws: 'R-03', joinDate: '2026-03-01' },
 ];
 
-// Clean empty state for collections and expenses
+// Clean initial empty state for collections and expenses
 const defaultCollections = [];
 const defaultExpenses = [];
 
@@ -132,6 +133,7 @@ const i18n = {
     th_date: "Date",
     th_category: "Category",
     th_amount: "Amount",
+    th_paid_by: "Paid By (Payer)",
     th_description: "Description",
     driver_directory_title: "Driver Directory & Profiles",
     btn_add_new_driver: "Add New Driver",
@@ -172,6 +174,7 @@ const i18n = {
     cat_line_fee: "Line / Union Fee",
     cat_other: "Miscellaneous",
     lbl_amount: "Amount (৳)",
+    lbl_paid_by: "Paid By / Spender",
     lbl_description: "Description / Note",
     lbl_receipt: "Receipt / Voucher (Optional)",
     lbl_attach_receipt: "Attach receipt photo",
@@ -296,6 +299,7 @@ const i18n = {
     th_date: "তারিখ",
     th_category: "ক্যাটাগরি",
     th_amount: "পরিমাণ",
+    th_paid_by: "কে খরচ দিয়েছেন",
     th_description: "বিবরণ",
     driver_directory_title: "ড্রাইভার ডিরেক্টরি ও প্রোফাইল",
     btn_add_new_driver: "নতুন চালক যুক্ত করুন",
@@ -336,6 +340,7 @@ const i18n = {
     cat_line_fee: "লাইন / ইউনিয়ন ফি",
     cat_other: "অন্যান্য খরচ",
     lbl_amount: "পরিমাণ (৳)",
+    lbl_paid_by: "কে খরচ দিয়েছেন",
     lbl_description: "বিবরণ / কাজের নোট",
     lbl_receipt: "রসিদ / ভাউচার (ঐচ্ছিক)",
     lbl_attach_receipt: "রসিদের ছবি যুক্ত করুন",
@@ -408,6 +413,7 @@ let state = {
 document.addEventListener('DOMContentLoaded', () => {
   applyLanguage(state.lang);
   checkAuthSession();
+  setupFirestoreLiveListeners();
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.date-picker-wrapper')) {
@@ -418,6 +424,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderAll();
 });
+
+// --- Firestore Real-Time Synchronization Listener ---
+function setupFirestoreLiveListeners() {
+  if (typeof firebase === 'undefined' || !window.firebaseDb) return;
+
+  try {
+    const db = window.firebaseDb;
+    db.collection('fleet_sync').doc('latest').onSnapshot((doc) => {
+      if (doc.exists) {
+        const remoteData = doc.data();
+        if (remoteData.updatedAt && remoteData.updatedBy !== (state.currentUser.name || 'Local')) {
+          if (remoteData.rickshaws) state.rickshaws = remoteData.rickshaws;
+          if (remoteData.drivers) state.drivers = remoteData.drivers;
+          if (remoteData.shareholders) state.shareholders = remoteData.shareholders;
+          if (remoteData.collections) state.collections = remoteData.collections;
+          if (remoteData.expenses) state.expenses = remoteData.expenses;
+          renderAll();
+          showToast(state.lang === 'bn' ? 'ফায়ারবেস থেকে নতুন ডাটা রিয়েল-টাইমে সিঙ্ক হয়েছে!' : 'Real-time live update synced from Firestore!', 'blue');
+        }
+      }
+    });
+  } catch (e) {
+    console.warn('Firestore live listener setup note:', e);
+  }
+}
+
+function broadcastFirestoreUpdate() {
+  if (typeof firebase === 'undefined' || !window.firebaseDb) return;
+  try {
+    const db = window.firebaseDb;
+    db.collection('fleet_sync').doc('latest').set({
+      rickshaws: state.rickshaws,
+      drivers: state.drivers,
+      shareholders: state.shareholders,
+      collections: state.collections,
+      expenses: state.expenses,
+      updatedBy: state.currentUser.name || 'Owner',
+      updatedAt: new Date().toISOString(),
+    }, { merge: true });
+  } catch (e) {}
+}
 
 // --- Authentication Engine ---
 function checkAuthSession() {
@@ -500,6 +547,7 @@ function submitLogin(e) {
 
   checkAuthSession();
   renderAll();
+  broadcastFirestoreUpdate();
   showToast(state.lang === 'bn' ? `স্বাগতম, ${state.currentUser.name}!` : `Welcome back, ${state.currentUser.name}!`, 'emerald');
 }
 
@@ -534,6 +582,7 @@ function saveUserProfile(e) {
   closeModal('userProfileModal');
   updateUserProfileDisplay();
   renderAll();
+  broadcastFirestoreUpdate();
   showToast(state.lang === 'bn' ? 'প্রোফাইল সফলভাবে আপডেট হয়েছে!' : 'Profile updated successfully!', 'emerald');
 }
 
@@ -985,6 +1034,7 @@ function onTodayStatusChange(driverId, newStatus) {
   }
 
   renderAll();
+  broadcastFirestoreUpdate();
 }
 
 // --- Collections Ledger Table ---
@@ -1043,7 +1093,7 @@ function renderExpensesTable() {
   if (!tbody) return;
 
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-tertiary); padding: 24px;">${state.lang === 'bn' ? 'কোনো খরচের হিসাব নেই।' : 'No expense records logged yet.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-tertiary); padding: 24px;">${state.lang === 'bn' ? 'কোনো খরচের হিসাব নেই।' : 'No expense records logged yet.'}</td></tr>`;
     return;
   }
 
@@ -1052,6 +1102,7 @@ function renderExpensesTable() {
       <td>${e.date}</td>
       <td><span class="badge-pill ${e.category === 'rent' ? 'badge-amber' : 'badge-crimson'}">${e.catName}</span></td>
       <td><strong class="text-crimson">${formatBDT(e.amount)}</strong></td>
+      <td><span class="badge-pill badge-blue" style="font-size: 10px;">${e.paidBy || 'Garage Fund'}</span></td>
       <td>${e.note}</td>
       <td><small style="color: var(--text-tertiary);">${e.recordedBy}</small></td>
       <td style="text-align: right;">
@@ -1181,7 +1232,7 @@ function renderShareholdersGrid() {
             <strong class="text-emerald">${formatBDT(sh.investment)}</strong>
           </div>
           <div class="teammate-detail-item">
-            <span>${state.lang === 'bn' ? 'লভ্যাংশ পাওনা (ডিভিডেন্ড)' : 'Est. Dividend Share'}</span>
+            <span>${state.lang === 'bn' ? 'মাসিক লভ্যাংশ পাওনা' : 'Monthly Dividend Share'}</span>
             <strong class="text-blue">${formatBDT(dividend)}</strong>
           </div>
           <div class="teammate-detail-item">
@@ -1196,7 +1247,7 @@ function renderShareholdersGrid() {
 
         <div class="teammate-footer">
           <div style="font-size: 10px; color: var(--text-tertiary);">
-            <i class="fa-solid fa-chart-line"></i> Equity: ${sh.equity}% of Net Profits
+            <i class="fa-solid fa-chart-line"></i> Equity: ${sh.equity}% • Cloud Live Connected
           </div>
           <div class="teammate-actions">
             <button class="btn-glass btn-sm" style="color: var(--crimson-light);" onclick="deleteShareholder('${sh.id}')" title="Remove">
@@ -1231,6 +1282,7 @@ function submitNewShareholder(e) {
   closeModal('addShareholderModal');
   document.getElementById('addShareholderForm').reset();
   renderAll();
+  broadcastFirestoreUpdate();
   showToast(state.lang === 'bn' ? `শেয়ারহোল্ডার ${name} নিবন্ধিত হয়েছেন` : `Shareholder ${name} added`, 'emerald');
 }
 
@@ -1242,6 +1294,7 @@ function deleteShareholder(id) {
 
   state.shareholders.splice(index, 1);
   renderAll();
+  broadcastFirestoreUpdate();
   showToast('Shareholder removed', 'crimson');
 }
 
@@ -1294,6 +1347,7 @@ function submitEditDriver(e) {
 
   closeModal('editDriverModal');
   renderAll();
+  broadcastFirestoreUpdate();
   showToast(state.lang === 'bn' ? `${driver.name}-এর প্রোফাইল আপডেট হয়েছে` : `Updated profile for ${driver.name}`, 'emerald');
 }
 
@@ -1374,6 +1428,7 @@ function submitNewDriver(e) {
   closeModal('addDriverModal');
   document.getElementById('addDriverForm').reset();
   renderAll();
+  broadcastFirestoreUpdate();
   showToast(state.lang === 'bn' ? `নতুন চালক ${name} নিবন্ধিত হয়েছেন` : `Driver ${name} registered successfully`, 'emerald');
 }
 
@@ -1401,6 +1456,7 @@ function submitNewRickshaw(e) {
   closeModal('addRickshawModal');
   document.getElementById('addRickshawForm').reset();
   renderAll();
+  broadcastFirestoreUpdate();
   showToast(state.lang === 'bn' ? `রিকশা ${id} ফ্লিটে যুক্ত হয়েছে` : `Rickshaw ${id} added to fleet`, 'emerald');
 }
 
@@ -1419,6 +1475,7 @@ function deleteCollection(id) {
 
   state.collections.splice(index, 1);
   renderAll();
+  broadcastFirestoreUpdate();
   showToast('Collection record deleted', 'amber');
 }
 
@@ -1430,6 +1487,7 @@ function deleteExpense(id) {
 
   state.expenses.splice(index, 1);
   renderAll();
+  broadcastFirestoreUpdate();
   showToast('Expense record removed', 'amber');
 }
 
@@ -1447,6 +1505,7 @@ function deleteDriver(id) {
 
   state.drivers.splice(index, 1);
   renderAll();
+  broadcastFirestoreUpdate();
   showToast(`Driver ${item.name} removed`, 'crimson');
 }
 
@@ -1493,6 +1552,7 @@ function submitQuickCollection(e) {
   state.collections.unshift(newCol);
   closeModal('quickCollectModal');
   renderAll();
+  broadcastFirestoreUpdate();
   showToast(state.lang === 'bn' ? `${driver.name}-এর থেকে ৳${payAmount} জমা নেওয়া হয়েছে` : `Collected ৳${payAmount} from ${driver.name}`, 'emerald');
 }
 
@@ -1594,6 +1654,7 @@ function submitCollection(e) {
       category: 'rent',
       catName: 'Garage Rent & Power',
       amount: garageRentAmount,
+      paidBy: 'Garage Fund',
       note: `Daily garage rent for ${rickshawId} (${driver ? driver.name : 'Unit'})`,
       recordedBy: 'SYSTEM-AUTO',
     };
@@ -1606,6 +1667,7 @@ function submitCollection(e) {
 
   closeModal('collectionModal');
   renderAll();
+  broadcastFirestoreUpdate();
   showToast(state.lang === 'bn' ? `৳${paid} জমা রেকর্ড করা হয়েছে` : `Deposit of ৳${paid} recorded`, 'emerald');
 }
 
@@ -1630,6 +1692,7 @@ function submitExpense(e) {
   e.preventDefault();
   const dateVal = state.selectedDateFilter === 'all' ? todayIso : state.selectedDateFilter;
   const amt = Number(document.getElementById('formExpAmount').value || 0);
+  const spender = document.getElementById('formExpSpender')?.value || 'Garage Fund';
   const note = document.getElementById('formExpNote').value.trim();
 
   const catNames = {
@@ -1646,6 +1709,7 @@ function submitExpense(e) {
     category: state.activeExpenseCat,
     catName: catNames[state.activeExpenseCat] || 'Other',
     amount: amt,
+    paidBy: spender,
     note: note,
     recordedBy: state.currentUser.name || 'Owner',
   };
@@ -1654,7 +1718,8 @@ function submitExpense(e) {
   closeModal('expenseModal');
   document.getElementById('expenseForm').reset();
   renderAll();
-  showToast(state.lang === 'bn' ? `৳${amt} খরচ রেকর্ড করা হয়েছে` : `Expense of ৳${amt} recorded`, 'crimson');
+  broadcastFirestoreUpdate();
+  showToast(state.lang === 'bn' ? `৳${amt} খরচ রেকর্ড করা হয়েছে (${spender})` : `Expense of ৳${amt} recorded (${spender})`, 'crimson');
 }
 
 // --- Navigation & Mobile Drawer ---
@@ -1872,6 +1937,7 @@ function exportFullExcel() {
     'Date': e.date,
     'Category': e.catName,
     'Amount': e.amount,
+    'Paid By': e.paidBy || 'Garage Fund',
     'Description': e.note,
     'Logged By': e.recordedBy,
   }));
