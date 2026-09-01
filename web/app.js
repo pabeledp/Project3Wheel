@@ -213,6 +213,8 @@ const i18n = {
     btn_download_id_pdf: "Download ID PDF",
     badge_firmware_connected: "Firmware v2.1 Connected",
     sync_live_firestore: "Live Firestore",
+    nav_more: "More",
+    more_menu_title: "More Hub Features & Tools",
   },
   bn: {
     nav_dashboard: "ড্যাশবোর্ড",
@@ -233,6 +235,8 @@ const i18n = {
     btn_download_id_pdf: "আইডি কার্ড ডাউনলোড",
     badge_firmware_connected: "ফার্মওয়্যার v2.1 কানেক্টেড",
     sync_live_firestore: "লাইভ ফায়ারবেস",
+    nav_more: "আরও মেনু",
+    more_menu_title: "অন্যান্য ফিচার ও হাব টুলস",
     modal_profile_title: "ইউজার প্রোফাইল ও গ্যারেজ সেটিংস",
     lbl_profile_name: "পূর্ণ নাম",
     lbl_garage_title: "গ্যারেজ / ফ্লিট নাম",
@@ -1845,16 +1849,62 @@ function toggleMobileSidebar() {
 
 function switchTab(tabId) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.mob-nav-btn').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
 
   const tab = document.getElementById(`tab-${tabId}`);
   if (tab) tab.classList.add('active');
 
+  // Highlight active mobile bottom nav tab if present
+  const mobBtn = document.getElementById(`mobNav${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`);
+  if (mobBtn) mobBtn.classList.add('active');
+
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('sidebarOverlay');
   if (sidebar) sidebar.classList.remove('drawer-open');
   if (overlay) overlay.classList.remove('active');
+  closeMobileMoreSheet();
+}
+
+function switchMobileTab(tabId) {
+  switchTab(tabId);
+}
+
+function switchMobileTabAndClose(tabId) {
+  switchTab(tabId);
+  closeMobileMoreSheet();
+}
+
+function toggleMobileMoreSheet(e) {
+  if (e) e.stopPropagation();
+  const sheet = document.getElementById('mobileMoreSheet');
+  const overlay = document.getElementById('mobileMoreOverlay');
+  const moreBtn = document.getElementById('mobNavMore');
+
+  if (sheet && overlay) {
+    const isOpen = sheet.classList.contains('open');
+    if (isOpen) {
+      closeMobileMoreSheet();
+    } else {
+      sheet.classList.add('open');
+      overlay.classList.add('open');
+      if (moreBtn) moreBtn.classList.add('active');
+    }
+  }
+}
+
+function closeMobileMoreSheet() {
+  const sheet = document.getElementById('mobileMoreSheet');
+  const overlay = document.getElementById('mobileMoreOverlay');
+  const moreBtn = document.getElementById('mobNavMore');
+  if (sheet) sheet.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+  if (moreBtn) moreBtn.classList.remove('active');
+}
+
+function openModalAndCloseMore(modalId) {
+  closeMobileMoreSheet();
+  openModal(modalId);
 }
 
 // --- Role Switcher ---

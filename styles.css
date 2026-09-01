@@ -2114,3 +2114,277 @@ body.lang-bn {
   color: var(--purple-light);
   font-weight: 600;
 }
+
+/* =========================================================
+   MOBILE BOTTOM DOCK & FLOATING MORE DRAWER (APPLE LIQUID GLASS)
+   ========================================================= */
+
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(12, 16, 26, 0.88);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border-top: var(--specular-border);
+  z-index: 990;
+  padding: 4px 10px;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.mob-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 12px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 58px;
+}
+
+.mob-nav-btn i {
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.mob-nav-btn:hover, .mob-nav-btn.active {
+  color: var(--blue-light);
+}
+
+.mob-nav-btn.active i {
+  color: var(--blue);
+  transform: translateY(-2px);
+}
+
+.mob-nav-btn.btn-more-trigger {
+  color: var(--text-secondary);
+}
+
+.mob-nav-btn.btn-more-trigger.active {
+  color: var(--purple-light);
+}
+
+/* Floating Liquid Glass More Menu Drawer */
+.mobile-more-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 995;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.mobile-more-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+.mobile-more-sheet {
+  position: fixed;
+  bottom: 74px;
+  left: 14px;
+  right: 14px;
+  background: rgba(18, 24, 38, 0.94);
+  backdrop-filter: blur(32px) saturate(190%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  padding: 18px 14px 14px;
+  z-index: 998;
+  display: none;
+  transform: translateY(20px) scale(0.96);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.mobile-more-sheet.open {
+  display: block;
+  transform: translateY(0) scale(1);
+}
+
+.more-sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 14px;
+}
+
+.more-sheet-header h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+}
+
+.more-grid-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.more-nav-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 6px;
+  border-radius: 16px;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.more-nav-card:hover, .more-nav-card:active {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.more-card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.more-nav-card span {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.more-sheet-profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+/* =========================================================
+   GLOBAL RESPONSIVE BREAKPOINTS (ALL DEVICES FULL SUPPORT)
+   ========================================================= */
+
+@media (max-width: 900px) {
+  /* Hide Desktop Sidebar on Tablets & Phones */
+  .glass-sidebar {
+    display: none !important;
+  }
+
+  .mobile-menu-btn {
+    display: none !important;
+  }
+
+  /* Show Bottom Floating Dock */
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+
+  .main-content {
+    padding-bottom: 80px !important;
+    width: 100vw !important;
+  }
+
+  .top-nav {
+    padding: 12px 16px !important;
+  }
+
+  .greeting-box h1 {
+    font-size: 16px !important;
+  }
+
+  .greeting-box p {
+    font-size: 11px !important;
+  }
+
+  .content-body {
+    padding: 14px 14px 80px !important;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .grid-2-col {
+    grid-template-columns: 1fr !important;
+  }
+
+  .table-header-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .table-actions {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .search-input-wrapper {
+    width: 100% !important;
+  }
+
+  .search-input-wrapper input {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .metrics-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .glass-modal-sheet {
+    max-width: 100% !important;
+    border-radius: 20px !important;
+    padding: 16px !important;
+  }
+
+  .teammates-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .top-nav {
+    flex-direction: row !important;
+    gap: 6px !important;
+  }
+
+  .glass-date-trigger span {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

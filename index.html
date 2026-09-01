@@ -673,6 +673,83 @@
     </main>
   </div>
 
+  <!-- ==================== APPLE LIQUID GLASS MOBILE BOTTOM NAVIGATION ==================== -->
+  <nav class="mobile-bottom-nav" id="mobileBottomNav">
+    <button class="mob-nav-btn active" id="mobNavDashboard" onclick="switchMobileTab('dashboard')">
+      <i class="fa-solid fa-gauge-high"></i>
+      <span data-i18n="nav_dashboard">Overview</span>
+    </button>
+    <button class="mob-nav-btn" id="mobNavCollections" onclick="switchMobileTab('collections')">
+      <i class="fa-solid fa-receipt"></i>
+      <span data-i18n="nav_collections">Collections</span>
+    </button>
+    <button class="mob-nav-btn" id="mobNavExpenses" onclick="switchMobileTab('expenses')">
+      <i class="fa-solid fa-wallet"></i>
+      <span data-i18n="nav_expenses">Expenses</span>
+    </button>
+    <button class="mob-nav-btn" id="mobNavDrivers" onclick="switchMobileTab('drivers')">
+      <i class="fa-solid fa-users"></i>
+      <span data-i18n="nav_drivers">Drivers</span>
+    </button>
+    <button class="mob-nav-btn btn-more-trigger" id="mobNavMore" onclick="toggleMobileMoreSheet(event)">
+      <i class="fa-solid fa-ellipsis"></i>
+      <span data-i18n="nav_more">More</span>
+    </button>
+  </nav>
+
+  <!-- Floating Mobile More Sheet Backdrop -->
+  <div class="mobile-more-overlay" id="mobileMoreOverlay" onclick="closeMobileMoreSheet()"></div>
+
+  <!-- Floating Mobile More Drawer Sheet -->
+  <div class="mobile-more-sheet" id="mobileMoreSheet">
+    <div class="more-sheet-header">
+      <h4 data-i18n="more_menu_title">More Hub Features & Tools</h4>
+      <button class="close-btn" onclick="closeMobileMoreSheet()">&times;</button>
+    </div>
+
+    <div class="more-grid-nav">
+      <div class="more-nav-card" onclick="switchMobileTabAndClose('reports')">
+        <div class="more-card-icon icon-emerald"><i class="fa-solid fa-chart-pie"></i></div>
+        <span data-i18n="nav_reports">P&L Reports</span>
+      </div>
+      <div class="more-nav-card" onclick="switchMobileTabAndClose('shareholders')">
+        <div class="more-card-icon icon-purple"><i class="fa-solid fa-handshake"></i></div>
+        <span data-i18n="nav_shareholders">Shareholders</span>
+      </div>
+      <div class="more-nav-card" onclick="switchMobileTabAndClose('gps')">
+        <div class="more-card-icon icon-blue"><i class="fa-solid fa-satellite"></i></div>
+        <span data-i18n="nav_gps">GPS Track</span>
+      </div>
+      <div class="more-nav-card" onclick="openModalAndCloseMore('collectionModal')">
+        <div class="more-card-icon icon-emerald"><i class="fa-solid fa-plus-circle"></i></div>
+        <span data-i18n="btn_deposit">New Deposit</span>
+      </div>
+      <div class="more-nav-card" onclick="openModalAndCloseMore('addRickshawModal')">
+        <div class="more-card-icon icon-blue"><i class="fa-solid fa-van-shuttle"></i></div>
+        <span data-i18n="btn_manage_rickshaws">Rickshaws</span>
+      </div>
+      <div class="more-nav-card" onclick="openModalAndCloseMore('qrModal')">
+        <div class="more-card-icon icon-amber"><i class="fa-solid fa-qrcode"></i></div>
+        <span data-i18n="btn_scan_qr">Scan QR</span>
+      </div>
+    </div>
+
+    <!-- Quick Profile & Role Switch in Mobile More Sheet -->
+    <div class="more-sheet-profile">
+      <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="openModalAndCloseMore('userProfileModal')">
+        <div class="avatar" style="width: 32px; height: 32px; font-size: 11px;">H</div>
+        <div>
+          <h5 style="font-size: 11px; font-weight: 700; color: white;" id="mobUserName">Habib Rahman</h5>
+          <span style="font-size: 9px; color: var(--text-secondary);" id="mobUserRole">OWNER</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        <button class="btn-glass btn-sm" onclick="toggleRole()"><i class="fa-solid fa-repeat"></i> Role</button>
+        <button class="btn-glass btn-sm btn-crimson" onclick="logoutUser()"><i class="fa-solid fa-right-from-bracket"></i></button>
+      </div>
+    </div>
+  </div>
+
   <!-- ==================== INTERACTIVE LIQUID GLASS MODALS ==================== -->
 
   <!-- 1. QR CODE SCANNER SIMULATOR MODAL -->
