@@ -471,7 +471,7 @@ function checkAuthSession() {
   const authOverlay = document.getElementById('authOverlay');
   if (!authOverlay) return;
 
-  if (state.currentUser && state.currentUser.isAuthenticated) {
+  if (state.currentUser && state.currentUser.isAuthenticated === true) {
     authOverlay.style.display = 'none';
     updateUserProfileDisplay();
   } else {
@@ -560,12 +560,19 @@ function logoutUser() {
 
 // --- Profile Management & Edit Engine ---
 function openUserProfileModal() {
-  document.getElementById('profileFullName').value = state.currentUser.name || 'Habib Rahman';
-  document.getElementById('profileGarageName').value = state.currentUser.garageName || 'Habib Electric Garage';
-  document.getElementById('profilePhone').value = state.currentUser.phone || '01711223344';
-  document.getElementById('profileEmail').value = state.currentUser.email || 'owner@project3wheel.com';
-  document.getElementById('profileRole').value = state.currentUser.role || 'owner';
-  document.getElementById('profileAvatarLarge').textContent = (state.currentUser.name || 'H')[0].toUpperCase();
+  const nameInput = document.getElementById('profileFullName');
+  const garageInput = document.getElementById('profileGarageName');
+  const phoneInput = document.getElementById('profilePhone');
+  const emailInput = document.getElementById('profileEmail');
+  const roleSelect = document.getElementById('profileRole');
+  const avatarLarge = document.getElementById('profileAvatarLarge');
+
+  if (nameInput) nameInput.value = state.currentUser.name || 'Habib Rahman';
+  if (garageInput) garageInput.value = state.currentUser.garageName || 'Habib Electric Garage';
+  if (phoneInput) phoneInput.value = state.currentUser.phone || '01711223344';
+  if (emailInput) emailInput.value = state.currentUser.email || 'owner@project3wheel.com';
+  if (roleSelect) roleSelect.value = state.currentUser.role || 'owner';
+  if (avatarLarge) avatarLarge.textContent = (state.currentUser.name || 'H')[0].toUpperCase();
 
   openModal('userProfileModal');
 }
@@ -1784,12 +1791,18 @@ function toggleNetworkSim() {
 // --- Modals Management ---
 function openModal(id) {
   const modal = document.getElementById(id);
-  if (modal) modal.classList.add('open');
+  if (modal) {
+    modal.classList.add('open');
+    modal.style.display = 'flex';
+  }
 }
 
 function closeModal(id) {
   const modal = document.getElementById(id);
-  if (modal) modal.classList.remove('open');
+  if (modal) {
+    modal.classList.remove('open');
+    modal.style.display = 'none';
+  }
 }
 
 // --- QR Scanner Simulation ---
@@ -1964,6 +1977,7 @@ function exportFullExcel() {
 // --- Toast Helper ---
 function showToast(message, type = 'emerald') {
   const container = document.getElementById('toastContainer');
+  if (!container) return;
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
   toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${message}`;
