@@ -29,17 +29,17 @@
 
     <div class="login-card">
       <div class="login-brand">
-        <div class="login-brand-icon" style="background: rgba(10, 132, 255, 0.15); border: 1px solid rgba(10, 132, 255, 0.4); padding: 4px; overflow: hidden;">
-          <img src="assets/app_logo_dark.png" alt="Project 3 Wheel" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 6px rgba(10,132,255,0.6));">
+        <div class="login-brand-icon" style="background: rgba(10, 132, 255, 0.15); border: 1px solid rgba(10, 132, 255, 0.4); padding: 5px; overflow: hidden;">
+          <img src="assets/app_logo_dark.png" alt="Project 3 Wheel" style="width: 100%; height: 100%; object-fit: contain;">
         </div>
         <h2>PROJECT 3 WHEEL</h2>
-        <p data-i18n="auth_tagline">Electric Rickshaw Fleet Hub & Financial Ledger</p>
+        <p data-i18n="auth_tagline">Electric Fleet & Garage Management System</p>
       </div>
 
       <!-- Auth Action Mode: Sign In vs Register -->
-      <div style="display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-        <button type="button" id="tabModeLogin" class="btn-cal-preset active" style="flex: 1; padding: 8px;" onclick="switchAuthMode('login')" data-i18n="tab_login">Sign In</button>
-        <button type="button" id="tabModeRegister" class="btn-cal-preset" style="flex: 1; padding: 8px;" onclick="switchAuthMode('register')" data-i18n="tab_register">Register New</button>
+      <div class="auth-mode-pill-group">
+        <button type="button" id="tabModeLogin" class="auth-mode-tab active" onclick="switchAuthMode('login')" data-i18n="tab_login">Sign In</button>
+        <button type="button" id="tabModeRegister" class="auth-mode-tab" onclick="switchAuthMode('register')" data-i18n="tab_register">Register New</button>
       </div>
 
       <!-- Role Selector -->
@@ -56,45 +56,42 @@
         <div class="auth-form-group" id="groupRegisterName" style="display: none;">
           <label data-i18n="lbl_profile_name">Full Name</label>
           <div class="input-icon-wrapper">
-            <i class="fa-solid fa-user"></i>
-            <input type="text" class="auth-input" id="authFullName" placeholder="e.g. Habib Rahman">
+            <i class="fa-solid fa-user input-icon-left"></i>
+            <input type="text" class="auth-input" id="authFullName" placeholder="Enter your full name">
           </div>
         </div>
 
         <div class="auth-form-group">
           <label data-i18n="lbl_email_or_phone">Email or Mobile Number</label>
           <div class="input-icon-wrapper">
-            <i class="fa-solid fa-envelope"></i>
-            <input type="text" class="auth-input" id="authIdentifier" placeholder="e.g. owner@project3wheel.com" required>
+            <i class="fa-solid fa-envelope input-icon-left"></i>
+            <input type="text" class="auth-input" id="authIdentifier" placeholder="name@example.com or 017xxxxxxxx" required autocomplete="username">
           </div>
         </div>
 
         <div class="auth-form-group">
-          <label data-i18n="lbl_password">Security Password / PIN</label>
+          <label data-i18n="lbl_password">Password</label>
           <div class="input-icon-wrapper">
-            <i class="fa-solid fa-lock"></i>
-            <input type="password" class="auth-input" id="authPassword" placeholder="••••••••" required>
+            <i class="fa-solid fa-lock input-icon-left"></i>
+            <input type="password" class="auth-input" id="authPassword" placeholder="Enter password" required autocomplete="current-password">
+            <button type="button" class="password-toggle-btn" onclick="toggleWebPasswordVisibility()" title="Toggle password visibility">
+              <i class="fa-solid fa-eye" id="passwordToggleIcon"></i>
+            </button>
           </div>
         </div>
 
         <!-- Remember Me Checkbox -->
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px; font-size: 11px; color: var(--text-secondary);">
-          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-            <input type="checkbox" id="rememberMeCheck" checked style="accent-color: var(--blue); cursor: pointer;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--text-secondary);">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="rememberMeCheck" checked style="accent-color: var(--blue); width: 15px; height: 15px; cursor: pointer;">
             <span data-i18n="lbl_remember_me">Remember my login</span>
           </label>
-          <span style="color: var(--blue-light); cursor: pointer;" onclick="autofillCredentials()" data-i18n="lbl_auto_fill">Auto Fill</span>
         </div>
 
-        <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 12px; padding: 12px; font-size: 13px;" id="btnAuthSubmit">
+        <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 18px; padding: 13px; font-size: 14px; font-weight: 700; border-radius: 14px;" id="btnAuthSubmit">
           <i class="fa-solid fa-right-to-bracket"></i> <span data-i18n="btn_sign_in">Sign In to Fleet Hub</span>
         </button>
       </form>
-
-      <div class="auth-demo-hint" id="authHintBox">
-        <span>Default Owner: <strong>owner@project3wheel.com</strong></span>
-        <span>PIN: <strong>admin123</strong></span>
-      </div>
     </div>
   </div>
 

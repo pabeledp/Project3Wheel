@@ -271,7 +271,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         GlassTextField(
                           controller: _nameController,
                           labelText: 'Full Name',
-                          hintText: 'e.g. Habib Rahman',
+                          hintText: 'Enter your full name',
                           prefixIcon: Icons.person_outline_rounded,
                         ),
                         const SizedBox(height: 14),
@@ -279,14 +279,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       GlassTextField(
                         controller: _phoneController,
                         labelText: 'Email or Mobile Number',
-                        hintText: 'e.g. owner@project3wheel.com',
+                        hintText: 'name@example.com or 017xxxxxxxx',
                         prefixIcon: Icons.phone_android_rounded,
                       ),
                       const SizedBox(height: 14),
                       GlassTextField(
                         controller: _pinController,
-                        labelText: 'Security PIN / Password',
-                        hintText: 'Enter your password',
+                        labelText: 'Password',
+                        hintText: 'Enter password',
                         prefixIcon: Icons.lock_outline_rounded,
                         obscureText: _obscurePassword,
                         suffix: IconButton(

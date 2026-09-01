@@ -630,18 +630,25 @@ function selectAuthRole(role) {
   state.selectedAuthRole = role;
   document.getElementById('authRoleOwner')?.classList.toggle('active', role === 'owner');
   document.getElementById('authRoleManager')?.classList.toggle('active', role === 'manager');
-  autofillCredentials();
 }
 
-function autofillCredentials() {
-  const role = state.selectedAuthRole || 'owner';
-  const idInput = document.getElementById('authIdentifier');
+function toggleWebPasswordVisibility() {
   const passInput = document.getElementById('authPassword');
-  const nameInput = document.getElementById('authFullName');
-
-  if (idInput) idInput.value = role === 'owner' ? 'owner@project3wheel.com' : 'manager@project3wheel.com';
-  if (passInput) passInput.value = 'admin123';
-  if (nameInput && !nameInput.value) nameInput.value = role === 'owner' ? 'Habib Rahman' : 'Selim Mia';
+  const icon = document.getElementById('passwordToggleIcon');
+  if (!passInput) return;
+  if (passInput.type === 'password') {
+    passInput.type = 'text';
+    if (icon) {
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    }
+  } else {
+    passInput.type = 'password';
+    if (icon) {
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
+  }
 }
 
 function submitLogin(e) {
