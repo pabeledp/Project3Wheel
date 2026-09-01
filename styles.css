@@ -64,7 +64,6 @@
 
 body {
   background-color: var(--bg-dark);
-  /* 10% Transparency Precision Grid Gradient Background */
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
@@ -132,7 +131,7 @@ body.lang-bn {
   overflow: visible;
 }
 
-/* Glass Sidebar with Collapsible Hide / Expand */
+/* Glass Sidebar */
 .glass-sidebar {
   width: 260px;
   background: rgba(9, 12, 16, 0.88);
@@ -150,7 +149,6 @@ body.lang-bn {
   flex-shrink: 0;
 }
 
-/* Collapsed State for Sidebar */
 .glass-sidebar.collapsed {
   width: 68px;
   padding: 20px 8px;
@@ -385,7 +383,7 @@ body.lang-bn {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(12, 16, 24, 0.78) !important;
+  background: rgba(12, 16, 24, 0.82) !important;
   backdrop-filter: blur(24px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
   border-bottom: var(--specular-border);
@@ -399,35 +397,33 @@ body.lang-bn {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+  flex: 1;
 }
 
 .greeting-box h1 {
-  font-size: 19px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 800;
   letter-spacing: -0.2px;
+  line-height: 1.2;
 }
 
 .greeting-box p {
   font-size: 12px;
   color: var(--text-secondary);
+  line-height: 1.3;
+  margin-top: 2px;
 }
 
 .mobile-menu-btn {
   display: none;
-  background: var(--glass-white-light);
-  border: var(--specular-border);
-  color: white;
-  padding: 8px 11px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
 }
 
 .nav-right {
   display: flex;
   align-items: center;
   gap: 10px;
-  position: relative;
+  flex-shrink: 0;
 }
 
 /* Date Picker Trigger */
@@ -442,13 +438,14 @@ body.lang-bn {
   background: var(--glass-white-medium);
   border: var(--specular-border);
   border-radius: var(--radius-pill);
-  padding: 6px 14px;
+  padding: 7px 14px;
   font-size: 12px;
   font-weight: 600;
   color: white;
   cursor: pointer;
   user-select: none;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .glass-date-trigger:hover {
@@ -466,11 +463,11 @@ body.lang-bn {
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
-  background: rgba(18, 24, 38, 0.94);
+  background: rgba(18, 24, 38, 0.96);
   border: var(--specular-border);
   border-radius: var(--radius-lg);
   padding: 16px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   z-index: 500;
@@ -582,74 +579,14 @@ body.lang-bn {
   opacity: 0;
 }
 
-/* Language Toggle Switch */
-.lang-toggle-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--glass-white-medium);
-  border: var(--specular-border);
-  border-radius: var(--radius-pill);
-  padding: 6px 12px;
-  font-size: 11px;
-  font-weight: 700;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s;
-  user-select: none;
-}
-
-.lang-toggle-btn:hover {
-  background: var(--glass-white-heavy);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-}
-
-/* Sync Status Pill */
-.sync-status-pill {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 12px;
-  border-radius: var(--radius-pill);
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--emerald-light);
-  cursor: pointer;
-  user-select: none;
-}
-
-.sync-status-pill.offline {
-  background: rgba(255, 149, 0, 0.15);
-  border-color: rgba(255, 149, 0, 0.4);
-  color: var(--amber-light);
-}
-
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-.status-dot.online {
-  background: var(--emerald);
-  box-shadow: 0 0 8px var(--emerald);
-}
-
-.status-dot.offline {
-  background: var(--amber);
-  box-shadow: 0 0 8px var(--amber);
-}
-
-/* Google 9-Dot Apps Launcher */
+/* Google 9-Dot Apps Launcher Button */
 .apps-launcher-wrapper {
   position: relative;
 }
 
 .btn-apps-grid {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: var(--glass-white-medium);
   border: var(--specular-border);
@@ -657,7 +594,7 @@ body.lang-bn {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -675,12 +612,12 @@ body.lang-bn {
   top: calc(100% + 12px);
   right: 0;
   width: 290px;
-  background: rgba(18, 23, 34, 0.94);
+  background: rgba(18, 23, 34, 0.96);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   border: var(--specular-border);
   border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
   padding: 14px;
   z-index: 500;
   animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -807,7 +744,7 @@ body.lang-bn {
 .btn-glass.btn-amber { background: rgba(255, 149, 0, 0.2); border-color: rgba(255, 149, 0, 0.4); color: var(--amber-light); }
 .btn-glass.btn-blue { background: rgba(10, 132, 255, 0.2); border-color: rgba(10, 132, 255, 0.4); color: var(--blue-light); }
 
-/* High-Clarity Liquid Glass Cards & Interactive Smooth Hover */
+/* High-Clarity Liquid Glass Cards */
 .glass-card, .metric-card, .teammate-card, .glass-modal-sheet {
   background: rgba(18, 24, 38, 0.72) !important;
   backdrop-filter: blur(28px) saturate(180%) !important;
@@ -827,21 +764,13 @@ body.lang-bn {
   box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.35) !important;
 }
 
-/* 5 Metrics in 1 Single Horizontal Row */
+/* 5 Metrics Row for Desktop */
 .metrics-grid {
   display: grid !important;
   grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
   gap: 14px !important;
   margin-bottom: 24px !important;
   width: 100%;
-}
-
-@media (max-width: 1200px) {
-  .metrics-grid { grid-template-columns: repeat(3, 1fr) !important; }
-}
-
-@media (max-width: 768px) {
-  .metrics-grid { grid-template-columns: 1fr !important; }
 }
 
 .metric-card {
@@ -1028,10 +957,6 @@ body.lang-bn {
   gap: 16px;
 }
 
-@media (max-width: 992px) {
-  .grid-2-col { grid-template-columns: 1fr; }
-}
-
 /* Velocity Chart */
 .chart-card {
   min-height: 240px;
@@ -1139,6 +1064,7 @@ body.lang-bn {
 .glass-table-wrapper {
   overflow-x: auto;
   margin-top: 8px;
+  width: 100%;
 }
 
 .glass-table {
@@ -1168,8 +1094,8 @@ body.lang-bn {
 
 .status-dropdown-select {
   border-radius: var(--radius-pill);
-  padding: 3px 8px;
-  font-size: 10px;
+  padding: 4px 8px;
+  font-size: 11px;
   font-weight: 700;
   border: 1px solid;
   outline: none;
@@ -1228,7 +1154,7 @@ body.lang-bn {
 .badge-amber { background: rgba(255, 149, 0, 0.15); border: 1px solid rgba(255, 149, 0, 0.4); color: var(--amber-light); }
 .badge-blue { background: rgba(10, 132, 255, 0.15); border: 1px solid rgba(10, 132, 255, 0.4); color: var(--blue-light); }
 
-/* Driver Directory (Teammates Grid) */
+/* Teammates Grid */
 .teammates-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -1465,114 +1391,127 @@ body.lang-bn {
   border-color: transparent;
 }
 
-/* QR Scanner */
-.scanner-viewfinder {
-  width: 200px;
-  height: 200px;
-  background: rgba(0, 0, 0, 0.5);
-  border: 2px solid var(--blue);
-  border-radius: 16px;
-  margin: 10px auto 14px;
-  position: relative;
+/* Quick Presets & Garage Rent Box */
+.quick-preset-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 16px;
+  flex-wrap: wrap;
+}
+
+.quick-preset-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.preset-btn-group {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+
+.preset-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-secondary);
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  gap: 4px;
 }
 
-.laser-scanner-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), var(--blue), transparent);
-  box-shadow: 0 0 10px var(--blue);
-  animation: laserScan 2.2s infinite alternate ease-in-out;
+.preset-btn:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: var(--emerald-light);
+  transform: translateY(-1px);
 }
 
-@keyframes laserScan {
-  0% { top: 10px; }
-  100% { top: 180px; }
-}
-
-.viewfinder-hint {
-  position: absolute;
-  bottom: 8px;
-  font-size: 10px;
-  color: var(--text-tertiary);
-}
-
-.preset-chips {
+.form-group-checkbox {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-top: 10px;
+  margin-bottom: 16px;
   display: flex;
-  gap: 6px;
-  margin-top: 6px;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.chip-btn {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.06);
-  border: var(--specular-border-light);
-  color: var(--text-secondary);
-  padding: 6px;
-  border-radius: 6px;
-  font-size: 11px;
+.custom-checkbox-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+.custom-checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--purple);
   cursor: pointer;
 }
 
-.chip-btn:hover {
-  background: var(--blue);
-  color: white;
-}
-
-/* SMS Preview */
-.sms-preview-box {
-  margin-bottom: 16px;
-}
-
-.sms-recipient-info {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  margin-bottom: 6px;
-}
-
-.bangla-sms-card {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 149, 0, 0.3);
-  border-radius: var(--radius-md);
-  padding: 12px;
-  color: var(--amber-light);
-  font-family: 'Hind Siliguri', sans-serif;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.gateway-tag {
-  font-size: 10px;
-  color: var(--text-tertiary);
-  margin-top: 5px;
-}
-
-.modal-actions-row {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-/* User Profile Modal */
-.profile-avatar-large {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: var(--grad-primary);
-  color: white;
-  font-size: 24px;
-  font-weight: 800;
+.garage-rent-input-wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 0 auto 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(94, 92, 230, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+
+.garage-rent-input-wrapper span.lbl {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.garage-rent-input-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.glass-input-sm {
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: white;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  width: 80px;
+  text-align: right;
+  outline: none;
+}
+
+.garage-unit-tag {
+  font-size: 11px;
+  color: var(--purple-light);
+  font-weight: 600;
 }
 
 /* Toast */
@@ -1751,10 +1690,7 @@ body.lang-bn {
   text-align: center;
 }
 
-/* =========================================================
-   GPS SATELLITE ORBIT ROTATING AROUND CIRCLE ANIMATION
-   ========================================================= */
-
+/* GPS Orbit Animation */
 .gps-orbit-system {
   width: 140px;
   height: 140px;
@@ -1765,7 +1701,6 @@ body.lang-bn {
   justify-content: center;
 }
 
-/* Central Planet / Earth Orb */
 .gps-center-orb {
   width: 64px;
   height: 64px;
@@ -1780,7 +1715,6 @@ body.lang-bn {
   z-index: 2;
 }
 
-/* Circular Orbit Path Track */
 .gps-orbit-ring {
   position: absolute;
   width: 120px;
@@ -1791,7 +1725,6 @@ body.lang-bn {
   animation: orbitRotate 6s linear infinite;
 }
 
-/* Satellite Object Traveling Around Track */
 .gps-satellite {
   position: absolute;
   top: -10px;
@@ -1815,11 +1748,7 @@ body.lang-bn {
   to { transform: rotate(360deg); }
 }
 
-/* =========================================================
-   STANDARD CR80 SMART ID CARD SPECIFICATION (PIXEL PERFECT)
-   Ratio: 85.6mm x 54mm (~ 1.585 Aspect Ratio)
-   ========================================================= */
-
+/* Driver Smart ID Card CR80 Layout */
 .driver-id-card-preview {
   width: 100%;
   max-width: 380px;
@@ -1978,147 +1907,7 @@ body.lang-bn {
   letter-spacing: 0.3px;
 }
 
-/* =========================================================
-   COLLECTION MODAL - QUICK PRESETS & GARAGE RENT GLASS THEME
-   ========================================================= */
-
-.quick-preset-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 6px 0 16px;
-  flex-wrap: wrap;
-}
-
-.quick-preset-label {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  font-weight: 600;
-}
-
-.preset-btn-group {
-  display: flex;
-  gap: 6px;
-  flex: 1;
-}
-
-.preset-btn {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--text-secondary);
-  padding: 6px 10px;
-  border-radius: var(--radius-md);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.preset-btn:hover {
-  background: rgba(16, 185, 129, 0.2);
-  border-color: rgba(16, 185, 129, 0.5);
-  color: var(--emerald-light);
-  transform: translateY(-1px);
-}
-
-.preset-btn:active {
-  transform: scale(0.97);
-}
-
-/* Garage Rent Checkbox Row & Input Card */
-.form-group-checkbox {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  margin-top: 10px;
-  margin-bottom: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.custom-checkbox-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  user-select: none;
-}
-
-.custom-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  color: white;
-}
-
-.custom-checkbox-label input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--purple);
-  cursor: pointer;
-}
-
-.garage-rent-input-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(94, 92, 230, 0.3);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  animation: fadeIn 0.2s ease;
-}
-
-.garage-rent-input-wrapper span.lbl {
-  font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.garage-rent-input-box {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.glass-input-sm {
-  background: var(--bg-elevated);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 6px;
-  color: white;
-  padding: 5px 8px;
-  font-size: 12px;
-  font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
-  width: 80px;
-  text-align: right;
-  outline: none;
-}
-
-.glass-input-sm:focus {
-  border-color: var(--purple-light);
-  box-shadow: 0 0 8px rgba(94, 92, 230, 0.4);
-}
-
-.garage-unit-tag {
-  font-size: 11px;
-  color: var(--purple-light);
-  font-weight: 600;
-}
-
-/* =========================================================
-   MOBILE BOTTOM DOCK & FLOATING MORE DRAWER (APPLE LIQUID GLASS)
-   ========================================================= */
-
+/* Mobile Bottom Dock */
 .mobile-bottom-nav {
   display: none;
   position: fixed;
@@ -2177,7 +1966,7 @@ body.lang-bn {
   color: var(--purple-light);
 }
 
-/* Floating Liquid Glass More Menu Drawer */
+/* Floating Mobile More Menu Drawer */
 .mobile-more-overlay {
   display: none;
   position: fixed;
@@ -2203,7 +1992,7 @@ body.lang-bn {
   bottom: 74px;
   left: 14px;
   right: 14px;
-  background: rgba(18, 24, 38, 0.94);
+  background: rgba(18, 24, 38, 0.96);
   backdrop-filter: blur(32px) saturate(190%);
   -webkit-backdrop-filter: blur(32px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -2293,16 +2082,12 @@ body.lang-bn {
 }
 
 /* =========================================================
-   GLOBAL RESPONSIVE BREAKPOINTS (ALL DEVICES FULL SUPPORT)
+   CLEAN RESPONSIVE ENGINE (MOBILE, TABLET, DESKTOP)
    ========================================================= */
 
 @media (max-width: 900px) {
-  /* Hide Desktop Sidebar on Tablets & Phones */
+  /* Hide Desktop Sidebar on Mobile */
   .glass-sidebar {
-    display: none !important;
-  }
-
-  .mobile-menu-btn {
     display: none !important;
   }
 
@@ -2316,15 +2101,46 @@ body.lang-bn {
     width: 100vw !important;
   }
 
+  /* Clean Top Navigation Bar */
   .top-nav {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
     padding: 12px 16px !important;
+    gap: 12px !important;
+    position: sticky !important;
+    top: 0 !important;
+    width: 100% !important;
+  }
+
+  .nav-left {
+    flex: 1 !important;
+    min-width: 0 !important;
   }
 
   .greeting-box h1 {
     font-size: 16px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
   .greeting-box p {
+    font-size: 11px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .nav-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .glass-date-trigger {
+    padding: 6px 12px !important;
     font-size: 11px !important;
   }
 
@@ -2332,210 +2148,21 @@ body.lang-bn {
     padding: 14px 14px 80px !important;
   }
 
-  .metrics-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-  }
-
-  .grid-2-col {
-    grid-template-columns: 1fr !important;
-  }
-
-  .table-header-row {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 10px !important;
-  }
-
-  .table-actions {
-    width: 100% !important;
-    justify-content: space-between !important;
-  }
-
-  .search-input-wrapper {
-    width: 100% !important;
-  }
-
-  .search-input-wrapper input {
-    width: 100% !important;
-  }
-}
-
-@media (max-width: 520px) {
-  .metrics-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .glass-modal-sheet {
-    max-width: 100% !important;
-    border-radius: 20px !important;
-    padding: 16px !important;
-  }
-
-  .teammates-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .top-nav {
-    flex-direction: row !important;
-    gap: 6px !important;
-  }
-
-  .glass-date-trigger span {
-    max-width: 80px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-/* =========================================================
-   COMPREHENSIVE MOBILE HEADER, MARGINS & PADDING POLISH
-   ========================================================= */
-
-@media (max-width: 768px) {
-  .top-nav {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 10px !important;
-    padding: 12px 14px !important;
-  }
-
-  .nav-left {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    width: 100% !important;
-  }
-
-  .nav-right {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 6px !important;
-    width: 100% !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    padding-bottom: 2px !important;
-  }
-
-  .date-picker-wrapper {
-    flex-shrink: 1 !important;
-    min-width: 0 !important;
-  }
-
-  .glass-date-trigger {
-    padding: 5px 10px !important;
-    font-size: 11px !important;
-    max-width: 100% !important;
-  }
-
-  .glass-date-trigger span {
-    max-width: 90px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
-
-  .lang-toggle-btn {
-    padding: 5px 10px !important;
-    font-size: 11px !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
-  }
-
-  .sync-status-pill {
-    padding: 5px 9px !important;
-    font-size: 10px !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
-  }
-
-  .apps-launcher-wrapper {
-    flex-shrink: 0 !important;
-  }
-
-  .btn-apps-grid {
-    width: 32px !important;
-    height: 32px !important;
-    font-size: 13px !important;
-  }
-
-  /* Content area spacing */
-  .content-body {
-    padding: 12px 12px 90px !important;
-  }
-
-  /* Metrics grid */
-  .metrics-grid {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-    margin-bottom: 16px !important;
-  }
-
-  .metric-card {
-    padding: 14px !important;
-    min-height: auto !important;
-  }
-
-  .metric-val {
-    font-size: 20px !important;
-    margin: 4px 0 !important;
-  }
-
-  /* Table Header and Actions */
-  .table-header-row {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-  }
-
-  .table-actions {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-    width: 100% !important;
-  }
-
-  .search-input-wrapper {
-    width: 100% !important;
-  }
-
-  .search-input-wrapper input {
-    width: 100% !important;
-  }
-
-  .glass-select-filter {
-    width: 100% !important;
-  }
-
-  .table-actions .btn-glass {
-    justify-content: center !important;
-    width: 100% !important;
-  }
-}
-
-/* =========================================================
-   MOBILE 2-COLUMN KPI METRICS CARDS & FULL HORIZONTAL SCROLL
-   ========================================================= */
-
-@media (max-width: 768px) {
-  /* Metrics Grid in 2 Columns Side-by-Side */
+  /* 2-Column KPI Metrics Grid */
   .metrics-grid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8px !important;
-    margin-bottom: 16px !important;
+    gap: 10px !important;
+    margin-bottom: 18px !important;
     width: 100% !important;
   }
 
-  /* Make 5th Card Full Width or 2-col span */
   .metrics-grid > .metric-card:last-child {
     grid-column: span 2 !important;
   }
 
   .metric-card {
-    padding: 12px 10px !important;
+    padding: 14px 12px !important;
     border-radius: 16px !important;
     min-height: 105px !important;
   }
@@ -2549,16 +2176,15 @@ body.lang-bn {
     margin: 4px 0 2px !important;
   }
 
-  .icon-circle {
-    width: 24px !important;
-    height: 24px !important;
-    font-size: 10px !important;
+  .grid-2-col {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
   }
 
-  /* Table and Card Full Horizontal Scroll Enabler */
+  /* Horizontal Scrolling for Data Tables */
   .glass-card, .table-card {
-    max-width: 100% !important;
-    overflow-x: hidden !important;
+    width: 100% !important;
+    overflow: hidden !important;
   }
 
   .glass-table-wrapper {
@@ -2570,52 +2196,38 @@ body.lang-bn {
   }
 
   .glass-table {
-    min-width: 580px !important;
+    min-width: 540px !important;
     width: 100% !important;
   }
 
   .glass-table th, .glass-table td {
-    padding: 8px 10px !important;
+    padding: 9px 10px !important;
     white-space: nowrap !important;
   }
 
-  .status-dropdown-select {
-    padding: 4px 6px !important;
-    font-size: 11px !important;
+  .table-header-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
   }
 
-  /* Clean Top Nav on Mobile */
-  .top-nav {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 12px 16px !important;
-    gap: 8px !important;
-  }
-
-  .nav-left {
-    flex: 1 !important;
-    min-width: 0 !important;
-  }
-
-  .greeting-box h1 {
-    font-size: 17px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  .greeting-box p {
-    font-size: 11px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-  }
-
-  .nav-right {
+  .table-actions {
+    width: 100% !important;
     display: flex !important;
-    align-items: center !important;
+    flex-direction: column !important;
     gap: 8px !important;
-    flex-shrink: 0 !important;
+  }
+
+  .search-input-wrapper {
+    width: 100% !important;
+  }
+
+  .search-input-wrapper input {
+    width: 100% !important;
+  }
+
+  .table-actions .btn-glass {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }
