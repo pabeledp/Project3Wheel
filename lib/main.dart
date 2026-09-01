@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'core/theme/glass_theme.dart';
 import 'core/network/connectivity_service.dart';
 import 'services/storage/hive_service.dart';
@@ -33,12 +34,14 @@ void main() async {
   await ConnectivityService().initialize();
   SyncEngine().initialize();
 
-  // Initialize Firebase with graceful offline fallback
+  // Initialize Firebase with DefaultFirebaseOptions and graceful offline fallback
   try {
-    await Firebase.initializeApp();
-    debugPrint('Firebase Core initialized successfully.');
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    debugPrint('Firebase Core initialized successfully with project3wheels.');
   } catch (e) {
-    debugPrint('Firebase initialization notice: Running in local Hive / Offline simulation mode ($e)');
+    debugPrint('Firebase initialization notice: Running with local Hive persistence ($e)');
   }
 
   runApp(
