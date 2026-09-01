@@ -1172,38 +1172,52 @@
       </div>
 
       <div id="driverIdCardPrintArea" class="driver-id-card-preview">
-        <div class="id-card-badge-chip" data-i18n="badge_official_pilot">OFFICIAL PILOT</div>
+        <div class="id-card-badge-chip">OFFICIAL PILOT</div>
+        
         <div class="id-card-header">
-          <div class="brand-icon" style="width: 32px; height: 32px; font-size: 15px;">
+          <div class="brand-icon">
             <i class="fa-solid fa-dharmachakra"></i>
           </div>
-          <div>
-            <h4 style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px;">PROJECT 3 WHEEL</h4>
-            <div style="font-size: 9px; color: var(--text-secondary);" data-i18n="id_card_subtitle">Electric Fleet Pilot Identification</div>
+          <div class="id-card-title-group">
+            <h4>PROJECT 3 WHEEL</h4>
+            <div>FLEET PILOT SMART IDENTIFICATION</div>
           </div>
         </div>
 
         <div class="id-card-body">
-          <!-- QR Code Canvas Container -->
+          <div class="id-card-info-grid">
+            <div class="id-card-driver-label">DRIVER / PILOT NAME</div>
+            <div class="id-card-driver-name" id="idCardDriverName">Karim Ullah</div>
+            
+            <div class="id-card-details-table">
+              <div class="id-card-row">
+                <span class="lbl">ID NO</span>
+                <span class="val" id="idCardDriverId">D-101</span>
+              </div>
+              <div class="id-card-row">
+                <span class="lbl">PHONE</span>
+                <span class="val" id="idCardDriverPhone">01711223344</span>
+              </div>
+              <div class="id-card-row">
+                <span class="lbl">UNIT</span>
+                <span class="id-card-badge-rickshaw" id="idCardDriverRickshaw">R-01</span>
+              </div>
+              <div class="id-card-row">
+                <span class="lbl">NID NO</span>
+                <span class="val" id="idCardDriverNid">19882691234567890</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- High Resolution Scannable QR -->
           <div class="id-card-qr-box" id="idCardQrContainer">
             <!-- QR Image injected via JS -->
           </div>
-
-          <div class="id-card-info-grid">
-            <span style="font-size: 10px; color: var(--text-tertiary);" data-i18n="th_driver">Driver Name</span>
-            <strong id="idCardDriverName">Karim Ullah</strong>
-            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 4px;">
-              <div><strong>ID:</strong> <span id="idCardDriverId">D-101</span></div>
-              <div><strong data-i18n="th_phone">Phone:</strong> <span id="idCardDriverPhone">01711223344</span></div>
-              <div><strong data-i18n="th_rickshaw">Rickshaw:</strong> <span id="idCardDriverRickshaw" class="badge-pill badge-blue" style="font-size: 9px; padding: 2px 6px;">R-01</span></div>
-              <div><strong data-i18n="lbl_nid">NID:</strong> <span id="idCardDriverNid">19882691234567890</span></div>
-            </div>
-          </div>
         </div>
 
-        <div style="margin-top: 14px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.15); display: flex; justify-content: space-between; font-size: 9px; color: var(--text-tertiary);">
-          <span>Fleet Hub: Habib Electric Garage</span>
-          <span>Verified QR Enabled</span>
+        <div class="id-card-footer">
+          <span>HUB: HABIB ELECTRIC GARAGE</span>
+          <span>QR VERIFIED PILOT</span>
         </div>
       </div>
 

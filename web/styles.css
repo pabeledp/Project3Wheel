@@ -1815,65 +1815,165 @@ body.lang-bn {
   to { transform: rotate(360deg); }
 }
 
-/* Driver ID Card Visual Styles */
+/* =========================================================
+   STANDARD CR80 SMART ID CARD SPECIFICATION (PIXEL PERFECT)
+   Ratio: 85.6mm x 54mm (~ 1.585 Aspect Ratio)
+   ========================================================= */
+
 .driver-id-card-preview {
-  background: linear-gradient(145deg, rgba(20, 28, 45, 0.95), rgba(10, 14, 24, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 20px;
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 85.6 / 54;
+  margin: 0 auto;
+  background: #0B0F19;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 12px 14px;
   color: white;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
 .id-card-badge-chip {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 10px;
+  right: 12px;
   background: var(--grad-primary);
-  padding: 3px 10px;
+  color: white;
+  padding: 2px 8px;
   border-radius: var(--radius-pill);
-  font-size: 9px;
-  font-weight: 800;
+  font-size: 8px;
+  font-weight: 700;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .id-card-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: 8px;
+  padding-bottom: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 10px;
+}
+
+.id-card-header .brand-icon {
+  width: 26px;
+  height: 26px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+.id-card-title-group h4 {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: white;
+  line-height: 1.2;
+}
+
+.id-card-title-group div {
+  font-size: 8px;
+  color: var(--text-tertiary);
 }
 
 .id-card-body {
   display: flex;
-  gap: 16px;
   align-items: center;
-}
-
-.id-card-qr-box {
-  background: white;
-  padding: 8px;
-  border-radius: 12px;
-  width: 90px;
-  height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
 }
 
 .id-card-info-grid {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 11px;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
 }
 
-.id-card-info-grid strong {
-  font-size: 15px;
+.id-card-driver-label {
+  font-size: 8px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.id-card-driver-name {
+  font-size: 13px;
+  font-weight: 800;
   color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.id-card-details-table {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 9px;
+  color: var(--text-secondary);
+}
+
+.id-card-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.id-card-row span.lbl {
+  color: var(--text-tertiary);
+  font-size: 8.5px;
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.id-card-row span.val {
+  color: white;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.id-card-badge-rickshaw {
+  background: rgba(10, 132, 255, 0.2);
+  border: 1px solid rgba(10, 132, 255, 0.5);
+  color: var(--blue-light);
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.id-card-qr-box {
+  background: white;
+  padding: 4px;
+  border-radius: 8px;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.id-card-footer {
+  padding-top: 6px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7.5px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }

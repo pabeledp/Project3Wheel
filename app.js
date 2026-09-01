@@ -2111,11 +2111,11 @@ function openDriverIdCardModal(driverId) {
   document.getElementById('idCardDriverName').textContent = driver.name;
   document.getElementById('idCardDriverId').textContent = driver.id;
   document.getElementById('idCardDriverPhone').textContent = driver.phone;
-  document.getElementById('idCardDriverRickshaw').textContent = driver.activeRickshaw || (state.lang === 'bn' ? 'বরাদ্দ নেই' : 'Unassigned');
+  document.getElementById('idCardDriverRickshaw').textContent = driver.activeRickshaw || 'Unassigned';
   document.getElementById('idCardDriverNid').textContent = driver.nid;
 
   // Generate Real Dynamic QR Code image for the driver & assigned rickshaw
-  const qrData = `DRIVER:${driver.name}|ID:${driver.id}|RICKSHAW:${driver.activeRickshaw || 'NONE'}|PHONE:${driver.phone}|NID:${driver.nid}`;
+  const qrData = `DRIVER:${driver.name}|ID:${driver.id}|UNIT:${driver.activeRickshaw || 'NONE'}|PHONE:${driver.phone}|NID:${driver.nid}`;
   const qrBox = document.getElementById('idCardQrContainer');
   if (qrBox) {
     qrBox.innerHTML = `<img id="idCardQrImg" crossOrigin="anonymous" src="${generateInlineQrSvg(qrData)}" alt="Driver QR" style="width: 100%; height: 100%; object-fit: contain;">`;
