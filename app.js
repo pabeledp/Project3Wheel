@@ -448,6 +448,10 @@ function toggleAppsMenu(e) {
 
 function openModalAndCloseApps(modalId) {
   const popup = document.getElementById('appsPopup');
+  if (popup) popup.classList.remove('open');
+  openModal(modalId);
+}
+
 // --- Cloud-First Firestore Real-Time Synchronization Engine ---
 let lastLocalMutationTime = 0;
 let activeFirestoreUnsubscribe = null;
@@ -725,137 +729,6 @@ function submitLogin(e) {
   setupFirestoreLiveListeners();
 
   showToast(state.lang === 'bn' ? `স্বাগতম, ${state.currentUser.name}!` : `Welcome, ${state.currentUser.name}!`, 'emerald');
-}t');
-  const hintBox = document.getElementById('authHintBox');
-
-  if (nameGroup) nameGroup.style.display = mode === 'register' ? 'block' : 'none';
-  if (hintBox) hintBox.style.display = mode === 'login' ? 'flex' : 'none';
-
-  if (btnSubmit) {
-    btnSubmit.innerHTML = mode === 'register'
-      ? `<i class="fa-solid fa-user-plus"></i> <span>${state.lang === 'bn' ? 'অ্যাকাউন্ট তৈরি করুন' : 'Create Fleet Account'}</span>`
-      : `<i class="fa-solid fa-right-to-bracket"></i> <span>${state.lang === 'bn' ? 'লগইন করুন' : 'Sign In to Fleet Hub'}</span>`;
-  }
-}
-
-function selectAuthRole(role) {
-  state.selectedAuthRole = role;
-  document.getElementById('authRoleOwner')?.classList.toggle('active', role === 'owner');
-  document.getElementById('authRoleManager')?.classList.toggle('active', role === 'manager');
-}
-
-function toggleWebPasswordVisibility() {
-  const passInput = document.getElementById('authPassword');
-  const icon = document.getElementById('passwordToggleIcon');
-  if (!passInput) return;
-  if (passInput.type === 'password') {
-    passInput.type = 'text';
-    if (icon) {
-      icon.classList.remove('fa-eye');
-      icon.classList.add('fa-eye-slash');
-    }
-  } else {
-    passInput.type = 'password';
-    if (icon) {
-      icon.classList.remove('fa-eye-slash');
-      icon.classList.add('fa-eye');
-    }
-  }
-}
-
-function submitLogin(e) {
-  e.preventDefault();
-  const idVal = document.getElementById('authIdentifier').value.trim();
-  const passVal = document.getElementById('authPassword').value.trim();
-  const nameVal = document.getElementById('authFullName')?.value.trim() || '';
-  const remember = document.getElementById('rememberMeCheck')?.checked || false;
-
-  if (!idVal || !passVal) {
-    showToast(state.lang === 'bn' ? 'অনুগ্রহ করে ইমেইল/ফোন ও পাসওয়ার্ড দিন' : 'Please enter credentials', 'crimson');
-    return;
-  }
-
-  // Strict Registered Account & Password Verification
-  const knownAccounts = {
-    'owner@project3wheel.com': { pass: 'admin123', name: 'Habib Rahman', role: 'owner' },
-    'manager@project3wheel.com': { pass: 'admin123', name: 'Selim Mia', role: 'manager' },
-    '01711223344': { pass: 'admin123', name: 'Habib Rahman', role: 'owner' },
-    '01812345678': { pass: 'admin123', name: 'Selim Mia', role: 'manager' },
-  };
-
-  const storedAccounts = loadFromStorage('registered_accounts', {});
-
-  if (state.authMode === 'login') {
-    const accKey = idVal.toLowerCase();
-    const stored = storedAccounts[accKey];
-    const known = knownAccounts[accKey];
-
-    let expectedPass = null;
-    let savedName = '';
-    let savedRole = state.selectedAuthRole || 'owner';
-
-    if (stored) {
-      expectedPass = typeof stored === 'object' ? stored.pass : stored;
-      savedName = typeof stored === 'object' ? stored.name : '';
-      savedRole = typeof stored === 'object' ? stored.role : savedRole;
-    } else if (known) {
-      expectedPass = known.pass;
-      savedName = known.name;
-      savedRole = known.role;
-    }
-
-    if (!expectedPass) {
-      showToast(state.lang === 'bn' ? 'অ্যাকাউন্ট খুঁজে পাওয়া যায়নি! অনুগ্রহ করে আগে রেজিস্টার করুন।' : 'Account not found! Please register first or use a registered email.', 'crimson');
-      return;
-    }
-
-    if (passVal !== expectedPass) {
-      showToast(state.lang === 'bn' ? 'ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে চেষ্টা করুন।' : 'Wrong password! Please enter the correct password.', 'crimson');
-      return;
-    }
-
-    state.selectedAuthRole = savedRole;
-    if (savedName) state.currentUserName = savedName;
-  } else {
-    // Register mode: store password & name
-    if (passVal.length < 6) {
-      showToast(state.lang === 'bn' ? 'নিরাপত্তা পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।' : 'Password must be at least 6 characters long.', 'crimson');
-      return;
-    }
-    const role = state.selectedAuthRole || 'owner';
-    const regName = nameVal || (role === 'owner' ? 'Habib Rahman' : 'Selim Mia');
-    storedAccounts[idVal.toLowerCase()] = {
-      pass: passVal,
-      name: regName,
-      role: role
-    };
-    saveToStorage('registered_accounts', storedAccounts);
-    state.currentUserName = regName;
-  }
-
-  const role = state.selectedAuthRole || 'owner';
-  const defaultName = role === 'owner' ? 'Habib Rahman' : 'Selim Mia';
-
-  state.currentUser = {
-    name: nameVal || (state.currentUser.name || defaultName),
-    garageName: state.currentUser.garageName || (role === 'owner' ? 'Habib Electric Garage' : 'Central Hub'),
-    phone: state.currentUser.phone || (role === 'owner' ? '01711223344' : '01812345678'),
-    email: idVal.includes('@') ? idVal : `${idVal}@project3wheel.com`,
-    role: role,
-    isAuthenticated: true
-  };
-
-  state.rememberMe = remember;
-  saveToStorage('remember_me', remember);
-  saveToStorage('user_profile', state.currentUser);
-
-  checkAuthSession();
-  renderAll();
-
-  // Connect real-time Firestore listener and pull cloud data for this specific user account
-  setupFirestoreLiveListeners();
-
-  showToast(state.lang === 'bn' ? `স্বাগতম, ${state.currentUser.name}!` : `Welcome back, ${state.currentUser.name}!`, 'emerald');
 }
 
 function logoutUser() {
