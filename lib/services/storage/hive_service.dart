@@ -221,4 +221,24 @@ class HiveService {
     }
     return null;
   }
+
+  // --- Persistent Active Session ---
+  Future<void> saveActiveSession(Map<String, dynamic> userMap) async {
+    final box = Hive.box(boxSettings);
+    await box.put('active_user_session', userMap);
+  }
+
+  Map<String, dynamic>? getActiveSession() {
+    final box = Hive.box(boxSettings);
+    final session = box.get('active_user_session');
+    if (session is Map) {
+      return Map<String, dynamic>.from(session);
+    }
+    return null;
+  }
+
+  Future<void> clearActiveSession() async {
+    final box = Hive.box(boxSettings);
+    await box.delete('active_user_session');
+  }
 }

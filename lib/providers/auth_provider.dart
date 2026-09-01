@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/user_model.dart';
+import '../../services/storage/hive_service.dart';
 
 class AuthState {
   final UserModel currentUser;
@@ -7,7 +8,7 @@ class AuthState {
 
   const AuthState({
     required this.currentUser,
-    this.isAuthenticated = true,
+    this.isAuthenticated = false,
   });
 
   AuthState copyWith({
@@ -22,6 +23,8 @@ class AuthState {
 }
 
 class AuthNotifier extends StateNotifier<AuthState> {
+  final HiveService _hive = HiveService();
+
   AuthNotifier()
       : super(
           const AuthState(
@@ -34,12 +37,29 @@ class AuthNotifier extends StateNotifier<AuthState> {
             ),
             isAuthenticated: false,
           ),
-        );
+        ) {
+    _restoreSavedSession();
+  }
+
+  void _restoreSavedSession() {
+    try {
+      final savedMap = _hive.getActiveSession();
+      if (savedMap != null && savedMap.isNotEmpty) {
+        final user = UserModel.fromMap(savedMap);
+        if (user.uid.isNotEmpty) {
+          state = AuthState(
+            currentUser: user,
+            isAuthenticated: true,
+          );
+        }
+      }
+    } catch (_) {}
+  }
 
   void switchRole(UserRole role) {
-    state = state.copyWith(
-      currentUser: state.currentUser.copyWith(role: role),
-    );
+    final updated = state.currentUser.copyWith(role: role);
+    state = state.copyWith(currentUser: updated);
+    _hive.saveActiveSession(updated.toMap());
   }
 
   void setUser(UserModel user) {
@@ -47,6 +67,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       currentUser: user,
       isAuthenticated: true,
     );
+    _hive.saveActiveSession(user.toMap());
   }
 
   void updateProfile({required String name, required String garageName, required String phone}) {
@@ -56,9 +77,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
       phone: phone,
     );
     state = state.copyWith(currentUser: updated);
+    _hive.saveActiveSession(updated.toMap());
   }
 
   void signOut() {
+    _hive.clearActiveSession();
     state = state.copyWith(
       currentUser: const UserModel(
         uid: '',
