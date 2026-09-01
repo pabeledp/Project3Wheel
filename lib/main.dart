@@ -8,6 +8,8 @@ import 'core/network/connectivity_service.dart';
 import 'services/storage/hive_service.dart';
 import 'services/sync/sync_engine.dart';
 import 'services/mock/mock_data_seeder.dart';
+import 'providers/auth_provider.dart';
+import 'screens/auth/login_screen.dart';
 import 'screens/main_shell_screen.dart';
 
 void main() async {
@@ -27,7 +29,7 @@ void main() async {
   final hive = HiveService();
   await hive.initialize();
 
-  // Seed Realistic Fleet Mock Data on first run
+  // Initialize Real Clean Fleet on first run
   await MockDataSeeder.seedIfEmpty();
 
   // Initialize Real-time Network Watcher & Sync Engine
@@ -51,16 +53,18 @@ void main() async {
   );
 }
 
-class Project3WheelApp extends StatelessWidget {
+class Project3WheelApp extends ConsumerWidget {
   const Project3WheelApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+
     return MaterialApp(
       title: 'Project 3 Wheel - Liquid Glass Fleet Hub',
       debugShowCheckedModeBanner: false,
       theme: GlassTheme.darkTheme,
-      home: const MainShellScreen(),
+      home: authState.isAuthenticated ? const MainShellScreen() : const LoginScreen(),
     );
   }
 }

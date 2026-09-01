@@ -69,10 +69,13 @@
 
       <!-- User Profile & Role Switcher -->
       <div class="sidebar-footer">
-        <div class="user-card">
+        <div class="user-card" onclick="openUserProfileModal()" title="Click to view & edit profile">
           <div class="avatar" id="userAvatar">H</div>
-          <div class="user-info">
-            <h4 id="userName">Habib Rahman</h4>
+          <div class="user-info" style="flex: 1;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <h4 id="userName">Habib Rahman</h4>
+              <i class="fa-solid fa-pen-to-square" style="font-size: 11px; color: var(--blue-light);"></i>
+            </div>
             <span class="badge-pill" id="userRoleBadge">OWNER</span>
           </div>
         </div>
@@ -80,6 +83,10 @@
           <button class="btn-role-switch" onclick="toggleRole()">
             <i class="fa-solid fa-repeat"></i>
             <span id="roleSwitchText" data-i18n="btn_switch_role">Switch to Manager</span>
+          </button>
+          <button class="btn-logout" onclick="logoutUser()">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span data-i18n="btn_logout">Logout</span>
           </button>
         </div>
       </div>
@@ -952,6 +959,104 @@ rickshaws.last_location: {
         <button class="btn-glass btn-amber" onclick="executeSendSms()">
           <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btn_send_now">Send Now</span>
         </button>
+      </div>
+    </div>
+  <!-- 9. USER PROFILE MANAGEMENT MODAL -->
+  <div class="modal-backdrop" id="userProfileModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-gear text-blue"></i> <span data-i18n="modal_profile_title">User Profile & Garage Settings</span></h3>
+        <button class="close-btn" onclick="closeModal('userProfileModal')">&times;</button>
+      </div>
+
+      <div class="profile-avatar-large" id="profileAvatarLarge">H</div>
+
+      <form id="userProfileForm" onsubmit="saveUserProfile(event)">
+        <div class="form-group">
+          <label data-i18n="lbl_profile_name">Full Name</label>
+          <input type="text" class="glass-input" id="profileFullName" value="Habib Rahman" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_garage_title">Garage / Fleet Title</label>
+          <input type="text" class="glass-input" id="profileGarageName" value="Habib Electric Garage" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_phone">Mobile Number</label>
+          <input type="tel" class="glass-input" id="profilePhone" value="01711223344" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_email">Email Address</label>
+          <input type="email" class="glass-input" id="profileEmail" value="owner@project3wheel.com" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_role">Active Role</label>
+          <select class="glass-select" id="profileRole">
+            <option value="owner">Fleet Owner (মালিক)</option>
+            <option value="manager">Garage Manager (ম্যানেজার)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 18px;">
+          <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn_save_profile">Save Profile</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== FULL-SCREEN AUTH & LOGIN OVERLAY ==================== -->
+  <div class="auth-overlay" id="authOverlay">
+    <!-- Ambient Background Mesh Lights for Login -->
+    <div class="mesh-orb mesh-blue"></div>
+    <div class="mesh-orb mesh-purple"></div>
+    <div class="mesh-orb mesh-emerald"></div>
+
+    <div class="login-card">
+      <div class="login-brand">
+        <div class="login-brand-icon">
+          <i class="fa-solid fa-dharmachakra"></i>
+        </div>
+        <h2>PROJECT 3 WHEEL</h2>
+        <p data-i18n="auth_tagline">Electric Rickshaw Fleet Hub & Financial Ledger</p>
+      </div>
+
+      <div class="role-tab-group">
+        <button type="button" class="role-tab-btn active" id="authRoleOwner" onclick="selectAuthRole('owner')">
+          <i class="fa-solid fa-crown"></i> <span data-i18n="role_owner">Fleet Owner</span>
+        </button>
+        <button type="button" class="role-tab-btn" id="authRoleManager" onclick="selectAuthRole('manager')">
+          <i class="fa-solid fa-user-tie"></i> <span data-i18n="role_manager">Garage Manager</span>
+        </button>
+      </div>
+
+      <form class="auth-form" id="loginForm" onsubmit="submitLogin(event)">
+        <div class="auth-form-group">
+          <label data-i18n="lbl_email_or_phone">Email or Mobile Number</label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="text" class="auth-input" id="authIdentifier" placeholder="e.g. owner@project3wheel.com" required>
+          </div>
+        </div>
+
+        <div class="auth-form-group">
+          <label data-i18n="lbl_password">Security Password / PIN</label>
+          <div class="input-icon-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" class="auth-input" id="authPassword" placeholder="••••••••" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 10px; padding: 12px; font-size: 13px;">
+          <i class="fa-solid fa-right-to-bracket"></i> <span data-i18n="btn_sign_in">Sign In to Fleet Hub</span>
+        </button>
+      </form>
+
+      <div class="auth-demo-hint">
+        <span>Default Owner: <strong>owner@project3wheel.com</strong></span>
+        <span>PIN: <strong>admin123</strong></span>
       </div>
     </div>
   </div>

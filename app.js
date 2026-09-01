@@ -1,49 +1,34 @@
 /* =========================================================
    PROJECT 3 WHEEL - LIQUID GLASS REAL-TIME DYNAMIC ENGINE
-   Clean Vector UI, In-Theme Calendar & Interactive Joma Tracker
+   Authentication, User Profile Management & Real Assigned Data
    ========================================================= */
 
 const todayIso = new Date().toISOString().split('T')[0];
 
+// Clean Real Assigned Initial State (Clean Fleet & Clean Ledgers)
 const defaultRickshaws = [
   { id: 'R-01', model: 'Mishuk Classic 48V', rate: 350, status: 'active', driverId: 'D-101' },
   { id: 'R-02', model: 'Speedy Eco 60V', rate: 350, status: 'active', driverId: 'D-102' },
-  { id: 'R-03', model: 'Mishuk Classic 48V', rate: 350, status: 'active', driverId: 'D-103' },
-  { id: 'R-04', model: 'Runner Turbo 48V', rate: 350, status: 'maintenance', driverId: null },
-  { id: 'R-05', model: 'GreenWheels Pro 60V', rate: 380, status: 'active', driverId: 'D-104' },
-  { id: 'R-06', model: 'Mishuk Classic 48V', rate: 350, status: 'active', driverId: 'D-105' },
-  { id: 'R-07', model: 'Mishuk Classic 48V', rate: 350, status: 'active', driverId: 'D-106' },
-  { id: 'R-08', model: 'Speedy Eco 60V', rate: 350, status: 'maintenance', driverId: null },
-  { id: 'R-09', model: 'Mishuk Classic 48V', rate: 350, status: 'active', driverId: 'D-107' },
-  { id: 'R-10', model: 'Speedy Heavy Duty 72V', rate: 400, status: 'active', driverId: 'D-108' },
+  { id: 'R-03', model: 'Runner Turbo 48V', rate: 350, status: 'maintenance', driverId: null },
 ];
 
 const defaultDrivers = [
-  { id: 'D-101', name: 'Karim Ullah', phone: '01711223344', nid: '19882691234567890', agreedDailyRate: 350, due: 0, activeRickshaw: 'R-01', address: 'Mirpur-10, Dhaka', joinDate: '2026-01-15' },
-  { id: 'D-102', name: 'Rafiqul Islam', phone: '01812345678', nid: '19922699876543210', agreedDailyRate: 350, due: 700, activeRickshaw: 'R-02', address: 'Kalyanpur, Dhaka', joinDate: '2026-02-01' },
-  { id: 'D-103', name: 'Abul Hossain', phone: '01919876543', nid: '19852694561237890', agreedDailyRate: 350, due: 350, activeRickshaw: 'R-03', address: 'Gabtoli, Dhaka', joinDate: '2026-02-20' },
-  { id: 'D-104', name: 'Md. Shahjahan', phone: '01615554433', nid: '19902693214569870', agreedDailyRate: 380, due: 1050, activeRickshaw: 'R-05', address: 'Mohammadpur, Dhaka', joinDate: '2026-03-10' },
-  { id: 'D-105', name: 'Sattar Bepari', phone: '01718889900', nid: '19832696547891230', agreedDailyRate: 350, due: 0, activeRickshaw: 'R-06', address: 'Badda, Dhaka', joinDate: '2026-04-05' },
-  { id: 'D-106', name: 'Billal Majhi', phone: '01512223344', nid: '19942697894561230', agreedDailyRate: 350, due: 1400, activeRickshaw: 'R-07', address: 'Tejgaon, Dhaka', joinDate: '2026-05-12' },
-  { id: 'D-107', name: 'Jasim Shikdar', phone: '01314445566', nid: '19912691472583690', agreedDailyRate: 350, due: 0, activeRickshaw: 'R-09', address: 'Uttara, Dhaka', joinDate: '2026-06-01' },
-  { id: 'D-108', name: 'Mokbul Sardar', phone: '01817778899', nid: '19872693692581470', agreedDailyRate: 400, due: 400, activeRickshaw: 'R-10', address: 'Kazipara, Dhaka', joinDate: '2026-07-18' },
+  { id: 'D-101', name: 'Karim Ullah', phone: '01711223344', nid: '19882691234567890', agreedDailyRate: 350, due: 0, activeRickshaw: 'R-01', address: 'Mirpur-10, Dhaka', joinDate: todayIso },
+  { id: 'D-102', name: 'Rafiqul Islam', phone: '01812345678', nid: '19922699876543210', agreedDailyRate: 350, due: 0, activeRickshaw: 'R-02', address: 'Kalyanpur, Dhaka', joinDate: todayIso },
 ];
 
-const defaultCollections = [
-  { id: 'COL-01', time: '08:15 AM', date: todayIso, rickshawId: 'R-01', driverId: 'D-101', driverName: 'Karim Ullah', expected: 350, paid: 350, due: 0, garageRent: 100, status: 'paid', recordedBy: 'MGR-SELIM' },
-  { id: 'COL-02', time: '09:30 AM', date: todayIso, rickshawId: 'R-02', driverId: 'D-102', driverName: 'Rafiqul Islam', expected: 350, paid: 150, due: 200, garageRent: 100, status: 'due', recordedBy: 'MGR-SELIM' },
-  { id: 'COL-03', time: '10:05 AM', date: todayIso, rickshawId: 'R-03', driverId: 'D-103', driverName: 'Abul Hossain', expected: 350, paid: 350, due: 0, garageRent: 100, status: 'paid', recordedBy: 'MGR-SELIM' },
-  { id: 'COL-04', time: '11:00 AM', date: todayIso, rickshawId: 'R-05', driverId: 'D-104', driverName: 'Md. Shahjahan', expected: 380, paid: 0, due: 380, garageRent: 100, status: 'unpaid', recordedBy: 'MGR-SELIM' },
-  { id: 'COL-05', time: '11:45 AM', date: todayIso, rickshawId: 'R-06', driverId: 'D-105', driverName: 'Sattar Bepari', expected: 350, paid: 350, due: 0, garageRent: 100, status: 'paid', recordedBy: 'MGR-SELIM' },
-];
+// Clean empty state for collections and expenses (Only real-time assigned data logged by owner)
+const defaultCollections = [];
+const defaultExpenses = [];
 
-const defaultExpenses = [
-  { id: 'EXP-RENT-01', date: todayIso, category: 'rent', catName: 'Garage Rent & Power', amount: 500, note: 'Daily garage rent for 5 active rickshaws (৳100/unit)', recordedBy: 'SYSTEM-AUTO' },
-  { id: 'EXP-01', date: todayIso, category: 'parts', catName: 'Parts & Battery', amount: 1200, note: '2x Front Brake Shoes & Tube servicing for R-04', recordedBy: 'MGR-SELIM' },
-  { id: 'EXP-02', date: todayIso, category: 'mechanic', catName: 'Mechanic Labor', amount: 450, note: 'Master Ustad labor charge for R-08 axle repair', recordedBy: 'MGR-SELIM' },
-  { id: 'EXP-03', date: '2026-08-29', category: 'rent', catName: 'Garage Rent & Power', amount: 3500, note: 'Monthly electricity meter advance for charging station', recordedBy: 'OWNER-HABIB' },
-  { id: 'EXP-04', date: '2026-08-28', category: 'line_fee', catName: 'Line / Union Fee', amount: 500, note: 'Route union registration sticker for 5 units', recordedBy: 'MGR-SELIM' },
-];
+const defaultUserProfile = {
+  name: 'Habib Rahman',
+  garageName: 'Habib Electric Garage',
+  phone: '01711223344',
+  email: 'owner@project3wheel.com',
+  role: 'owner',
+  isAuthenticated: false
+};
 
 // --- Translations Dictionary (English & Bengali) ---
 const i18n = {
@@ -56,6 +41,19 @@ const i18n = {
     nav_gps: "GPS Telematics",
     badge_soon: "SOON",
     btn_switch_role: "Switch to Manager",
+    btn_logout: "Logout",
+    modal_profile_title: "User Profile & Garage Settings",
+    lbl_profile_name: "Full Name",
+    lbl_garage_title: "Garage / Fleet Title",
+    lbl_email: "Email Address",
+    lbl_role: "Active Role",
+    btn_save_profile: "Save Profile",
+    auth_tagline: "Electric Rickshaw Fleet Hub & Financial Ledger",
+    role_owner: "Fleet Owner",
+    role_manager: "Garage Manager",
+    lbl_email_or_phone: "Email or Mobile Number",
+    lbl_password: "Security Password / PIN",
+    btn_sign_in: "Sign In to Fleet Hub",
     page_title_dashboard: "Fleet Overview",
     page_subtitle_dashboard: "Real-time collections, garage rent, and net profit",
     cal_today: "Today",
@@ -193,6 +191,19 @@ const i18n = {
     nav_gps: "জিপিএস ট্র্যাকিং",
     badge_soon: "শীঘ্রই",
     btn_switch_role: "ম্যানেজার ভিউ",
+    btn_logout: "লগআউট",
+    modal_profile_title: "ইউজার প্রোফাইল ও গ্যারেজ সেটিংস",
+    lbl_profile_name: "পূর্ণ নাম",
+    lbl_garage_title: "গ্যারেজ / ফ্লিট নাম",
+    lbl_email: "ইমেইল অ্যাড্রেস",
+    lbl_role: "অ্যাক্টিভ রোল",
+    btn_save_profile: "প্রোফাইল সেভ করুন",
+    auth_tagline: "ইলেকট্রিক রিকশা ফ্লিট হাব ও আর্থিক লেজার",
+    role_owner: "ফ্লিট মালিক",
+    role_manager: "গ্যারেজ ম্যানেজার",
+    lbl_email_or_phone: "ইমেইল বা মোবাইল নম্বর",
+    lbl_password: "সিকিউরিটি পাসওয়ার্ড / পিন",
+    btn_sign_in: "লগইন করুন",
     page_title_dashboard: "ফ্লিট ওভারভিউ",
     page_subtitle_dashboard: "দৈনিক জমা, গ্যারেজ ভাড়া এবং প্রকৃত লাভের হিসাব",
     cal_today: "আজ",
@@ -327,7 +338,7 @@ const i18n = {
 function loadFromStorage(key, fallback) {
   try {
     const saved = localStorage.getItem('project_3_wheel_' + key);
-    return saved ? JSON.parse(saved) : fallback;
+    return saved !== null ? JSON.parse(saved) : fallback;
   } catch (e) {
     return fallback;
   }
@@ -342,8 +353,9 @@ function saveToStorage(key, data) {
 // --- App State ---
 let state = {
   lang: loadFromStorage('lang', 'en'),
-  currentUser: { name: 'Habib Rahman', role: 'owner' },
+  currentUser: loadFromStorage('user_profile', defaultUserProfile),
   isOnline: true,
+  selectedAuthRole: 'owner',
   selectedDateFilter: todayIso,
   calYear: new Date().getFullYear(),
   calMonth: new Date().getMonth(),
@@ -360,6 +372,7 @@ let state = {
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
   applyLanguage(state.lang);
+  checkAuthSession();
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.date-picker-wrapper')) {
@@ -371,12 +384,120 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAll();
 });
 
+// --- Authentication Engine ---
+function checkAuthSession() {
+  const authOverlay = document.getElementById('authOverlay');
+  if (!authOverlay) return;
+
+  if (state.currentUser && state.currentUser.isAuthenticated) {
+    authOverlay.classList.add('hidden');
+    updateUserProfileDisplay();
+  } else {
+    authOverlay.classList.remove('hidden');
+  }
+}
+
+function selectAuthRole(role) {
+  state.selectedAuthRole = role;
+  document.getElementById('authRoleOwner')?.classList.toggle('active', role === 'owner');
+  document.getElementById('authRoleManager')?.classList.toggle('active', role === 'manager');
+
+  const idInput = document.getElementById('authIdentifier');
+  if (idInput && !idInput.value) {
+    idInput.value = role === 'owner' ? 'owner@project3wheel.com' : 'manager@project3wheel.com';
+    document.getElementById('authPassword').value = 'admin123';
+  }
+}
+
+function submitLogin(e) {
+  e.preventDefault();
+  const idVal = document.getElementById('authIdentifier').value.trim();
+  const passVal = document.getElementById('authPassword').value.trim();
+
+  if (!idVal || !passVal) {
+    alert('Please enter credentials');
+    return;
+  }
+
+  // Set logged in profile
+  const role = state.selectedAuthRole || 'owner';
+  state.currentUser = {
+    name: role === 'owner' ? (state.currentUser.name || 'Habib Rahman') : 'Selim Mia',
+    garageName: state.currentUser.garageName || 'Habib Electric Garage',
+    phone: state.currentUser.phone || (role === 'owner' ? '01711223344' : '01812345678'),
+    email: idVal.includes('@') ? idVal : `${idVal}@project3wheel.com`,
+    role: role,
+    isAuthenticated: true
+  };
+
+  saveToStorage('user_profile', state.currentUser);
+  checkAuthSession();
+  renderAll();
+  showToast(state.lang === 'bn' ? `স্বাগতম, ${state.currentUser.name}!` : `Welcome back, ${state.currentUser.name}!`, 'emerald');
+}
+
+function logoutUser() {
+  if (!confirm(state.lang === 'bn' ? 'আপনি কি নিশ্চিত যে লগআউট করতে চান?' : 'Are you sure you want to log out?')) return;
+  state.currentUser.isAuthenticated = false;
+  saveToStorage('user_profile', state.currentUser);
+  checkAuthSession();
+  showToast(state.lang === 'bn' ? 'সফলভাবে লগআউট হয়েছেন' : 'Logged out successfully', 'amber');
+}
+
+// --- Profile Management & Edit Engine ---
+function openUserProfileModal() {
+  document.getElementById('profileFullName').value = state.currentUser.name || 'Habib Rahman';
+  document.getElementById('profileGarageName').value = state.currentUser.garageName || 'Habib Electric Garage';
+  document.getElementById('profilePhone').value = state.currentUser.phone || '01711223344';
+  document.getElementById('profileEmail').value = state.currentUser.email || 'owner@project3wheel.com';
+  document.getElementById('profileRole').value = state.currentUser.role || 'owner';
+  document.getElementById('profileAvatarLarge').textContent = (state.currentUser.name || 'H')[0].toUpperCase();
+
+  openModal('userProfileModal');
+}
+
+function saveUserProfile(e) {
+  e.preventDefault();
+  state.currentUser.name = document.getElementById('profileFullName').value.trim();
+  state.currentUser.garageName = document.getElementById('profileGarageName').value.trim();
+  state.currentUser.phone = document.getElementById('profilePhone').value.trim();
+  state.currentUser.email = document.getElementById('profileEmail').value.trim();
+  state.currentUser.role = document.getElementById('profileRole').value;
+
+  saveToStorage('user_profile', state.currentUser);
+  closeModal('userProfileModal');
+  updateUserProfileDisplay();
+  renderAll();
+  showToast(state.lang === 'bn' ? 'প্রোফাইল সফলভাবে আপডেট হয়েছে!' : 'Profile updated successfully!', 'emerald');
+}
+
+function updateUserProfileDisplay() {
+  const name = state.currentUser.name || 'Habib Rahman';
+  const role = state.currentUser.role || 'owner';
+
+  document.getElementById('userName').textContent = name;
+  document.getElementById('userAvatar').textContent = name[0].toUpperCase();
+  const roleBadge = document.getElementById('userRoleBadge');
+  if (roleBadge) {
+    roleBadge.textContent = role.toUpperCase();
+    roleBadge.className = `badge-pill ${role === 'owner' ? 'badge-blue' : 'badge-amber'}`;
+  }
+
+  const roleSwitchText = document.getElementById('roleSwitchText');
+  if (roleSwitchText) {
+    roleSwitchText.textContent = role === 'owner' 
+      ? (state.lang === 'bn' ? 'ম্যানেজার ভিউ' : 'Switch to Manager')
+      : (state.lang === 'bn' ? 'মালিক ভিউ' : 'Switch to Owner');
+  }
+}
+
 function renderAll() {
   saveToStorage('rickshaws', state.rickshaws);
   saveToStorage('drivers', state.drivers);
   saveToStorage('collections', state.collections);
   saveToStorage('expenses', state.expenses);
 
+  updateUserProfileDisplay();
   updateDateTriggerLabel();
   renderCustomCalendarGrid();
   updateMetrics();
@@ -607,16 +728,16 @@ function renderVelocityChart() {
   const totalRev = state.collections.reduce((sum, c) => sum + Number(c.paid || 0), 0);
   const totalExp = state.expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
 
-  const baseRev = Math.max(20, Math.min(100, Math.round(totalRev / 35)));
-  const baseExp = Math.max(15, Math.min(100, Math.round(totalExp / 40)));
+  const baseRev = Math.max(10, Math.min(100, Math.round(totalRev / 35)));
+  const baseExp = Math.max(10, Math.min(100, Math.round(totalExp / 40)));
 
   const revFactors = [0.7, 0.85, 0.75, 0.95, 0.9, 1.0, 0.65];
   const expFactors = [0.35, 0.25, 0.45, 0.35, 0.55, 0.2, 0.15];
 
   const container = document.getElementById('velocityBars');
   container.innerHTML = days.map((day, i) => {
-    const revH = Math.min(100, Math.round(baseRev * revFactors[i]));
-    const expH = Math.min(100, Math.round(baseExp * expFactors[i]));
+    const revH = totalRev > 0 ? Math.min(100, Math.round(baseRev * revFactors[i])) : 8;
+    const expH = totalExp > 0 ? Math.min(100, Math.round(baseExp * expFactors[i])) : 5;
 
     return `
       <div class="bar-column">
@@ -650,6 +771,11 @@ function renderTodayJomaTracker() {
 
   const targetDate = state.selectedDateFilter === 'all' ? todayIso : state.selectedDateFilter;
 
+  if (state.drivers.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-tertiary); padding: 24px;">${state.lang === 'bn' ? 'কোনো চালক নিবন্ধিত নেই।' : 'No drivers registered yet.'}</td></tr>`;
+    return;
+  }
+
   const rows = state.drivers.map(driver => {
     const rickshaw = state.rickshaws.find(r => r.id === driver.activeRickshaw) || { id: driver.activeRickshaw || 'Unassigned', rate: driver.agreedDailyRate || 350 };
     const agreedRate = driver.agreedDailyRate || rickshaw.rate || 350;
@@ -658,7 +784,7 @@ function renderTodayJomaTracker() {
 
     let currentStatus = existingCol ? existingCol.status : 'unpaid';
     let paidAmount = existingCol ? existingCol.paid : 0;
-    let dueAmount = existingCol ? existingCol.due : agreedRate;
+    let dueAmount = existingCol ? existingCol.due : (existingCol ? 0 : agreedRate);
 
     return `
       <tr>
@@ -734,7 +860,7 @@ function onTodayStatusChange(driverId, newStatus) {
         due: due,
         garageRent: 100,
         status: 'paid',
-        recordedBy: state.currentUser.name,
+        recordedBy: state.currentUser.name || 'Owner',
       });
     }
     showToast(state.lang === 'bn' ? `${driver.name}-এর জমা ৳${paid} পরিশোধিত করা হয়েছে` : `Marked ৳${paid} fully paid for ${driver.name}`, 'emerald');
@@ -760,7 +886,7 @@ function onTodayStatusChange(driverId, newStatus) {
         due: due,
         garageRent: 100,
         status: 'due',
-        recordedBy: state.currentUser.name,
+        recordedBy: state.currentUser.name || 'Owner',
       });
     }
     showToast(state.lang === 'bn' ? `${driver.name}-এর আংশিক জমা ৳${paid} (বাকি ৳${due})` : `Recorded partial deposit ৳${paid} for ${driver.name}`, 'amber');
@@ -786,7 +912,7 @@ function onTodayStatusChange(driverId, newStatus) {
         due: due,
         garageRent: 100,
         status: 'unpaid',
-        recordedBy: state.currentUser.name,
+        recordedBy: state.currentUser.name || 'Owner',
       });
     }
     showToast(state.lang === 'bn' ? `${driver.name}-এর জমা বাকি হিসেবে চিহ্নিত` : `Marked unpaid (due ৳${due}) for ${driver.name}`, 'crimson');
@@ -818,7 +944,7 @@ function renderCollectionsTable() {
   if (!tbody) return;
 
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: var(--text-tertiary); padding: 24px;">${state.lang === 'bn' ? 'কোনো জমার রেকর্ড পাওয়া যায়নি।' : 'No collection logs found.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; color: var(--text-tertiary); padding: 24px;">${state.lang === 'bn' ? 'কোনো জমার রেকর্ড নেই।' : 'No collection logs yet.'}</td></tr>`;
     return;
   }
 
@@ -857,7 +983,7 @@ function renderExpensesTable() {
   if (!tbody) return;
 
   if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-tertiary); padding: 24px;">${state.lang === 'bn' ? 'কোনো খরচের হিসাব পাওয়া যায়নি।' : 'No expense records logged.'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-tertiary); padding: 24px;">${state.lang === 'bn' ? 'কোনো খরচের হিসাব নেই।' : 'No expense records logged yet.'}</td></tr>`;
     return;
   }
 
@@ -1198,7 +1324,7 @@ function submitQuickCollection(e) {
     due: remainingDue,
     garageRent: 0,
     status: remainingDue === 0 ? 'paid' : 'due',
-    recordedBy: state.currentUser.name,
+    recordedBy: state.currentUser.name || 'Owner',
   };
 
   state.collections.unshift(newCol);
@@ -1293,7 +1419,7 @@ function submitCollection(e) {
     due: due,
     garageRent: garageRentAmount,
     status: status,
-    recordedBy: state.currentUser.name,
+    recordedBy: state.currentUser.name || 'Owner',
   };
 
   state.collections.unshift(newRecord);
@@ -1358,7 +1484,7 @@ function submitExpense(e) {
     catName: catNames[state.activeExpenseCat] || 'Other',
     amount: amt,
     note: note,
-    recordedBy: state.currentUser.name,
+    recordedBy: state.currentUser.name || 'Owner',
   };
 
   state.expenses.unshift(newExp);
@@ -1394,21 +1520,17 @@ function switchTab(tabId) {
 
 // --- Role Switcher ---
 function toggleRole() {
-  if (state.currentUser.role === 'owner') {
-    state.currentUser = { name: 'Selim Mia', role: 'manager' };
-    document.getElementById('userName').textContent = 'Selim Mia';
-    document.getElementById('userAvatar').textContent = 'S';
-    document.getElementById('userRoleBadge').textContent = 'MANAGER';
-    document.getElementById('userRoleBadge').className = 'badge-pill badge-amber';
-    showToast('Switched to Garage Manager View', 'amber');
+  const newRole = state.currentUser.role === 'owner' ? 'manager' : 'owner';
+  state.currentUser.role = newRole;
+  if (newRole === 'manager') {
+    state.currentUser.name = 'Selim Mia';
   } else {
-    state.currentUser = { name: 'Habib Rahman', role: 'owner' };
-    document.getElementById('userName').textContent = 'Habib Rahman';
-    document.getElementById('userAvatar').textContent = 'H';
-    document.getElementById('userRoleBadge').textContent = 'OWNER';
-    document.getElementById('userRoleBadge').className = 'badge-pill badge-blue';
-    showToast('Switched to Fleet Owner View', 'emerald');
+    state.currentUser.name = 'Habib Rahman';
   }
+  saveToStorage('user_profile', state.currentUser);
+  updateUserProfileDisplay();
+  renderAll();
+  showToast(newRole === 'manager' ? 'Switched to Garage Manager View' : 'Switched to Fleet Owner View', newRole === 'manager' ? 'amber' : 'emerald');
 }
 
 // --- Network Sim Toggle ---
@@ -1524,7 +1646,7 @@ function exportDailyCollectionsPdf() {
   doc.autoTable({
     startY: 36,
     head: [['Date/Time', 'Rickshaw', 'Driver Name', 'Target', 'Paid', 'Due', 'Garage Rent', 'Status']],
-    body: tableData,
+    body: tableData.length > 0 ? tableData : [['-', '-', 'No data recorded yet', '-', '-', '-', '-', '-']],
     theme: 'grid',
     headStyles: { fillColor: [20, 25, 35] },
   });
@@ -1580,7 +1702,7 @@ function exportFullExcel() {
     'Status': c.status.toUpperCase(),
     'Logged By': c.recordedBy,
   }));
-  const wsColl = XLSX.utils.json_to_sheet(collData);
+  const wsColl = XLSX.utils.json_to_sheet(collData.length > 0 ? collData : [{ 'Status': 'No logs yet' }]);
   XLSX.utils.book_append_sheet(wb, wsColl, 'Collections');
 
   const expData = state.expenses.map(e => ({
@@ -1590,7 +1712,7 @@ function exportFullExcel() {
     'Description': e.note,
     'Logged By': e.recordedBy,
   }));
-  const wsExp = XLSX.utils.json_to_sheet(expData);
+  const wsExp = XLSX.utils.json_to_sheet(expData.length > 0 ? expData : [{ 'Status': 'No expenses yet' }]);
   XLSX.utils.book_append_sheet(wb, wsExp, 'Expenses');
 
   const driverData = state.drivers.map(d => ({

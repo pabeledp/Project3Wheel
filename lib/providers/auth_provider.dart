@@ -31,6 +31,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
               role: UserRole.owner,
               phone: '01710001122',
             ),
+            isAuthenticated: false,
           ),
         );
 
