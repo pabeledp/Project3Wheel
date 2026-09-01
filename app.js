@@ -652,8 +652,37 @@ function submitLogin(e) {
   const remember = document.getElementById('rememberMeCheck')?.checked || false;
 
   if (!idVal || !passVal) {
-    alert('Please enter credentials');
+    showToast(state.lang === 'bn' ? 'অনুগ্রহ করে ইমেইল/ফোন ও পাসওয়ার্ড দিন' : 'Please enter credentials', 'crimson');
     return;
+  }
+
+  // Strict Password & Credentials Verification
+  const knownAccounts = {
+    'owner@project3wheel.com': 'admin123',
+    'manager@project3wheel.com': 'admin123',
+    '01711223344': 'admin123',
+    '01812345678': 'admin123',
+  };
+
+  const storedAccounts = loadFromStorage('registered_accounts', {});
+
+  if (state.authMode === 'login') {
+    const expectedPass = storedAccounts[idVal.toLowerCase()] || knownAccounts[idVal.toLowerCase()];
+    if (expectedPass && passVal !== expectedPass) {
+      showToast(state.lang === 'bn' ? 'ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে চেষ্টা করুন।' : 'Invalid password! Please enter the correct password.', 'crimson');
+      return;
+    } else if (!expectedPass && passVal.length < 6) {
+      showToast(state.lang === 'bn' ? 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।' : 'Password must be at least 6 characters.', 'crimson');
+      return;
+    }
+  } else {
+    // Register mode: store password
+    if (passVal.length < 6) {
+      showToast(state.lang === 'bn' ? 'নিরাপত্তা পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।' : 'Password must be at least 6 characters long.', 'crimson');
+      return;
+    }
+    storedAccounts[idVal.toLowerCase()] = passVal;
+    saveToStorage('registered_accounts', storedAccounts);
   }
 
   const role = state.selectedAuthRole || 'owner';

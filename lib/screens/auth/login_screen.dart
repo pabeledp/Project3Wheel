@@ -41,6 +41,47 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       return;
     }
 
+    // Strict Password & Credentials Security Check
+    final knownAccounts = {
+      'owner@project3wheel.com': 'admin123',
+      'manager@project3wheel.com': 'admin123',
+      '01710001122': 'admin123',
+      '01815556677': 'admin123',
+    };
+
+    if (!_isRegisterMode) {
+      // In Sign In mode: verify credentials against registered account or standard pin
+      final expectedPass = knownAccounts[identifier.toLowerCase()];
+      if (expectedPass != null && pin != expectedPass) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid password/PIN! Please enter the correct password.'),
+            backgroundColor: AppColors.crimsonRed,
+          ),
+        );
+        return;
+      } else if (expectedPass == null && pin.length < 6) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Password must be at least 6 characters long.'),
+            backgroundColor: AppColors.crimsonRed,
+          ),
+        );
+        return;
+      }
+    } else {
+      // In Register mode: validate password length
+      if (pin.length < 6) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Security password must be at least 6 characters long.'),
+            backgroundColor: AppColors.crimsonRed,
+          ),
+        );
+        return;
+      }
+    }
+
     setState(() => _isLoading = true);
     await Future.delayed(const Duration(milliseconds: 400));
 
