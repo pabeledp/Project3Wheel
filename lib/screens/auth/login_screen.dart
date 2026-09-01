@@ -77,24 +77,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 // Glowing Rickshaw Brand Icon
                 Container(
-                  width: 76,
-                  height: 76,
+                  width: 84,
+                  height: 84,
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    gradient: AppColors.primaryGradient,
+                    color: AppColors.backgroundElevated,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primaryBlue.withOpacity(0.5),
+                        color: AppColors.primaryBlue.withOpacity(0.4),
                         blurRadius: 32,
                         spreadRadius: 4,
                       ),
                     ],
-                    border: Border.all(color: Colors.white.withOpacity(0.4), width: 2),
+                    border: Border.all(color: AppColors.primaryBlue.withOpacity(0.5), width: 2),
                   ),
-                  child: const Icon(
-                    Icons.electric_rickshaw,
-                    color: Colors.white,
-                    size: 40,
+                  child: Image.asset(
+                    'assets/icons/app_logo_dark.png',
+                    fit: BoxFit.contain,
                   ),
                 ),
                 const SizedBox(height: 20),

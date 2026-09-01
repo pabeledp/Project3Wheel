@@ -46,11 +46,16 @@ class DriverIdCardDialog extends StatelessWidget {
                         Container(
                           width: 28,
                           height: 28,
+                          padding: const EdgeInsets.all(2),
                           decoration: BoxDecoration(
-                            gradient: AppColors.primaryGradient,
+                            color: AppColors.backgroundElevated,
                             borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: AppColors.primaryBlue.withOpacity(0.4)),
                           ),
-                          child: const Icon(Icons.electric_rickshaw, color: Colors.white, size: 16),
+                          child: Image.asset(
+                            'assets/icons/app_logo_dark.png',
+                            fit: BoxFit.contain,
+                          ),
                         ),
                         const SizedBox(width: 8),
                         Expanded(

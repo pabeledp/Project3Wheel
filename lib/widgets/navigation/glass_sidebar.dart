@@ -54,21 +54,22 @@ class GlassSidebar extends StatelessWidget {
                     Container(
                       width: 42,
                       height: 42,
+                      padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                        gradient: AppColors.primaryGradient,
+                        color: AppColors.backgroundElevated,
                         borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: AppColors.primaryBlue.withOpacity(0.4)),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primaryBlue.withOpacity(0.4),
+                            color: AppColors.primaryBlue.withOpacity(0.3),
                             blurRadius: 16,
                             offset: const Offset(0, 4),
                           ),
                         ],
                       ),
-                      child: const Icon(
-                        Icons.electric_rickshaw,
-                        color: Colors.white,
-                        size: 24,
+                      child: Image.asset(
+                        'assets/icons/app_logo_dark.png',
+                        fit: BoxFit.contain,
                       ),
                     ),
                     const SizedBox(width: 12),
