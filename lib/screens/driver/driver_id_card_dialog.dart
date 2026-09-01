@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../models/driver_model.dart';
+import '../../providers/auth_provider.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
 import '../../widgets/glass/glass_button.dart';
 
-class DriverIdCardDialog extends StatelessWidget {
+class DriverIdCardDialog extends ConsumerWidget {
   final DriverModel driver;
 
   const DriverIdCardDialog({super.key, required this.driver});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authProvider).currentUser;
+    final hubName = user.garageName.isNotEmpty ? user.garageName.toUpperCase() : 'CENTRAL FLEET HUB';
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -137,8 +141,8 @@ class DriverIdCardDialog extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'HUB: HABIB ELECTRIC GARAGE',
-                          style: TextStyle(fontSize: 7, color: AppColors.textTertiary, fontWeight: FontWeight.w600),
+                          'HUB: $hubName',
+                          style: const TextStyle(fontSize: 7, color: AppColors.textTertiary, fontWeight: FontWeight.w600),
                         ),
                         Text(
                           'QR VERIFIED PILOT',

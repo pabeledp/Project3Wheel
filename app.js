@@ -774,14 +774,14 @@ function openUserProfileModal() {
   const roleSelect = document.getElementById('profileRole');
   const avatarLarge = document.getElementById('profileAvatarLarge');
 
-  if (nameInput) nameInput.value = state.currentUser.name || 'Habib Rahman';
-  if (garageInput) garageInput.value = state.currentUser.garageName || 'Habib Electric Garage';
-  if (phoneInput) phoneInput.value = state.currentUser.phone || '01711223344';
-  if (emailInput) emailInput.value = state.currentUser.email || 'owner@project3wheel.com';
+  if (nameInput) nameInput.value = state.currentUser.name || '';
+  if (garageInput) garageInput.value = state.currentUser.garageName || 'My Electric Garage';
+  if (phoneInput) phoneInput.value = state.currentUser.phone || '';
+  if (emailInput) emailInput.value = state.currentUser.email || '';
   if (roleSelect) roleSelect.value = state.currentUser.role || 'owner';
   const langSelect = document.getElementById('profileLanguage');
   if (langSelect) langSelect.value = state.lang || 'en';
-  if (avatarLarge) avatarLarge.textContent = (state.currentUser.name || 'H')[0].toUpperCase();
+  if (avatarLarge) avatarLarge.textContent = (state.currentUser.name || 'U')[0].toUpperCase();
 
   openModal('userProfileModal');
 }
@@ -2342,6 +2342,11 @@ function openDriverIdCardModal(driverId) {
   document.getElementById('idCardDriverPhone').textContent = driver.phone;
   document.getElementById('idCardDriverRickshaw').textContent = driver.activeRickshaw || 'Unassigned';
   document.getElementById('idCardDriverNid').textContent = driver.nid;
+
+  const garageEl = document.getElementById('idCardGarageHub');
+  if (garageEl) {
+    garageEl.textContent = `HUB: ${(state.currentUser.garageName || 'My Electric Garage').toUpperCase()}`;
+  }
 
   // Generate Real Dynamic QR Code image for the driver & assigned rickshaw
   const qrData = `DRIVER:${driver.name}|ID:${driver.id}|UNIT:${driver.activeRickshaw || 'NONE'}|PHONE:${driver.phone}|NID:${driver.nid}`;

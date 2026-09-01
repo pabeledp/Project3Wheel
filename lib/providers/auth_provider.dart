@@ -26,43 +26,49 @@ class AuthNotifier extends StateNotifier<AuthState> {
       : super(
           const AuthState(
             currentUser: UserModel(
-              uid: 'OWNER-001',
-              name: 'Habib Rahman',
+              uid: '',
+              name: '',
+              garageName: 'My Electric Garage',
               role: UserRole.owner,
-              phone: '01710001122',
+              phone: '',
             ),
             isAuthenticated: false,
           ),
         );
 
   void switchRole(UserRole role) {
-    if (role == UserRole.owner) {
-      state = state.copyWith(
-        currentUser: const UserModel(
-          uid: 'OWNER-001',
-          name: 'Habib Rahman',
-          role: UserRole.owner,
-          phone: '01710001122',
-        ),
-      );
-    } else {
-      state = state.copyWith(
-        currentUser: const UserModel(
-          uid: 'MGR-SELIM',
-          name: 'Selim Mia',
-          role: UserRole.manager,
-          phone: '01815556677',
-        ),
-      );
-    }
+    state = state.copyWith(
+      currentUser: state.currentUser.copyWith(role: role),
+    );
   }
 
   void setUser(UserModel user) {
-    state = state.copyWith(currentUser: user, isAuthenticated: true);
+    state = state.copyWith(
+      currentUser: user,
+      isAuthenticated: true,
+    );
+  }
+
+  void updateProfile({required String name, required String garageName, required String phone}) {
+    final updated = state.currentUser.copyWith(
+      name: name,
+      garageName: garageName,
+      phone: phone,
+    );
+    state = state.copyWith(currentUser: updated);
   }
 
   void signOut() {
-    state = state.copyWith(isAuthenticated: false);
+    state = state.copyWith(
+      currentUser: const UserModel(
+        uid: '',
+        name: '',
+        garageName: '',
+        role: UserRole.owner,
+        phone: '',
+      ),
+      isAuthenticated: false,
+    );
   }
 }
 

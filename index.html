@@ -1166,27 +1166,27 @@
         <button class="close-btn" onclick="closeModal('userProfileModal')">&times;</button>
       </div>
 
-      <div class="profile-avatar-large" id="profileAvatarLarge">H</div>
+      <div class="profile-avatar-large" id="profileAvatarLarge">U</div>
 
       <form id="userProfileForm" onsubmit="saveUserProfile(event)">
         <div class="form-group">
           <label data-i18n="lbl_profile_name">Full Name</label>
-          <input type="text" class="glass-input" id="profileFullName" value="Habib Rahman" required>
+          <input type="text" class="glass-input" id="profileFullName" placeholder="Enter your full name" required>
         </div>
 
         <div class="form-group">
           <label data-i18n="lbl_garage_title">Garage / Fleet Title</label>
-          <input type="text" class="glass-input" id="profileGarageName" value="Habib Electric Garage" required>
+          <input type="text" class="glass-input" id="profileGarageName" placeholder="e.g. My Electric Garage" required>
         </div>
 
         <div class="form-group">
           <label data-i18n="lbl_phone">Mobile Number</label>
-          <input type="tel" class="glass-input" id="profilePhone" value="01711223344" required>
+          <input type="tel" class="glass-input" id="profilePhone" placeholder="017xxxxxxxx">
         </div>
 
         <div class="form-group">
           <label data-i18n="lbl_email">Email Address</label>
-          <input type="email" class="glass-input" id="profileEmail" value="owner@project3wheel.com" required>
+          <input type="email" class="glass-input" id="profileEmail" placeholder="name@example.com" required>
         </div>
 
         <div class="form-group">
@@ -1307,7 +1307,7 @@
         </div>
 
         <div class="id-card-footer">
-          <span>HUB: HABIB ELECTRIC GARAGE</span>
+          <span id="idCardGarageHub">HUB: MY ELECTRIC GARAGE</span>
           <span>QR VERIFIED PILOT</span>
         </div>
       </div>

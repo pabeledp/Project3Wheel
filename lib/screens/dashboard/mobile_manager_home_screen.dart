@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_typography.dart';
 import '../../core/utils/currency_formatter.dart';
+import '../../models/user_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/fleet_provider.dart';
 import '../../providers/collection_provider.dart';
@@ -11,6 +13,8 @@ import '../../providers/sync_provider.dart';
 import '../../widgets/glass/liquid_glass_container.dart';
 import '../../widgets/glass/glass_metric_card.dart';
 import '../../widgets/glass/glass_pill_badge.dart';
+import '../../widgets/glass/glass_button.dart';
+import '../../widgets/glass/glass_text_field.dart';
 import '../scanner/qr_scanner_screen.dart';
 import '../collection/daily_collection_form_screen.dart';
 import '../expense/add_expense_screen.dart';
@@ -38,31 +42,55 @@ class MobileManagerHomeScreen extends ConsumerWidget {
             elevation: 0,
             floating: false,
             pinned: true,
-            title: Row(
-              children: [
-                CircleAvatar(
-                  radius: 18,
-                  backgroundColor: AppColors.primaryBlue.withOpacity(0.3),
-                  child: Text(
-                    currentUser.name[0],
-                    style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            title: GestureDetector(
+              onTap: () {
+                _showMobileEditProfileDialog(context, ref, currentUser);
+              },
+              child: Row(
+                children: [
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      CircleAvatar(
+                        radius: 18,
+                        backgroundColor: AppColors.primaryBlue.withOpacity(0.35),
+                        child: Text(
+                          currentUser.name.isNotEmpty ? currentUser.name[0].toUpperCase() : 'U',
+                          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.primaryBlue,
+                        ),
+                        child: const Icon(Icons.edit, size: 8, color: Colors.white),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      currentUser.name,
-                      style: AppTypography.titleSmall,
-                    ),
-                    Text(
-                      currentUser.roleDisplayName,
-                      style: AppTypography.bodySmall.copyWith(color: AppColors.electricAmber, fontSize: 10),
-                    ),
-                  ],
-                ),
-              ],
+                  const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            currentUser.name.isNotEmpty ? currentUser.name : 'Fleet User',
+                            style: AppTypography.titleSmall,
+                          ),
+                          const SizedBox(width: 4),
+                          const Icon(Icons.edit_outlined, size: 12, color: AppColors.primaryBlue),
+                        ],
+                      ),
+                      Text(
+                        currentUser.garageName.isNotEmpty ? currentUser.garageName : currentUser.roleDisplayName,
+                        style: AppTypography.bodySmall.copyWith(color: AppColors.electricAmber, fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             actions: [
               // Online / Offline Sync Orb
@@ -313,6 +341,133 @@ class MobileManagerHomeScreen extends ConsumerWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  void _showMobileEditProfileDialog(BuildContext context, WidgetRef ref, UserModel user) {
+    final nameController = TextEditingController(text: user.name);
+    final garageController = TextEditingController(text: user.garageName.isNotEmpty ? user.garageName : 'My Electric Garage');
+    final phoneController = TextEditingController(text: user.phone);
+
+    showDialog(
+      context: context,
+      builder: (dialogCtx) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 440),
+          child: LiquidGlassContainer(
+            padding: const EdgeInsets.all(22),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryBlue.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(Icons.manage_accounts_rounded, color: AppColors.primaryBlue, size: 20),
+                          ),
+                          const SizedBox(width: 10),
+                          Text('Edit Profile & Garage', style: AppTypography.titleMedium),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white70),
+                        onPressed: () => Navigator.pop(dialogCtx),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
+                  GlassTextField(
+                    controller: nameController,
+                    labelText: 'Full Name',
+                    hintText: 'Enter full name',
+                    prefixIcon: Icons.person_outline,
+                  ),
+                  const SizedBox(height: 14),
+                  GlassTextField(
+                    controller: garageController,
+                    labelText: 'Garage / Fleet Name',
+                    hintText: 'e.g. Dhaka Express Fleet Hub',
+                    prefixIcon: Icons.warehouse_outlined,
+                  ),
+                  const SizedBox(height: 14),
+                  GlassTextField(
+                    controller: phoneController,
+                    labelText: 'Mobile Number',
+                    hintText: '017xxxxxxxx',
+                    prefixIcon: Icons.phone_outlined,
+                    keyboardType: TextInputType.phone,
+                  ),
+                  const SizedBox(height: 22),
+                  GlassButton(
+                    text: 'Save Changes',
+                    icon: Icons.save_rounded,
+                    variant: GlassButtonVariant.primary,
+                    onPressed: () async {
+                      final newName = nameController.text.trim();
+                      final newGarage = garageController.text.trim();
+                      final newPhone = phoneController.text.trim();
+
+                      if (newName.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please enter your name'), backgroundColor: AppColors.crimsonRed),
+                        );
+                        return;
+                      }
+
+                      final updated = user.copyWith(
+                        name: newName,
+                        garageName: newGarage.isNotEmpty ? newGarage : 'My Electric Garage',
+                        phone: newPhone,
+                      );
+
+                      ref.read(authProvider.notifier).setUser(updated);
+
+                      // Sync update to Cloud Firestore
+                      try {
+                        final email = user.phone.contains('@') ? user.phone : '${user.uid}@project3wheel.com';
+                        final docKey = email.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '_');
+                        await FirebaseFirestore.instance.collection('fleet_accounts').doc(docKey).set({
+                          'userProfile': {
+                            'name': newName,
+                            'garageName': newGarage,
+                            'phone': newPhone,
+                            'email': email,
+                            'role': user.isOwner ? 'owner' : 'manager',
+                          },
+                          'updatedAt': DateTime.now().toIso8601String(),
+                        }, SetOptions(merge: true));
+                      } catch (e) {
+                        debugPrint('Firestore profile update note: $e');
+                      }
+
+                      if (context.mounted) Navigator.pop(dialogCtx);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Profile and Garage Name updated across app!'),
+                            backgroundColor: AppColors.emeraldGreen,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

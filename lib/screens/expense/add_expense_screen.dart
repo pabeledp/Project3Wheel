@@ -76,6 +76,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authProvider).currentUser;
     return LiquidGlassBackgroundScaffold(
       appBar: AppBar(
         title: Text('Record Garage Expense', style: AppTypography.titleMedium),
@@ -171,13 +172,13 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                             dropdownColor: const Color(0xFF141A26),
                             style: const TextStyle(color: Colors.white, fontSize: 13),
                             icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.primaryBlue),
-                            items: const [
-                              DropdownMenuItem(value: 'Habib Rahman (Owner)', child: Text('Habib Rahman (Owner)')),
-                              DropdownMenuItem(value: 'Selim Mia (Manager)', child: Text('Selim Mia (Manager)')),
-                              DropdownMenuItem(value: 'Garage Petty Cash', child: Text('Garage Petty Cash')),
-                              DropdownMenuItem(value: 'Al-Haj Moksed Ali (Partner)', child: Text('Al-Haj Moksed Ali (Partner)')),
+                            items: [
+                              DropdownMenuItem(value: '${user.name.isNotEmpty ? user.name : 'Owner'} (${user.roleDisplayName})', child: Text('${user.name.isNotEmpty ? user.name : 'Owner'} (${user.roleDisplayName})')),
+                              const DropdownMenuItem(value: 'Garage Petty Cash', child: Text('Garage Petty Cash')),
+                              const DropdownMenuItem(value: 'Fleet Fund', child: Text('Fleet Fund')),
+                              const DropdownMenuItem(value: 'Emergency Buffer', child: Text('Emergency Buffer')),
                             ],
-                            onChanged: (val) => setState(() => _spender = val ?? 'Habib Rahman (Owner)'),
+                            onChanged: (val) => setState(() => _spender = val ?? (user.name.isNotEmpty ? user.name : 'Owner')),
                           ),
                         ),
                       ),
