@@ -2388,3 +2388,129 @@ body.lang-bn {
     white-space: nowrap;
   }
 }
+
+/* =========================================================
+   COMPREHENSIVE MOBILE HEADER, MARGINS & PADDING POLISH
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .top-nav {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+
+  .nav-left {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .nav-right {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding-bottom: 2px !important;
+  }
+
+  .date-picker-wrapper {
+    flex-shrink: 1 !important;
+    min-width: 0 !important;
+  }
+
+  .glass-date-trigger {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+    max-width: 100% !important;
+  }
+
+  .glass-date-trigger span {
+    max-width: 90px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .lang-toggle-btn {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .sync-status-pill {
+    padding: 5px 9px !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .apps-launcher-wrapper {
+    flex-shrink: 0 !important;
+  }
+
+  .btn-apps-grid {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 13px !important;
+  }
+
+  /* Content area spacing */
+  .content-body {
+    padding: 12px 12px 90px !important;
+  }
+
+  /* Metrics grid */
+  .metrics-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .metric-card {
+    padding: 14px !important;
+    min-height: auto !important;
+  }
+
+  .metric-val {
+    font-size: 20px !important;
+    margin: 4px 0 !important;
+  }
+
+  /* Table Header and Actions */
+  .table-header-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .table-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .search-input-wrapper {
+    width: 100% !important;
+  }
+
+  .search-input-wrapper input {
+    width: 100% !important;
+  }
+
+  .glass-select-filter {
+    width: 100% !important;
+  }
+
+  .table-actions .btn-glass {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+}
