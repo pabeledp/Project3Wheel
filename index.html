@@ -106,7 +106,7 @@
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
 
   <div class="app-layout">
-    <!-- Translucent Glass Sidebar (Sticky & Stacked) -->
+    <!-- Translucent Glass Sidebar (Sticky & Collapsible) -->
     <aside class="glass-sidebar" id="sidebar">
       <div class="brand-header">
         <div class="brand-icon">
@@ -115,6 +115,9 @@
         <div class="brand-text">
           <h2>PROJECT 3 WHEEL</h2>
         </div>
+        <button class="sidebar-toggle-btn" onclick="toggleSidebarCollapse()" title="Hide/Expand Sidebar">
+          <i class="fa-solid fa-chevron-left" id="sidebarToggleIcon"></i>
+        </button>
       </div>
 
       <nav class="sidebar-nav">
@@ -148,21 +151,21 @@
           <span class="badge-pill badge-amber" data-i18n="badge_soon">SOON</span>
         </button>
 
-        <!-- Sidebar Quick Action Drawer / More Menu -->
+        <!-- Sidebar Quick Action Drawer -->
         <div class="sidebar-section-divider">
-          <span>QUICK ACTIONS</span>
+          <span data-i18n="quick_actions_header">QUICK ACTIONS</span>
         </div>
         <button class="nav-item" onclick="openModal('collectionModal')">
           <i class="fa-solid fa-hand-holding-dollar text-emerald"></i>
-          <span>New Deposit</span>
+          <span data-i18n="btn_new_deposit">New Deposit</span>
         </button>
         <button class="nav-item" onclick="openModal('expenseModal')">
           <i class="fa-solid fa-receipt text-crimson"></i>
-          <span>Track Expense</span>
+          <span data-i18n="btn_add_expense">Track Expense</span>
         </button>
         <button class="nav-item" onclick="openModal('addDriverModal')">
           <i class="fa-solid fa-user-plus text-amber"></i>
-          <span>Register Driver</span>
+          <span data-i18n="btn_add_new_driver">Register Driver</span>
         </button>
         <button class="nav-item" onclick="openModal('addRickshawModal')">
           <i class="fa-solid fa-van-shuttle text-blue"></i>
@@ -210,7 +213,7 @@
         </div>
 
         <div class="nav-right">
-          <!-- 100% In-Theme Custom Glass Calendar Picker (Clean Specular Glass Design) -->
+          <!-- 100% In-Theme Custom Glass Calendar Picker -->
           <div class="date-picker-wrapper">
             <button class="glass-date-trigger" onclick="toggleCustomCalendar()">
               <i class="fa-solid fa-calendar-days"></i>
@@ -251,7 +254,7 @@
           <!-- Live Sync Status Orb -->
           <div class="sync-status-pill" onclick="toggleNetworkSim()" id="syncPill" title="Toggle Online/Offline simulation">
             <span class="status-dot online" id="syncDot"></span>
-            <span id="syncText">Live Firestore</span>
+            <span id="syncText" data-i18n="sync_live_firestore">Live Firestore</span>
           </div>
 
           <!-- Google-Style 9-Dot Quick Apps Launcher Button -->
@@ -263,37 +266,37 @@
             <!-- Google-Style Glass 9-Dot Apps Popup Menu -->
             <div class="glass-apps-popup" id="appsPopup">
               <div class="apps-popup-header">
-                <span>Fleet Actions & Hub Tools</span>
+                <span data-i18n="apps_popup_title">Fleet Actions & Hub Tools</span>
               </div>
               <div class="apps-grid-cards">
                 <div class="app-card-item" onclick="openModalAndCloseApps('collectionModal')">
                   <div class="app-card-icon icon-emerald"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                  <span>Deposit</span>
+                  <span data-i18n="btn_deposit">Deposit</span>
                 </div>
                 <div class="app-card-item" onclick="openModalAndCloseApps('expenseModal')">
                   <div class="app-card-icon icon-crimson"><i class="fa-solid fa-receipt"></i></div>
-                  <span>Expense</span>
+                  <span data-i18n="btn_expense">Expense</span>
                 </div>
                 <div class="app-card-item" onclick="openModalAndCloseApps('addDriverModal')">
                   <div class="app-card-icon icon-amber"><i class="fa-solid fa-user-plus"></i></div>
-                  <span>Driver</span>
+                  <span data-i18n="btn_add_driver">Driver</span>
                 </div>
                 <div class="app-card-item" onclick="openModalAndCloseApps('addRickshawModal')">
                   <div class="app-card-icon icon-blue"><i class="fa-solid fa-van-shuttle"></i></div>
-                  <span>Rickshaws</span>
+                  <span data-i18n="btn_manage_rickshaws">Rickshaws</span>
                 </div>
                 <div class="app-card-item" onclick="openModalAndCloseApps('addShareholderModal')">
                   <div class="app-card-icon icon-purple"><i class="fa-solid fa-handshake"></i></div>
-                  <span>Shareholder</span>
+                  <span data-i18n="nav_shareholders">Shareholder</span>
                 </div>
                 <div class="app-card-item" onclick="openModalAndCloseApps('qrModal')">
                   <div class="app-card-icon icon-blue"><i class="fa-solid fa-qrcode"></i></div>
-                  <span>Scan QR</span>
+                  <span data-i18n="btn_scan_qr">Scan QR</span>
                 </div>
               </div>
               <div class="apps-popup-footer">
                 <a href="Project3Wheel-v1.0.0.apk" download="Project3Wheel-v1.0.0.apk" class="btn-download-app-banner">
-                  <i class="fa-brands fa-android"></i> Download Android APK
+                  <i class="fa-brands fa-android"></i> <span data-i18n="btn_download_apk">Download Android APK</span>
                 </a>
               </div>
             </div>
@@ -547,7 +550,7 @@
           </div>
         </section>
 
-        <!-- 4. DRIVER DIRECTORY & PROFILES VIEW -->
+        <!-- 4. DRIVER DIRECTORY & PROFILES VIEW (Spacious Clean Row) -->
         <section class="tab-pane" id="tab-drivers">
           <div class="glass-card">
             <div class="table-header-row">
@@ -559,7 +562,7 @@
                   <i class="fa-solid fa-magnifying-glass"></i>
                   <input type="text" id="driverSearch" placeholder="Search driver name, phone, NID..." oninput="renderDriversGrid()">
                 </div>
-                <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); cursor: pointer;">
+                <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); cursor: pointer; white-space: nowrap;">
                   <input type="checkbox" id="onlyDefaultersCheckbox" onchange="renderDriversGrid()">
                   <span data-i18n="chk_only_defaulters">Only Defaulters</span>
                 </label>
@@ -645,14 +648,23 @@
         <!-- 7. GPS TELEMATICS VIEW -->
         <section class="tab-pane" id="tab-gps">
           <div class="glass-card" style="text-align: center; padding: 60px 20px;">
-            <div class="gps-pulse-orb">
-              <i class="fa-solid fa-satellite-dish"></i>
+            <!-- Rotating Orbit Satellite System -->
+            <div class="gps-orbit-system">
+              <div class="gps-center-orb">
+                <i class="fa-solid fa-earth-americas"></i>
+              </div>
+              <div class="gps-orbit-ring">
+                <div class="gps-satellite">
+                  <i class="fa-solid fa-satellite"></i>
+                </div>
+              </div>
             </div>
-            <h2 style="font-size: 22px; font-weight: 700; margin: 20px 0 8px;" data-i18n="gps_title">GPS Fleet Tracking</h2>
+
+            <h2 style="font-size: 22px; font-weight: 700; margin: 16px 0 8px;" data-i18n="gps_title">GPS Fleet Tracking</h2>
             <p style="color: var(--text-secondary); max-width: 480px; margin: 0 auto 24px; font-size: 13px;" data-i18n="gps_desc">
               Real-time live location, speed monitoring, and telemetry will be available in the upcoming firmware release.
             </p>
-            <span class="badge-pill badge-blue" style="padding: 6px 16px; font-size: 12px;">Firmware v2.1 Connected</span>
+            <span class="badge-pill badge-blue" style="padding: 6px 16px; font-size: 12px;" data-i18n="badge_firmware_connected">Firmware v2.1 Connected</span>
           </div>
         </section>
 
@@ -968,7 +980,7 @@
       <!-- Add New Vehicle Form -->
       <form id="addRickshawForm" onsubmit="submitNewRickshaw(event)" style="background: rgba(255, 255, 255, 0.04); padding: 14px; border-radius: 12px; border: var(--specular-border-light); margin-bottom: 18px;">
         <h4 style="font-size: 13px; font-weight: 700; color: var(--blue-light); margin-bottom: 12px;">
-          <i class="fa-solid fa-plus-circle"></i> Add New Rickshaw
+          <i class="fa-solid fa-plus-circle"></i> <span data-i18n="btn_add_rickshaw">Add New Rickshaw</span>
         </h4>
         <div class="form-row" style="display: flex; gap: 8px;">
           <div class="form-group" style="flex: 1;">
@@ -994,7 +1006,7 @@
       <!-- Existing Rickshaws Fleet List with Delete Option -->
       <div>
         <h4 style="font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 10px;">
-          <i class="fa-solid fa-list-check"></i> Registered Fleet Units
+          <i class="fa-solid fa-list-check"></i> <span data-i18n="lbl_total_fleet">Registered Fleet Units</span>
         </h4>
         <div class="rickshaws-manage-list" id="rickshawsManageList" style="display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto;">
           <!-- Injected dynamically via JS -->
@@ -1127,12 +1139,12 @@
           <input type="tel" class="glass-input" id="newShareholderPhone" placeholder="017xxxxxxxx" required>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
+        <div class="form-row" style="display: flex; gap: 8px;">
+          <div class="form-group" style="flex: 1;">
             <label data-i18n="lbl_equity_share">Equity Share (%)</label>
             <input type="number" step="0.1" min="1" max="100" class="glass-input" id="newShareholderEquity" placeholder="25" required>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="flex: 1;">
             <label data-i18n="lbl_invested_amount">Invested Capital (৳)</label>
             <input type="number" class="glass-input" id="newShareholderInvestment" placeholder="500000" required>
           </div>
@@ -1147,6 +1159,59 @@
           <i class="fa-solid fa-check"></i> <span data-i18n="btn_save_shareholder">Register Shareholder</span>
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- 11. DRIVER ID CARD PREVIEW & DOWNLOAD MODAL -->
+  <div class="modal-backdrop" id="driverIdCardModal">
+    <div class="glass-modal-sheet" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-id-card text-blue"></i> <span data-i18n="modal_driver_id_title">Driver Smart ID Card</span></h3>
+        <button class="close-btn" onclick="closeModal('driverIdCardModal')">&times;</button>
+      </div>
+
+      <div id="driverIdCardPrintArea" class="driver-id-card-preview">
+        <div class="id-card-badge-chip" data-i18n="badge_official_pilot">OFFICIAL PILOT</div>
+        <div class="id-card-header">
+          <div class="brand-icon" style="width: 32px; height: 32px; font-size: 15px;">
+            <i class="fa-solid fa-dharmachakra"></i>
+          </div>
+          <div>
+            <h4 style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px;">PROJECT 3 WHEEL</h4>
+            <div style="font-size: 9px; color: var(--text-secondary);" data-i18n="id_card_subtitle">Electric Fleet Pilot Identification</div>
+          </div>
+        </div>
+
+        <div class="id-card-body">
+          <!-- QR Code Canvas Container -->
+          <div class="id-card-qr-box" id="idCardQrContainer">
+            <!-- QR Image injected via JS -->
+          </div>
+
+          <div class="id-card-info-grid">
+            <span style="font-size: 10px; color: var(--text-tertiary);" data-i18n="th_driver">Driver Name</span>
+            <strong id="idCardDriverName">Karim Ullah</strong>
+            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 4px;">
+              <div><strong>ID:</strong> <span id="idCardDriverId">D-101</span></div>
+              <div><strong data-i18n="th_phone">Phone:</strong> <span id="idCardDriverPhone">01711223344</span></div>
+              <div><strong data-i18n="th_rickshaw">Rickshaw:</strong> <span id="idCardDriverRickshaw" class="badge-pill badge-blue" style="font-size: 9px; padding: 2px 6px;">R-01</span></div>
+              <div><strong data-i18n="lbl_nid">NID:</strong> <span id="idCardDriverNid">19882691234567890</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.15); display: flex; justify-content: space-between; font-size: 9px; color: var(--text-tertiary);">
+          <span>Fleet Hub: Habib Electric Garage</span>
+          <span>Verified QR Enabled</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 18px;">
+        <button class="btn-glass btn-block" onclick="closeModal('driverIdCardModal')" style="flex: 1;" data-i18n="btn_cancel">Close</button>
+        <button class="btn-glass btn-primary btn-block" onclick="downloadDriverIdCardPdf()" style="flex: 2;">
+          <i class="fa-solid fa-download"></i> <span data-i18n="btn_download_id_pdf">Download ID PDF</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1181,56 +1246,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
-  <!-- 11. DRIVER ID CARD PREVIEW & DOWNLOAD MODAL -->
-  <div class="modal-backdrop" id="driverIdCardModal">
-    <div class="glass-modal-sheet" style="max-width: 440px;">
-      <div class="modal-header">
-        <h3><i class="fa-solid fa-id-card text-blue"></i> <span>Driver Smart ID Card</span></h3>
-        <button class="close-btn" onclick="closeModal('driverIdCardModal')">&times;</button>
-      </div>
-
-      <div id="driverIdCardPrintArea" class="driver-id-card-preview">
-        <div class="id-card-badge-chip">OFFICIAL PILOT</div>
-        <div class="id-card-header">
-          <div class="brand-icon" style="width: 32px; height: 32px; font-size: 15px;">
-            <i class="fa-solid fa-dharmachakra"></i>
-          </div>
-          <div>
-            <h4 style="font-size: 13px; font-weight: 800; letter-spacing: 0.5px;">PROJECT 3 WHEEL</h4>
-            <div style="font-size: 9px; color: var(--text-secondary);">Electric Fleet Pilot Identification</div>
-          </div>
-        </div>
-
-        <div class="id-card-body">
-          <!-- QR Code Canvas Container -->
-          <div class="id-card-qr-box" id="idCardQrContainer">
-            <!-- QR Image injected via JS -->
-          </div>
-
-          <div class="id-card-info-grid">
-            <span style="font-size: 10px; color: var(--text-tertiary);">Driver Name</span>
-            <strong id="idCardDriverName">Karim Ullah</strong>
-            <div style="font-size: 10px; color: var(--text-secondary); margin-top: 4px;">
-              <div><strong>ID:</strong> <span id="idCardDriverId">D-101</span></div>
-              <div><strong>Phone:</strong> <span id="idCardDriverPhone">01711223344</span></div>
-              <div><strong>Rickshaw:</strong> <span id="idCardDriverRickshaw" class="badge-pill badge-blue" style="font-size: 9px; padding: 2px 6px;">R-01</span></div>
-              <div><strong>NID:</strong> <span id="idCardDriverNid">19882691234567890</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top: 14px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.15); display: flex; justify-content: space-between; font-size: 9px; color: var(--text-tertiary);">
-          <span>Fleet Hub: Habib Electric Garage</span>
-          <span>Verified QR Enabled</span>
-        </div>
-      </div>
-
-      <div style="display: flex; gap: 10px; margin-top: 18px;">
-        <button class="btn-glass btn-block" onclick="closeModal('driverIdCardModal')" style="flex: 1;">Close</button>
-        <button class="btn-glass btn-primary btn-block" onclick="downloadDriverIdCardPdf()" style="flex: 2;">
-          <i class="fa-solid fa-download"></i> <span>Download ID PDF</span>
-        </button>
-      </div>
-    </div>
-  </div>

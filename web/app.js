@@ -205,6 +205,14 @@ const i18n = {
     lbl_recipient: "Recipient:",
     btn_cancel: "Cancel",
     btn_send_now: "Send Now",
+    quick_actions_header: "QUICK ACTIONS",
+    apps_popup_title: "Fleet Actions & Hub Tools",
+    modal_driver_id_title: "Driver Smart ID Card",
+    badge_official_pilot: "OFFICIAL PILOT",
+    id_card_subtitle: "Electric Fleet Pilot Identification",
+    btn_download_id_pdf: "Download ID PDF",
+    badge_firmware_connected: "Firmware v2.1 Connected",
+    sync_live_firestore: "Live Firestore",
   },
   bn: {
     nav_dashboard: "ড্যাশবোর্ড",
@@ -217,6 +225,14 @@ const i18n = {
     badge_soon: "শীঘ্রই",
     btn_switch_role: "ম্যানেজার ভিউ",
     btn_logout: "লগআউট",
+    quick_actions_header: "কুইক অ্যাকশন",
+    apps_popup_title: "ফ্লিট অ্যাকশন ও হাব মেনু",
+    modal_driver_id_title: "ড্রাইভার স্মার্ট আইডি কার্ড",
+    badge_official_pilot: "অনুমোদিত চালক",
+    id_card_subtitle: "ইলেকট্রিক ফ্লিট চালক পরিচিতিপত্র",
+    btn_download_id_pdf: "আইডি কার্ড ডাউনলোড",
+    badge_firmware_connected: "ফার্মওয়্যার v2.1 কানেক্টেড",
+    sync_live_firestore: "লাইভ ফায়ারবেস",
     modal_profile_title: "ইউজার প্রোফাইল ও গ্যারেজ সেটিংস",
     lbl_profile_name: "পূর্ণ নাম",
     lbl_garage_title: "গ্যারেজ / ফ্লিট নাম",
@@ -1802,7 +1818,22 @@ function submitExpense(e) {
   showToast(state.lang === 'bn' ? `৳${amt} খরচ রেকর্ড করা হয়েছে (${spender})` : `Expense of ৳${amt} recorded (${spender})`, 'crimson');
 }
 
-// --- Navigation & Mobile Drawer ---
+// --- Navigation & Collapsible Sidebar ---
+function toggleSidebarCollapse() {
+  const sidebar = document.getElementById('sidebar');
+  const icon = document.getElementById('sidebarToggleIcon');
+  if (!sidebar) return;
+
+  sidebar.classList.toggle('collapsed');
+  if (icon) {
+    if (sidebar.classList.contains('collapsed')) {
+      icon.className = 'fa-solid fa-chevron-right';
+    } else {
+      icon.className = 'fa-solid fa-chevron-left';
+    }
+  }
+}
+
 function toggleMobileSidebar() {
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('sidebarOverlay');
