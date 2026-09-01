@@ -613,6 +613,8 @@ function openUserProfileModal() {
   if (phoneInput) phoneInput.value = state.currentUser.phone || '01711223344';
   if (emailInput) emailInput.value = state.currentUser.email || 'owner@project3wheel.com';
   if (roleSelect) roleSelect.value = state.currentUser.role || 'owner';
+  const langSelect = document.getElementById('profileLanguage');
+  if (langSelect) langSelect.value = state.lang || 'en';
   if (avatarLarge) avatarLarge.textContent = (state.currentUser.name || 'H')[0].toUpperCase();
 
   openModal('userProfileModal');
@@ -823,12 +825,18 @@ function updateDateTriggerLabel() {
   if (!label) return;
 
   if (state.selectedDateFilter === 'all') {
-    label.textContent = state.lang === 'bn' ? 'সর্বমোট হিসাব' : 'All Time';
-  } else if (state.selectedDateFilter === todayIso) {
-    label.textContent = state.lang === 'bn' ? `আজ (${formatDateDisplay(todayIso)})` : `Today (${formatDateDisplay(todayIso)})`;
+    label.textContent = state.lang === 'bn' ? 'সর্বমোট' : 'All Time';
   } else {
     label.textContent = formatDateDisplay(state.selectedDateFilter);
   }
+}
+
+function onProfileLanguageChange(newLang) {
+  state.lang = newLang;
+  saveToStorage('lang', state.lang);
+  applyLanguage(state.lang);
+  renderAll();
+  showToast(state.lang === 'en' ? 'Language switched to English' : 'ভাষা পরিবর্তন: বাংলা', 'emerald');
 }
 
 // --- Metrics Calculation Engine ---

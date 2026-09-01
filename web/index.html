@@ -218,7 +218,7 @@
           <div class="date-picker-wrapper">
             <button class="glass-date-trigger" onclick="toggleCustomCalendar()">
               <i class="fa-solid fa-calendar-days"></i>
-              <span id="selectedDateLabel">Today</span>
+              <span id="selectedDateLabel">1 Sep 2026</span>
               <i class="fa-solid fa-chevron-down" style="font-size: 9px; opacity: 0.7;"></i>
             </button>
 
@@ -232,7 +232,7 @@
 
               <div class="cal-header">
                 <button class="cal-nav-btn" onclick="changeCalMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="cal-month-title" id="calMonthTitle">August 2026</div>
+                <div class="cal-month-title" id="calMonthTitle">September 2026</div>
                 <button class="cal-nav-btn" onclick="changeCalMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
               </div>
 
@@ -244,18 +244,6 @@
                 <!-- Injected via custom calendar JS engine -->
               </div>
             </div>
-          </div>
-
-          <!-- Bilingual Mode Switcher (English / বাংলা) -->
-          <button class="lang-toggle-btn" onclick="toggleLanguage()" id="langToggleBtn" title="Change Language / ভাষা পরিবর্তন">
-            <i class="fa-solid fa-globe"></i>
-            <span id="langLabel">EN / বাংলা</span>
-          </button>
-
-          <!-- Live Sync Status Orb -->
-          <div class="sync-status-pill" onclick="toggleNetworkSim()" id="syncPill" title="Toggle Online/Offline simulation">
-            <span class="status-dot online" id="syncDot"></span>
-            <span id="syncText" data-i18n="sync_live_firestore">Live Firestore</span>
           </div>
 
           <!-- Google-Style 9-Dot Quick Apps Launcher Button -->
@@ -290,8 +278,12 @@
                   <div class="app-card-icon icon-purple"><i class="fa-solid fa-handshake"></i></div>
                   <span data-i18n="nav_shareholders">Shareholder</span>
                 </div>
+                <div class="app-card-item" onclick="openModalAndCloseApps('userProfileModal')">
+                  <div class="app-card-icon icon-blue"><i class="fa-solid fa-user-gear"></i></div>
+                  <span data-i18n="modal_profile_title">Profile / Settings</span>
+                </div>
                 <div class="app-card-item" onclick="openModalAndCloseApps('qrModal')">
-                  <div class="app-card-icon icon-blue"><i class="fa-solid fa-qrcode"></i></div>
+                  <div class="app-card-icon icon-amber"><i class="fa-solid fa-qrcode"></i></div>
                   <span data-i18n="btn_scan_qr">Scan QR</span>
                 </div>
               </div>
@@ -1193,6 +1185,14 @@
           <select class="glass-select" id="profileRole">
             <option value="owner">Fleet Owner (মালিক)</option>
             <option value="manager">Garage Manager (ম্যানেজার)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_system_language">System Interface Language / ভাষা</label>
+          <select class="glass-select" id="profileLanguage" onchange="onProfileLanguageChange(this.value)">
+            <option value="en">English (US)</option>
+            <option value="bn">বাংলা (Bengali)</option>
           </select>
         </div>
 

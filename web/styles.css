@@ -2514,3 +2514,108 @@ body.lang-bn {
     width: 100% !important;
   }
 }
+
+/* =========================================================
+   MOBILE 2-COLUMN KPI METRICS CARDS & FULL HORIZONTAL SCROLL
+   ========================================================= */
+
+@media (max-width: 768px) {
+  /* Metrics Grid in 2 Columns Side-by-Side */
+  .metrics-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: 16px !important;
+    width: 100% !important;
+  }
+
+  /* Make 5th Card Full Width or 2-col span */
+  .metrics-grid > .metric-card:last-child {
+    grid-column: span 2 !important;
+  }
+
+  .metric-card {
+    padding: 12px 10px !important;
+    border-radius: 16px !important;
+    min-height: 105px !important;
+  }
+
+  .card-label {
+    font-size: 11px !important;
+  }
+
+  .metric-val {
+    font-size: 18px !important;
+    margin: 4px 0 2px !important;
+  }
+
+  .icon-circle {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 10px !important;
+  }
+
+  /* Table and Card Full Horizontal Scroll Enabler */
+  .glass-card, .table-card {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .glass-table-wrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    display: block !important;
+    padding-bottom: 8px !important;
+  }
+
+  .glass-table {
+    min-width: 580px !important;
+    width: 100% !important;
+  }
+
+  .glass-table th, .glass-table td {
+    padding: 8px 10px !important;
+    white-space: nowrap !important;
+  }
+
+  .status-dropdown-select {
+    padding: 4px 6px !important;
+    font-size: 11px !important;
+  }
+
+  /* Clean Top Nav on Mobile */
+  .top-nav {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px 16px !important;
+    gap: 8px !important;
+  }
+
+  .nav-left {
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+  .greeting-box h1 {
+    font-size: 17px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .greeting-box p {
+    font-size: 11px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .nav-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+}
