@@ -23,13 +23,14 @@
 </head>
 <body class="lang-en">
   <!-- ==================== FULL-SCREEN AUTH & LOGIN/REGISTER OVERLAY ==================== -->
-  <div class="auth-overlay" id="authOverlay" style="display: flex;">
+  <div class="auth-overlay" id="authOverlay" style="display: none;">
     <!-- Ambient Background Mesh Lights for Login -->
     <div class="mesh-orb mesh-blue"></div>
     <div class="mesh-orb mesh-purple"></div>
     <div class="mesh-orb mesh-emerald"></div>
 
     <div class="login-card">
+      <button type="button" class="login-close-btn" onclick="closeAuthModal()" title="Back to Website">&times;</button>
       <div class="login-brand">
         <div class="login-brand-icon" style="background: rgba(10, 132, 255, 0.15); border: 1px solid rgba(10, 132, 255, 0.4); padding: 5px; overflow: hidden;">
           <img src="assets/app_logo_dark.png" alt="Project 3 Wheel" style="width: 100%; height: 100%; object-fit: contain;">
@@ -101,6 +102,12 @@
         <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 18px; padding: 13px; font-size: 14px; font-weight: 700; border-radius: 14px;" id="btnAuthSubmit">
           <i class="fa-solid fa-right-to-bracket"></i> <span data-i18n="btn_sign_in">Sign In to Fleet Hub</span>
         </button>
+
+        <div class="login-back-wrapper" style="text-align: center; margin-top: 14px;">
+          <a href="javascript:void(0)" onclick="closeAuthModal()" class="login-back-link">
+            <i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back_website">Back to Public Site</span>
+          </a>
+        </div>
       </form>
     </div>
   </div>
@@ -110,10 +117,392 @@
   <div class="mesh-orb mesh-purple"></div>
   <div class="mesh-orb mesh-emerald"></div>
 
+  <!-- ==================== 1. INTERACTIVE PUBLIC LANDING PAGE ==================== -->
+  <div class="landing-page-container" id="landingPageContainer">
+    <!-- Floating Liquid Glass Landing Header -->
+    <header class="landing-header">
+      <div class="landing-nav-container">
+        <div class="landing-brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+          <div class="landing-brand-logo">
+            <img src="assets/app_logo_dark.png" alt="Project 3 Wheel Logo">
+          </div>
+          <div class="landing-brand-title">
+            <h3>PROJECT 3 WHEEL</h3>
+            <span>ELECTRIC FLEET OS</span>
+          </div>
+        </div>
+
+        <nav class="landing-nav-links">
+          <a href="#about" class="landing-nav-link" data-i18n="landing_nav_about">About</a>
+          <a href="#features" class="landing-nav-link" data-i18n="landing_nav_features">Features</a>
+          <a href="#telematics" class="landing-nav-link" data-i18n="landing_nav_telematics">GPS Telematics</a>
+          <a href="#shareholders-info" class="landing-nav-link" data-i18n="landing_nav_shareholders">Shareholders</a>
+        </nav>
+
+        <div class="landing-nav-actions">
+          <!-- Language Switcher Pill -->
+          <div class="landing-lang-toggle" onclick="toggleLanguage()" title="Switch Language">
+            <i class="fa-solid fa-language"></i>
+            <span id="landingLangLabel">বাং</span>
+          </div>
+
+          <!-- Admin Area Button -->
+          <button class="btn-landing-admin" onclick="openAdminArea()">
+            <i class="fa-solid fa-lock"></i>
+            <span data-i18n="landing_btn_admin">Admin Area</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="landing-hero" id="hero">
+      <div class="landing-hero-content">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          <span data-i18n="hero_pill_tag">NEXT-GEN ELECTRIC 3-WHEELER FLEET PLATFORM</span>
+        </div>
+
+        <h1 class="hero-title" data-i18n="hero_main_title">
+          Revolutionizing 3-Wheeler Fleet Management & Garage Operations
+        </h1>
+
+        <p class="hero-subtitle" data-i18n="hero_main_subtitle">
+          Automate daily rental collections, track real-time GPS telematics, streamline maintenance expenses, and manage transparent shareholder dividends with a single powerful platform.
+        </p>
+
+        <div class="hero-cta-group">
+          <button class="btn-hero-primary" onclick="openAdminArea()">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span data-i18n="hero_btn_launch">Launch Garage Hub</span>
+          </button>
+          <a href="#features" class="btn-hero-secondary">
+            <i class="fa-solid fa-layer-group"></i>
+            <span data-i18n="hero_btn_explore">Explore Features</span>
+          </a>
+        </div>
+
+        <!-- Live Simulated Metrics Bar -->
+        <div class="hero-stats-grid">
+          <div class="hero-stat-card">
+            <div class="hero-stat-val text-emerald">100%</div>
+            <div class="hero-stat-lbl" data-i18n="hero_stat_1">Automated Collections</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-val text-blue">Live GPS</div>
+            <div class="hero-stat-lbl" data-i18n="hero_stat_2">Smart Telematics</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-val text-purple">৳130/day</div>
+            <div class="hero-stat-lbl" data-i18n="hero_stat_3">Garage Rent Tracking</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="hero-stat-val text-amber">Zero-Loss</div>
+            <div class="hero-stat-lbl" data-i18n="hero_stat_4">Multi-Partner Equity</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Interactive Preview Visual Card -->
+      <div class="landing-hero-visual">
+        <div class="hero-liquid-card">
+          <div class="hero-card-header">
+            <div class="hero-card-title">
+              <span class="unit-pulse"></span>
+              <h4>FLEET UNIT R-01</h4>
+              <span class="badge-pill badge-emerald">ACTIVE ROAD</span>
+            </div>
+            <div class="hero-card-battery">
+              <i class="fa-solid fa-battery-three-quarters text-emerald"></i>
+              <span>92% (48.8V)</span>
+            </div>
+          </div>
+
+          <div class="hero-vehicle-centerpiece">
+            <img src="assets/rickshaw_white.png" alt="Rickshaw Preview" class="hero-rickshaw-img">
+            <div class="hero-telemetry-overlay">
+              <div class="telemetry-badge"><i class="fa-solid fa-gauge-simple-high"></i> 24 km/h</div>
+              <div class="telemetry-badge"><i class="fa-solid fa-location-dot"></i> Dhaka Fleet Hub</div>
+            </div>
+          </div>
+
+          <div class="hero-card-data-grid">
+            <div class="hero-data-item">
+              <span class="lbl" data-i18n="lbl_assigned_driver">Assigned Pilot</span>
+              <strong class="val">Mohammad Selim</strong>
+            </div>
+            <div class="hero-data-item">
+              <span class="lbl" data-i18n="lbl_daily_joma_target">Daily Target</span>
+              <strong class="val text-blue">৳350 / day</strong>
+            </div>
+            <div class="hero-data-item">
+              <span class="lbl" data-i18n="lbl_rent_share">Garage Rent</span>
+              <strong class="val text-purple">৳130 / day</strong>
+            </div>
+            <div class="hero-data-item">
+              <span class="lbl" data-i18n="lbl_collection_status">Collection Status</span>
+              <strong class="val text-emerald"><i class="fa-solid fa-circle-check"></i> Paid</strong>
+            </div>
+          </div>
+
+          <div class="hero-card-interactive-footer">
+            <button class="hero-interactive-btn" onclick="openAdminArea()">
+              <i class="fa-solid fa-sliders"></i> <span data-i18n="hero_interactive_action">Open Full Fleet Hub</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Project 3 Wheels Section -->
+    <section class="landing-section" id="about">
+      <div class="landing-section-header">
+        <span class="section-tag" data-i18n="about_tag">ABOUT PROJECT 3 WHEEL</span>
+        <h2 class="section-title" data-i18n="about_title">Modernizing Electric Mobility & Garage Eco-System</h2>
+        <p class="section-subtitle" data-i18n="about_subtitle">
+          Project 3 Wheel is Bangladesh's pioneering operating platform purpose-built for electric rickshaws, mishuks, easy-bikes, and charging garage hubs.
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-icon icon-emerald">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h3 data-i18n="about_card1_title">100% Financial Transparency</h3>
+          <p data-i18n="about_card1_desc">
+            Eliminate paper khata books, missing dues, and cash disputes. Every taka of daily rental deposit, garage rent deduction, and maintenance cost is logged with cryptographic certainty.
+          </p>
+        </div>
+
+        <div class="about-card">
+          <div class="about-icon icon-blue">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <h3 data-i18n="about_card2_title">Built for EV 3-Wheelers</h3>
+          <p data-i18n="about_card2_desc">
+            Tailored specifically for battery charging garages, 48V/60V lead-acid & lithium units, motor servicing labor, and daily garage rental accounting.
+          </p>
+        </div>
+
+        <div class="about-card">
+          <div class="about-icon icon-purple">
+            <i class="fa-solid fa-id-card-clip"></i>
+          </div>
+          <h3 data-i18n="about_card3_title">Smart Pilot Dignity & Security</h3>
+          <p data-i18n="about_card3_desc">
+            Equip drivers with high-resolution digital QR Pilot IDs, verifiable in real-time by traffic authorities, garage staff, and fleet owners.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Features Showcase Section -->
+    <section class="landing-section" id="features">
+      <div class="landing-section-header">
+        <span class="section-tag" data-i18n="features_tag">POWERFUL CAPABILITIES</span>
+        <h2 class="section-title" data-i18n="features_title">Everything You Need to Run Your Fleet Hub</h2>
+        <p class="section-subtitle" data-i18n="features_subtitle">
+          A complete all-in-one suite covering collection logs, expense tracking, shareholder dividends, driver management, and GPS intelligence.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon icon-emerald">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+          </div>
+          <h4 data-i18n="feat_1_title">Automated Daily Joma & Rent</h4>
+          <p data-i18n="feat_1_desc">
+            Instant 1-tap logging for Full (৳350), Partial (৳200), or Unpaid collections. Automatic ৳130/day garage rent deduction keeps profit calculations exact.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon icon-blue">
+            <i class="fa-solid fa-satellite"></i>
+          </div>
+          <h4 data-i18n="feat_2_title">Live GPS & Route Telematics</h4>
+          <p data-i18n="feat_2_desc">
+            Simulated and live GPS tracking for every vehicle. Monitor speed, battery SoC voltage, route coverage, and get instant geofencing security alerts.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon icon-purple">
+            <i class="fa-solid fa-handshake"></i>
+          </div>
+          <h4 data-i18n="feat_3_title">Shareholder & Equity Ledger</h4>
+          <p data-i18n="feat_3_desc">
+            Multi-partner garage fund management. Record equity percentages, track fund injections with notes, and distribute net profits transparently.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon icon-amber">
+            <i class="fa-solid fa-qrcode"></i>
+          </div>
+          <h4 data-i18n="feat_4_title">Instant QR Pilot ID Cards</h4>
+          <p data-i18n="feat_4_desc">
+            Generate high-resolution printable PDF ID cards with scannable QR codes for every driver. Quick scanner opens the collection form with zero typing.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon icon-crimson">
+            <i class="fa-solid fa-receipt"></i>
+          </div>
+          <h4 data-i18n="feat_5_title">Smart Expense & Garage Fund</h4>
+          <p data-i18n="feat_5_desc">
+            Categorize parts, mechanic labor, power bills, and line fees. Automatic deduction from the Garage Fund when expenses are paid from common pool.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon icon-blue">
+            <i class="fa-solid fa-file-pdf"></i>
+          </div>
+          <h4 data-i18n="feat_6_title">1-Click P&L & Excel Export</h4>
+          <p data-i18n="feat_6_desc">
+            Generate formal PDF financial statements, monthly P&L audits, and export complete Excel spreadsheets for bank reconciliations and partner meetings.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GPS Telematics Highlight Section -->
+    <section class="landing-section telematics-section" id="telematics">
+      <div class="telematics-container">
+        <div class="telematics-info">
+          <span class="section-tag" data-i18n="gps_sec_tag">SMART TELEMATICS</span>
+          <h2 class="section-title" data-i18n="gps_sec_title">Real-Time Fleet Radar & GPS Tracking</h2>
+          <p data-i18n="gps_sec_desc">
+            Keep your fleet safe 24/7. Project 3 Wheel features integrated GPS simulation and hardware telematics connectivity, showing vehicle location, speed monitoring, and battery health in real time.
+          </p>
+          <ul class="telematics-points">
+            <li><i class="fa-solid fa-check-circle text-emerald"></i> <span data-i18n="gps_point_1">Real-time route & speed telemetry</span></li>
+            <li><i class="fa-solid fa-check-circle text-emerald"></i> <span data-i18n="gps_point_2">Battery voltage & state-of-charge (SoC) monitor</span></li>
+            <li><i class="fa-solid fa-check-circle text-emerald"></i> <span data-i18n="gps_point_3">Geofencing & boundary anti-theft alerts</span></li>
+          </ul>
+          <button class="btn-hero-primary" onclick="openAdminArea()" style="margin-top: 20px;">
+            <i class="fa-solid fa-satellite"></i> <span data-i18n="gps_btn_track">View Telematics Hub</span>
+          </button>
+        </div>
+
+        <div class="telematics-visual">
+          <div class="gps-radar-preview">
+            <div class="radar-circle circle-1"></div>
+            <div class="radar-circle circle-2"></div>
+            <div class="radar-circle circle-3"></div>
+            <div class="radar-sweep"></div>
+            <div class="radar-node node-1" title="R-01 Active">
+              <i class="fa-solid fa-van-shuttle"></i>
+              <span>R-01 (Active)</span>
+            </div>
+            <div class="radar-node node-2" title="R-02 Active">
+              <i class="fa-solid fa-van-shuttle"></i>
+              <span>R-02 (22 km/h)</span>
+            </div>
+            <div class="radar-node node-3" title="R-03 Hub">
+              <i class="fa-solid fa-warehouse"></i>
+              <span>Garage Hub</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Shareholder Equity Section -->
+    <section class="landing-section" id="shareholders-info">
+      <div class="landing-section-header">
+        <span class="section-tag" data-i18n="sh_sec_tag">PARTNERS & CAPITAL</span>
+        <h2 class="section-title" data-i18n="sh_sec_title">Transparent Shareholder Management</h2>
+        <p class="section-subtitle" data-i18n="sh_sec_subtitle">
+          Whether you own 100% of your fleet or have multiple investing partners, Project 3 Wheel handles capital injections, equity pools, and dividend splits automatically.
+        </p>
+      </div>
+
+      <div class="shareholder-preview-card">
+        <div class="sh-preview-grid">
+          <div class="sh-item">
+            <div class="sh-item-header">
+              <div class="avatar">O</div>
+              <div>
+                <h5>Lead Garage Owner</h5>
+                <span>60% Equity Share</span>
+              </div>
+            </div>
+            <div class="sh-item-stat">
+              <span data-i18n="lbl_dividend_share">Est. Dividend:</span>
+              <strong class="text-emerald">60% of Net P&L</strong>
+            </div>
+          </div>
+          <div class="sh-item">
+            <div class="sh-item-header">
+              <div class="avatar" style="background: var(--grad-purple);">S</div>
+              <div>
+                <h5>Investing Partner</h5>
+                <span>40% Equity Share</span>
+              </div>
+            </div>
+            <div class="sh-item-stat">
+              <span data-i18n="lbl_dividend_share">Est. Dividend:</span>
+              <strong class="text-emerald">40% of Net P&L</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <section class="landing-cta-banner">
+      <div class="cta-banner-content">
+        <h2 data-i18n="cta_banner_title">Ready to Take Complete Control of Your Fleet?</h2>
+        <p data-i18n="cta_banner_subtitle">Access your garage dashboard, track today's collections, and monitor your fleet in real time.</p>
+        <button class="btn-hero-primary btn-large" onclick="openAdminArea()">
+          <i class="fa-solid fa-lock"></i>
+          <span data-i18n="cta_banner_btn">Enter Admin Area</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Clean Minimalist Footer (Strictly without contact details) -->
+    <footer class="landing-footer">
+      <div class="landing-footer-container">
+        <div class="landing-footer-brand">
+          <div class="brand-logo-small">
+            <img src="assets/app_logo_dark.png" alt="Logo">
+          </div>
+          <div>
+            <h4>PROJECT 3 WHEEL</h4>
+            <p data-i18n="footer_tagline">Next-Gen Electric 3-Wheeler Fleet Operating System</p>
+          </div>
+        </div>
+
+        <div class="landing-footer-links">
+          <a href="#about" data-i18n="landing_nav_about">About</a>
+          <a href="#features" data-i18n="landing_nav_features">Features</a>
+          <a href="#telematics" data-i18n="landing_nav_telematics">GPS Telematics</a>
+          <a href="#shareholders-info" data-i18n="landing_nav_shareholders">Shareholders</a>
+          <a href="javascript:void(0)" onclick="openAdminArea()" data-i18n="landing_btn_admin">Admin Area</a>
+        </div>
+
+        <div class="landing-footer-bottom">
+          <p>&copy; 2026 Project 3 Wheel. All rights reserved.</p>
+          <div class="landing-footer-dev">
+            <span>Developed by </span>
+            <a href="https://www.framempire.com" target="_blank" rel="noopener noreferrer">FramEmpire</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
   <!-- Mobile Drawer Overlay Backdrop -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
 
-  <div class="app-layout">
+  <!-- ==================== 2. GARAGE MANAGEMENT ADMIN HUB ==================== -->
+  <div class="app-layout" id="appLayout" style="display: none;">
     <!-- Translucent Glass Sidebar (Sticky & Collapsible) -->
     <aside class="glass-sidebar" id="sidebar">
       <div class="brand-header">
@@ -178,6 +567,14 @@
         <button class="nav-item" onclick="openModal('addRickshawModal')">
           <i class="fa-solid fa-van-shuttle text-blue"></i>
           <span data-i18n="btn_manage_rickshaws">Manage Rickshaws</span>
+        </button>
+
+        <div class="sidebar-section-divider">
+          <span data-i18n="nav_mode_header">SITE NAVIGATION</span>
+        </div>
+        <button class="nav-item nav-item-website" onclick="navigateToLanding()">
+          <i class="fa-solid fa-globe text-blue"></i>
+          <span data-i18n="nav_website">Public Website</span>
         </button>
       </nav>
 
@@ -779,6 +1176,10 @@
       <div class="more-nav-card" onclick="openModalAndCloseMore('qrModal')">
         <div class="more-card-icon icon-amber"><i class="fa-solid fa-qrcode"></i></div>
         <span data-i18n="btn_scan_qr">Scan QR</span>
+      </div>
+      <div class="more-nav-card" onclick="navigateToLanding(); closeMobileMoreSheet();">
+        <div class="more-card-icon icon-blue"><i class="fa-solid fa-globe"></i></div>
+        <span data-i18n="nav_website">Website</span>
       </div>
     </div>
 

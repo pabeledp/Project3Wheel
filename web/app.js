@@ -213,11 +213,73 @@ const i18n = {
     modal_driver_id_title: "Driver Smart ID Card",
     badge_official_pilot: "OFFICIAL PILOT",
     id_card_subtitle: "Electric Fleet Pilot Identification",
-    btn_download_id_pdf: "Download ID PDF",
     badge_firmware_connected: "Firmware v2.1 Connected",
     sync_live_firestore: "Live Firestore",
     nav_more: "More",
     more_menu_title: "More Hub Features & Tools",
+    nav_mode_header: "SITE NAVIGATION",
+    nav_website: "Public Website",
+    btn_back_website: "Back to Public Site",
+    
+    // Landing Page English Translations
+    landing_nav_about: "About",
+    landing_nav_features: "Features",
+    landing_nav_telematics: "GPS Telematics",
+    landing_nav_shareholders: "Shareholders",
+    landing_btn_admin: "Admin Area",
+    hero_pill_tag: "NEXT-GEN ELECTRIC 3-WHEELER FLEET PLATFORM",
+    hero_main_title: "Revolutionizing 3-Wheeler Fleet Management & Garage Operations",
+    hero_main_subtitle: "Automate daily rental collections, track real-time GPS telematics, streamline maintenance expenses, and manage transparent shareholder dividends with a single powerful platform.",
+    hero_btn_launch: "Launch Garage Hub",
+    hero_btn_explore: "Explore Features",
+    hero_stat_1: "Automated Collections",
+    hero_stat_2: "Smart Telematics",
+    hero_stat_3: "Garage Rent Tracking",
+    hero_stat_4: "Multi-Partner Equity",
+    lbl_assigned_driver: "Assigned Pilot",
+    lbl_daily_joma_target: "Daily Target",
+    lbl_rent_share: "Garage Rent",
+    lbl_collection_status: "Collection Status",
+    hero_interactive_action: "Enter Admin Area",
+    about_tag: "ABOUT PROJECT 3 WHEEL",
+    about_title: "Modernizing Electric Mobility & Garage Eco-System",
+    about_subtitle: "Project 3 Wheel is Bangladesh's pioneering operating platform purpose-built for electric rickshaws, mishuks, easy-bikes, and charging garage hubs.",
+    about_card1_title: "100% Financial Transparency",
+    about_card1_desc: "Eliminate paper khata books, missing dues, and cash disputes. Every taka of daily rental deposit, garage rent deduction, and maintenance cost is logged with cryptographic certainty.",
+    about_card2_title: "Built for EV 3-Wheelers",
+    about_card2_desc: "Tailored specifically for battery charging garages, 48V/60V lead-acid & lithium units, motor servicing labor, and daily garage rental accounting.",
+    about_card3_title: "Smart Pilot Dignity & Security",
+    about_card3_desc: "Equip drivers with high-resolution digital QR Pilot IDs, verifiable in real-time by traffic authorities, garage staff, and fleet owners.",
+    features_tag: "POWERFUL CAPABILITIES",
+    features_title: "Everything You Need to Run Your Fleet Hub",
+    features_subtitle: "A complete all-in-one suite covering collection logs, expense tracking, shareholder dividends, driver management, and GPS intelligence.",
+    feat_1_title: "Automated Daily Joma & Rent",
+    feat_1_desc: "Instant 1-tap logging for Full (৳350), Partial (৳200), or Unpaid collections. Automatic ৳130/day garage rent deduction keeps profit calculations exact.",
+    feat_2_title: "Live GPS & Route Telematics",
+    feat_2_desc: "Simulated and live GPS tracking for every vehicle. Monitor speed, battery SoC voltage, route coverage, and get instant geofencing security alerts.",
+    feat_3_title: "Shareholder & Equity Ledger",
+    feat_3_desc: "Multi-partner garage fund management. Record equity percentages, track fund injections with notes, and distribute net profits transparently.",
+    feat_4_title: "Instant QR Pilot ID Cards",
+    feat_4_desc: "Generate high-resolution printable PDF ID cards with scannable QR codes for every driver. Quick scanner opens the collection form with zero typing.",
+    feat_5_title: "Smart Expense & Garage Fund",
+    feat_5_desc: "Categorize parts, mechanic labor, power bills, and line fees. Automatic deduction from the Garage Fund when expenses are paid from common pool.",
+    feat_6_title: "1-Click P&L & Excel Export",
+    feat_6_desc: "Generate formal PDF financial statements, monthly P&L audits, and export complete Excel spreadsheets for bank reconciliations and partner meetings.",
+    gps_sec_tag: "SMART TELEMATICS",
+    gps_sec_title: "Real-Time Fleet Radar & GPS Tracking",
+    gps_sec_desc: "Keep your fleet safe 24/7. Project 3 Wheel features integrated GPS simulation and hardware telematics connectivity, showing vehicle location, speed monitoring, and battery health in real time.",
+    gps_point_1: "Real-time route & speed telemetry",
+    gps_point_2: "Battery voltage & state-of-charge (SoC) monitor",
+    gps_point_3: "Geofencing & boundary anti-theft alerts",
+    gps_btn_track: "View Telematics Hub",
+    sh_sec_tag: "PARTNERS & CAPITAL",
+    sh_sec_title: "Transparent Shareholder Management",
+    sh_sec_subtitle: "Whether you own 100% of your fleet or have multiple investing partners, Project 3 Wheel handles capital injections, equity pools, and dividend splits automatically.",
+    lbl_dividend_share: "Est. Dividend:",
+    cta_banner_title: "Ready to Take Complete Control of Your Fleet?",
+    cta_banner_subtitle: "Access your garage dashboard, track today's collections, and monitor your fleet in real time.",
+    cta_banner_btn: "Enter Admin Area",
+    footer_tagline: "Next-Gen Electric 3-Wheeler Fleet Operating System",
   },
   bn: {
     nav_dashboard: "ড্যাশবোর্ড",
@@ -412,6 +474,69 @@ const i18n = {
     lbl_recipient: "প্রাপক:",
     btn_cancel: "বাতিল",
     btn_send_now: "এসএমএস পাঠান",
+    nav_mode_header: "সাইট নেভিগেশন",
+    nav_website: "পাবলিক ওয়েবসাইট",
+    btn_back_website: "ওয়েবসাইটে ফিরে যান",
+    
+    // Landing Page Bengali Translations
+    landing_nav_about: "পরিচিতি",
+    landing_nav_features: "ফিচারসমূহ",
+    landing_nav_telematics: "জিপিএস ট্র্যাকিং",
+    landing_nav_shareholders: "অংশীদার ও তহবিল",
+    landing_btn_admin: "অ্যাডমিন প্যানেল",
+    hero_pill_tag: "বৈদ্যুতিক থ্রি-হুইলার ও ফ্লিট অপারেটিং সিস্টেম",
+    hero_main_title: "থ্রি-হুইলার ফ্লিট ও গ্যারেজ পরিচালনার আধুনিক ডিজিটাল প্ল্যাটফর্ম",
+    hero_main_subtitle: "দৈনিক ভাড়া ও জমা অটোমেশন, লাইভ জিপিএস রুট ট্র্যাকিং, গ্যারেজ খরচ ও শেয়ারহোল্ডারদের স্বচ্ছ লভ্যাংশ হিসাব—সবকিছু পরিচালনা করুন একটি আধুনিক প্ল্যাটফর্মে।",
+    hero_btn_launch: "গ্যারেজ অ্যাডমিনে প্রবেশ",
+    hero_btn_explore: "ফিচারসমূহ দেখুন",
+    hero_stat_1: "স্বয়ংক্রিয় জমা হিসাব",
+    hero_stat_2: "স্মার্ট জিপিএস ট্র্যাকিং",
+    hero_stat_3: "গ্যারেজ ভাড়া অটো-হিসাব",
+    hero_stat_4: "স্বচ্ছ অংশীদার তহবিল",
+    lbl_assigned_driver: "নির্ধারিত চালক",
+    lbl_daily_joma_target: "দৈনিক জমা লক্ষ্য",
+    lbl_rent_share: "গ্যারেজ ভাড়া",
+    lbl_collection_status: "জমার অবস্থা",
+    hero_interactive_action: "অ্যাডমিন প্যানেলে যান",
+    about_tag: "প্রজেক্ট ৩ হুইল পরিচিতি",
+    about_title: "বৈদ্যুতিক থ্রি-হুইলার ইকোসিস্টেমের ডিজিটাল রূপান্তর",
+    about_subtitle: "প্রজেক্ট ৩ হুইল হলো বাংলাদেশে ব্যাটারিচালিত রিকশা, মিশুক, ইজিবাইক ও চার্জিং গ্যারেজের জন্য বিশেষভাবে তৈরি প্রথম স্বয়ংক্রিয় অপারেটিং প্ল্যাটফর্ম।",
+    about_card1_title: "১০০% নির্ভুল ও স্বচ্ছ হিসাব",
+    about_card1_desc: "কাগজের খাতার ঝামেলা ও বকেয়া নিয়ে অসন্তোষ দূর করুন। প্রতিটি জমার টাকা, গ্যারেজ ভাড়া ও খরচ স্বয়ংক্রিয়ভাবে সংরক্ষিত থাকে।",
+    about_card2_title: "ইভি থ্রি-হুইলারের জন্য বিশেষায়িত",
+    about_card2_desc: "৪৮ ভোল্ট / ৬০ ভোল্ট ব্যাটারি চার্জিং গ্যারেজ, মেকানিক পার্টস ও চালকদের দৈনিক জমা সহজে পরিচালনার জন্য বিশেষভাবে প্রস্তুত।",
+    about_card3_title: "স্মার্ট চালক পরিচয় ও নিরাপত্তা",
+    about_card3_desc: "চালকদের জন্য হাই-রেজোলিউশন কিউআর স্মার্ট আইডি কার্ড যা ট্রাফিক ও গ্যারেজে সহজে স্ক্যান করে যাচাই করা যায়।",
+    features_tag: "শক্তিশালী ফিচারসমূহ",
+    features_title: "গ্যারেজ ও ফ্লিট পরিচালনার সব প্রয়োজনীয় টুলস",
+    features_subtitle: "দৈনিক কালেকশন, খরচের হিসাব, অংশীদারদের লভ্যাংশ, ড্রাইভার ডিরেক্টরি এবং জিপিএস ট্র্যাকিং—সব এক প্ল্যাটফর্মে।",
+    feat_1_title: "স্বয়ংক্রিয় দৈনিক জমা ও গ্যারেজ ভাড়া",
+    feat_1_desc: "এক ক্লিকে ফুল (৳৩৫০), হাফ (৳২০০) বা বাকি জমা এন্ট্রি। সাথে দৈনিক ৳১৩০ গ্যারেজ ভাড়া অটোমেটিক মাইনাস হয়ে প্রকৃত লাভ হিসাব হয়।",
+    feat_2_title: "লাইভ জিপিএস ও গতি ট্র্যাকিং",
+    feat_2_desc: "প্রতিটি গাড়ির লাইভ গতিবিধি, ব্যাটারি ভোল্টেজ এবং নির্দিষ্ট সীমানা অতিক্রম করলে স্বয়ংক্রিয় নোটিফিকেশন সুবিধা।",
+    feat_3_title: "শেয়ারহোল্ডার ও তহবিল লেজার",
+    feat_3_desc: "একাধিক মালিক বা অংশীদারদের মূলধন, তহবিল যোগ করা ও মাসিক নেট লাভের স্বচ্ছ বণ্টন ব্যবস্থাপনা।",
+    feat_4_title: "ডিজিটাল কিউআর স্মার্ট আইডি কার্ড",
+    feat_4_desc: "চালকদের জন্য এক ক্লিকে ডাউনলোডযোগ্য কিউআর আইডি কার্ড। কিউআর স্ক্যান করলেই তাৎক্ষণিক জমা নেওয়ার ফর্ম চলে আসে।",
+    feat_5_title: "ক্যাটাগরিভিত্তিক খরচ ও গ্যারেজ ফান্ড",
+    feat_5_desc: "পার্টস, মেকানিক মজুরি ও বিদ্যুৎ বিল হিসাব রাখুন। গ্যারেজ ফান্ড থেকে খরচ হলে তা স্বয়ংক্রিয়ভাবে মূল তহবিল থেকে বাদ যায়।",
+    feat_6_title: "১-ক্লিকে পিঅ্যান্ডএল ও এক্সেল রিপোর্ট",
+    feat_6_desc: "যেকোনো সময়ের পূর্ণাঙ্গ অডিট স্টেটমেন্ট, কালেকশন শিট এবং পিঅ্যান্ডএল রিপোর্ট পিডিএফ ও এক্সেল আকারে ডাউনলোড করুন।",
+    gps_sec_tag: "স্মার্ট টেলিমেটিক্স",
+    gps_sec_title: "রিয়েল-টাইম ফ্লিট রাডার ও লাইভ লোকেশন",
+    gps_sec_desc: "আপনার প্রতিটি গাড়ির গতি, ব্যাটারি পারসেন্টেজ এবং রুট সার্বক্ষণিক পর্যবেক্ষণ করুন নির্ভরযোগ্য আধুনিক প্রযুক্তির সাহায্যে।",
+    gps_point_1: "রিয়েল-টাইম গতি ও রুট ট্র্যাকিং",
+    gps_point_2: "ব্যাটারি ভোল্টেজ ও চার্জ লেভেল মনিটর",
+    gps_point_3: "জিওফেন্সিং ও চুরিরোধে তাৎক্ষণিক সতর্কতা",
+    gps_btn_track: "টেলিমেটিক্স হাব দেখুন",
+    sh_sec_tag: "অংশীদার ও মূলধন",
+    sh_sec_title: "স্বচ্ছ শেয়ারহোল্ডার ব্যবস্থাপনা",
+    sh_sec_subtitle: "আপনি একাই মালিক হোন কিংবা যৌথ বিনিয়োগকারী থাকুক, মূলধন এন্ট্রি ও লভ্যাংশ বণ্টন হবে শতভাগ নির্ভুল।",
+    lbl_dividend_share: "প্রাক্কলিত লভ্যাংশ:",
+    cta_banner_title: "আপনার গ্যারেজ ও ফ্লিটকে আজই স্মার্ট করুন",
+    cta_banner_subtitle: "অ্যাডমিন প্যানেলে প্রবেশ করে আজকের জমা, খরচ ও গাড়ির অবস্থা রিয়েল-টাইমে নিয়ন্ত্রণ করুন।",
+    cta_banner_btn: "অ্যাডমিন প্যানেলে প্রবেশ করুন",
+    footer_tagline: "বৈদ্যুতিক থ্রি-হুইলার ও ফ্লিট অপারেটিং সিস্টেম",
   }
 };
 
@@ -619,16 +744,71 @@ function broadcastFirestoreUpdate() {
   } catch (e) {}
 }
 
+// --- View Navigation & Routing: Landing Page vs Garage Admin Hub ---
+function navigateToLanding() {
+  const landing = document.getElementById('landingPageContainer');
+  const appLayout = document.getElementById('appLayout');
+  const authOverlay = document.getElementById('authOverlay');
+
+  if (landing) landing.style.display = 'block';
+  if (appLayout) appLayout.style.display = 'none';
+  if (authOverlay) authOverlay.style.display = 'none';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (window.location.hash !== '#landing') {
+    history.replaceState(null, null, '#landing');
+  }
+}
+
+function navigateToAdmin() {
+  if (!state.currentUser || !state.currentUser.isAuthenticated) {
+    openAdminArea();
+    return;
+  }
+
+  const landing = document.getElementById('landingPageContainer');
+  const appLayout = document.getElementById('appLayout');
+  const authOverlay = document.getElementById('authOverlay');
+
+  if (landing) landing.style.display = 'none';
+  if (appLayout) appLayout.style.display = 'flex';
+  if (authOverlay) authOverlay.style.display = 'none';
+
+  renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (window.location.hash !== '#admin') {
+    history.replaceState(null, null, '#admin');
+  }
+}
+
+function openAdminArea() {
+  if (state.currentUser && state.currentUser.isAuthenticated === true) {
+    navigateToAdmin();
+  } else {
+    const authOverlay = document.getElementById('authOverlay');
+    if (authOverlay) {
+      authOverlay.style.display = 'flex';
+    }
+  }
+}
+
+function closeAuthModal() {
+  const authOverlay = document.getElementById('authOverlay');
+  if (authOverlay) {
+    authOverlay.style.display = 'none';
+  }
+}
+
 // --- Authentication Engine ---
 function checkAuthSession() {
   const authOverlay = document.getElementById('authOverlay');
-  if (!authOverlay) return;
+  if (authOverlay) authOverlay.style.display = 'none';
 
-  if (state.currentUser && state.currentUser.isAuthenticated === true) {
-    authOverlay.style.display = 'none';
-    updateUserProfileDisplay();
+  const hash = window.location.hash;
+  if (hash === '#admin' && state.currentUser && state.currentUser.isAuthenticated) {
+    navigateToAdmin();
   } else {
-    authOverlay.style.display = 'flex';
+    navigateToLanding();
   }
 }
 
@@ -791,7 +971,7 @@ function submitLogin(e) {
   state.shareholders = [];
   state.capitalInjections = [];
 
-  checkAuthSession();
+  navigateToAdmin();
   renderAll();
 
   // Connect real-time Firestore listener and pull cloud data for this specific user account
@@ -803,7 +983,7 @@ function submitLogin(e) {
 function logoutUser() {
   state.currentUser.isAuthenticated = false;
   saveToStorage('user_profile', state.currentUser);
-  checkAuthSession();
+  navigateToLanding();
   showToast(state.lang === 'bn' ? 'সফলভাবে লগআউট হয়েছেন' : 'Logged out successfully', 'amber');
 }
 
@@ -963,6 +1143,11 @@ function applyLanguage(lang) {
   const langLabel = document.getElementById('langLabel');
   if (langLabel) {
     langLabel.textContent = lang === 'en' ? 'EN / বাংলা' : 'বাংলা / EN';
+  }
+
+  const landingLangLabel = document.getElementById('landingLangLabel');
+  if (landingLangLabel) {
+    landingLangLabel.textContent = lang === 'en' ? 'বাং' : 'EN';
   }
 }
 
