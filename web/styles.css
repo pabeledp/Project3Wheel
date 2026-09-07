@@ -3413,6 +3413,7 @@ body.lang-bn {
   .hero-stats-grid {
     grid-template-columns: 1fr 1fr;
   }
+}
 
 /* --- Interactive Unit Selector Chips in Hero --- */
 .hero-unit-chips {
@@ -3457,23 +3458,148 @@ body.lang-bn {
   justify-content: center;
 }
 
-/* --- Interactive Fleet ROI & Profit Calculator (Apple Liquid Glass) --- */
-.interactive-calc-card {
+/* ==========================================================================
+   Apple Liquid Glass Simulator Section (Responsive Cards System)
+   ========================================================================== */
+.calculator-grid-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* Row of 3 standalone Liquid Glass cards (Side-by-side on PC, stacked on mobile) */
+.calc-cards-row {
   display: grid;
-  grid-template-columns: 1.18fr 0.82fr;
-  gap: 32px;
-  background: rgba(18, 23, 38, 0.72);
-  backdrop-filter: blur(32px) saturate(200%);
-  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.calc-glass-box {
+  background: rgba(18, 23, 38, 0.75);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 28px;
-  padding: 36px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(10, 132, 255, 0.1);
+  border-radius: 22px;
+  padding: 22px 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   overflow: hidden;
 }
 
-.interactive-calc-card::before {
+.calc-glass-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(10, 132, 255, 0.6), transparent);
+  opacity: 0.6;
+}
+
+.calc-glass-box:hover {
+  transform: translateY(-3px);
+  border-color: rgba(10, 132, 255, 0.4);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(10, 132, 255, 0.15);
+}
+
+.calc-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.calc-box-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.calc-box-title i {
+  font-size: 15px;
+}
+
+.calc-val-badge {
+  font-size: 12.5px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+.calc-box-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calc-slider {
+  width: 100%;
+  height: 7px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+  accent-color: var(--blue-light);
+  cursor: pointer;
+  margin: 4px 0;
+  transition: all 0.2s;
+}
+
+.calc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 0 12px rgba(10, 132, 255, 0.85);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.calc-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.calc-slider-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+
+/* Output Summary Glass Card */
+.calc-summary-glass-card {
+  background: rgba(14, 19, 32, 0.82);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 26px;
+  padding: 28px 32px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 32px rgba(10, 132, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.calc-summary-glass-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -3483,127 +3609,58 @@ body.lang-bn {
   background: linear-gradient(90deg, transparent, var(--blue-light), var(--emerald-light), transparent);
 }
 
-.calc-inputs-col {
+.calc-summary-header {
   display: flex;
-  flex-direction: column;
-  gap: 18px;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.calc-input-glass-card {
+.calc-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.25fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.calc-summary-stat-box {
   background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 18px;
-  padding: 16px 20px;
-  transition: all 0.25s ease;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.calc-input-glass-card:hover {
-  background: rgba(255, 255, 255, 0.055);
-  border-color: rgba(10, 132, 255, 0.35);
-}
-
-.calc-label-row {
+  padding: 16px 18px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.calc-label-title {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #FFFFFF;
 }
 
-.calc-val-badge {
-  font-size: 13px;
-  font-weight: 800;
-  padding: 4px 12px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.calc-slider {
-  width: 100%;
-  height: 6px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  outline: none;
-  accent-color: var(--blue-light);
-  cursor: pointer;
-  margin: 6px 0;
-}
-
-.calc-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  box-shadow: 0 0 12px rgba(10, 132, 255, 0.8);
-  cursor: pointer;
-}
-
-.calc-slider-scale {
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
+.calc-summary-stat-box .lbl {
+  font-size: 11.5px;
   font-weight: 600;
-  color: var(--text-tertiary);
-}
-
-.calc-results-col {
-  background: rgba(10, 14, 26, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 22px;
-  padding: 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
-}
-
-.calc-metrics-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin: 18px 0;
-}
-
-.calc-metric-glass-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 12px 14px;
-  border-radius: 14px;
-  font-size: 13px;
-}
-
-.calc-metric-glass-row .lbl {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.calc-net-profit-glass-card {
-  background: linear-gradient(135deg, rgba(10, 132, 255, 0.18) 0%, rgba(48, 209, 88, 0.12) 100%);
-  border: 1px solid rgba(10, 132, 255, 0.4);
-  padding: 20px 16px;
+.calc-summary-stat-box .val {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.calc-summary-profit-box {
+  background: linear-gradient(135deg, rgba(10, 132, 255, 0.22) 0%, rgba(48, 209, 88, 0.16) 100%);
+  border: 1px solid rgba(10, 132, 255, 0.45);
+  padding: 16px 20px;
   border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
-  box-shadow: 0 8px 24px rgba(10, 132, 255, 0.2);
+  box-shadow: 0 8px 24px rgba(10, 132, 255, 0.25);
 }
 
-.calc-net-profit-glass-card .lbl {
+.calc-summary-profit-box .lbl {
   font-size: 11px;
   font-weight: 700;
   color: var(--blue-light);
@@ -3611,19 +3668,31 @@ body.lang-bn {
   letter-spacing: 0.8px;
 }
 
-.net-profit-amount {
+.calc-summary-profit-box .net-profit-amount {
   font-family: var(--font-title);
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
   color: #FFFFFF;
-  margin-top: 6px;
-  text-shadow: 0 0 20px rgba(10, 132, 255, 0.5);
+  margin-top: 4px;
+  text-shadow: 0 0 20px rgba(10, 132, 255, 0.6);
 }
 
-.net-profit-amount small {
-  font-size: 13px;
+.calc-summary-profit-box .net-profit-amount small {
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text-secondary);
+}
+
+.calc-action-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.calc-action-row .btn-hero-primary {
+  padding: 12px 24px;
+  font-size: 13.5px;
+  border-radius: 14px;
 }
 
 /* --- Interactive Radar Simulator --- */
@@ -3720,10 +3789,17 @@ body.lang-bn {
 
 /* --- Responsive Layout Rules (Mobile & Tablet) --- */
 @media (max-width: 960px) {
-  .interactive-calc-card {
+  .calc-cards-row {
     grid-template-columns: 1fr;
-    padding: 24px;
-    gap: 24px;
+    gap: 16px;
+  }
+
+  .calc-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .calc-summary-profit-box {
+    grid-column: span 2;
   }
 }
 
@@ -3747,17 +3823,37 @@ body.lang-bn {
     padding: 4px 10px !important;
   }
 
-  .interactive-calc-card {
-    padding: 18px 14px !important;
+  .calc-cards-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .calc-glass-box {
+    padding: 16px 14px !important;
+    border-radius: 18px !important;
+  }
+
+  .calc-summary-glass-card {
+    padding: 20px 14px !important;
     border-radius: 20px !important;
   }
 
-  .calc-input-glass-card {
-    padding: 14px 14px !important;
+  .calc-summary-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
   }
 
-  .calc-results-col {
-    padding: 18px 14px !important;
+  .calc-summary-profit-box {
+    grid-column: span 1 !important;
+  }
+
+  .calc-action-row {
+    justify-content: stretch;
+  }
+
+  .calc-action-row .btn-hero-primary {
+    width: 100%;
+    justify-content: center;
   }
 
   .telematics-container {

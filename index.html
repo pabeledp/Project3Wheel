@@ -384,74 +384,95 @@
         </p>
       </div>
 
-      <div class="interactive-calc-card">
-        <div class="calc-inputs-col">
-          <!-- Fleet Size Slider Card -->
-          <div class="calc-input-glass-card">
-            <div class="calc-label-row">
-              <span class="calc-label-title"><i class="fa-solid fa-van-shuttle text-blue"></i> <span data-i18n="calc_lbl_fleet_size">Active Fleet Size:</span></span>
+      <div class="calculator-grid-wrapper">
+        <!-- Input Cards Grid: Beside each other on PC (3 cols), vertical on mobile -->
+        <div class="calc-cards-row">
+          <!-- Card 1: Active Fleet Size -->
+          <div class="calc-glass-box">
+            <div class="calc-box-header">
+              <div class="calc-box-title">
+                <i class="fa-solid fa-van-shuttle text-blue"></i>
+                <span data-i18n="calc_lbl_fleet_size">Active Fleet Size</span>
+              </div>
               <strong id="calcFleetSizeDisplay" class="calc-val-badge badge-blue">10 Vehicles</strong>
             </div>
-            <input type="range" min="1" max="50" value="10" class="calc-slider" id="calcFleetSize" oninput="updateLandingRoiCalculator()">
-            <div class="calc-slider-scale">
-              <span>1 Unit</span>
-              <span>25 Units</span>
-              <span>50 Units</span>
+            <div class="calc-box-body">
+              <input type="range" min="1" max="50" value="10" class="calc-slider" id="calcFleetSize" oninput="updateLandingRoiCalculator()">
+              <div class="calc-slider-scale">
+                <span>1 Unit</span>
+                <span>25 Units</span>
+                <span>50 Units</span>
+              </div>
             </div>
           </div>
 
-          <!-- Target Daily Joma Card -->
-          <div class="calc-input-glass-card">
-            <div class="calc-label-row">
-              <span class="calc-label-title"><i class="fa-solid fa-money-bill-wave text-emerald"></i> <span data-i18n="calc_lbl_daily_rate">Target Daily Joma / Vehicle:</span></span>
+          <!-- Card 2: Target Daily Joma -->
+          <div class="calc-glass-box">
+            <div class="calc-box-header">
+              <div class="calc-box-title">
+                <i class="fa-solid fa-money-bill-wave text-emerald"></i>
+                <span data-i18n="calc_lbl_daily_rate">Target Daily Joma</span>
+              </div>
               <strong id="calcRateDisplay" class="calc-val-badge badge-emerald">৳350</strong>
             </div>
-            <input type="range" min="100" max="800" step="10" value="350" class="calc-slider" id="calcRate" oninput="updateLandingRoiCalculator()">
-            <div class="calc-slider-scale">
-              <span>৳100</span>
-              <span>৳450</span>
-              <span>৳800</span>
+            <div class="calc-box-body">
+              <input type="range" min="100" max="800" step="10" value="350" class="calc-slider" id="calcRate" oninput="updateLandingRoiCalculator()">
+              <div class="calc-slider-scale">
+                <span>৳100</span>
+                <span>৳450</span>
+                <span>৳800</span>
+              </div>
             </div>
           </div>
 
-          <!-- Garage Overhead Card -->
-          <div class="calc-input-glass-card">
-            <div class="calc-label-row">
-              <span class="calc-label-title"><i class="fa-solid fa-bolt text-purple"></i> <span data-i18n="calc_lbl_overhead">Garage Overhead & Power / Vehicle:</span></span>
+          <!-- Card 3: Garage Overhead & Power -->
+          <div class="calc-glass-box">
+            <div class="calc-box-header">
+              <div class="calc-box-title">
+                <i class="fa-solid fa-bolt text-purple"></i>
+                <span data-i18n="calc_lbl_overhead">Garage Overhead</span>
+              </div>
               <strong id="calcOverheadDisplay" class="calc-val-badge badge-purple">৳130</strong>
             </div>
-            <input type="range" min="0" max="400" step="10" value="130" class="calc-slider" id="calcOverhead" oninput="updateLandingRoiCalculator()">
-            <div class="calc-slider-scale">
-              <span>৳0</span>
-              <span>৳200</span>
-              <span>৳400</span>
+            <div class="calc-box-body">
+              <input type="range" min="0" max="400" step="10" value="130" class="calc-slider" id="calcOverhead" oninput="updateLandingRoiCalculator()">
+              <div class="calc-slider-scale">
+                <span>৳0</span>
+                <span>৳200</span>
+                <span>৳400</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="calc-results-col">
-          <div class="calc-result-header">
-            <span class="badge-pill badge-emerald"><i class="fa-solid fa-chart-line"></i> 30-DAY PROJECTION</span>
+        <!-- Output Summary Glass Card -->
+        <div class="calc-summary-glass-card">
+          <div class="calc-summary-header">
+            <span class="badge-pill badge-emerald"><i class="fa-solid fa-chart-line"></i> 30-DAY PROJECTION AUDIT</span>
           </div>
 
-          <div class="calc-metrics-stack">
-            <div class="calc-metric-glass-row">
-              <span class="lbl"><i class="fa-solid fa-circle-dollar-to-slot text-emerald"></i> <span data-i18n="calc_gross_revenue">Monthly Gross Collections:</span></span>
-              <strong id="calcGrossRev" class="text-emerald">৳105,000</strong>
+          <div class="calc-summary-grid">
+            <div class="calc-summary-stat-box">
+              <span class="lbl"><i class="fa-solid fa-circle-dollar-to-slot text-emerald"></i> <span data-i18n="calc_gross_revenue">Monthly Gross Collections</span></span>
+              <strong id="calcGrossRev" class="val text-emerald">৳105,000</strong>
             </div>
-            <div class="calc-metric-glass-row">
-              <span class="lbl"><i class="fa-solid fa-receipt text-purple"></i> <span data-i18n="calc_garage_costs">Monthly Garage & Power Costs:</span></span>
-              <strong id="calcGarageCosts" class="text-purple">৳39,000</strong>
+
+            <div class="calc-summary-stat-box">
+              <span class="lbl"><i class="fa-solid fa-receipt text-purple"></i> <span data-i18n="calc_garage_costs">Monthly Garage & Power</span></span>
+              <strong id="calcGarageCosts" class="val text-purple">৳39,000</strong>
             </div>
-            <div class="calc-net-profit-glass-card">
+
+            <div class="calc-summary-profit-box">
               <span class="lbl" data-i18n="calc_net_surplus">Estimated Net Owner Surplus</span>
               <h3 id="calcNetProfit" class="net-profit-amount">৳66,000 <small>/ month</small></h3>
             </div>
           </div>
 
-          <button class="btn-hero-primary btn-block" onclick="openAdminArea()" style="justify-content: center;">
-            <i class="fa-solid fa-lock"></i> <span data-i18n="calc_btn_manage">Manage Real Fleet in Admin</span>
-          </button>
+          <div class="calc-action-row">
+            <button class="btn-hero-primary" onclick="openAdminArea()">
+              <i class="fa-solid fa-lock"></i> <span data-i18n="calc_btn_manage">Manage Real Fleet in Admin</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
