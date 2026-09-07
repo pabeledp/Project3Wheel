@@ -222,9 +222,11 @@ const i18n = {
     btn_back_website: "Back to Public Site",
     
     // Landing Page English Translations
+    landing_nav_home: "Home",
     landing_nav_about: "About",
     landing_nav_features: "Features",
-    landing_nav_telematics: "GPS Telematics",
+    landing_nav_calc: "ROI Calc",
+    landing_nav_telematics: "GPS",
     landing_nav_shareholders: "Shareholders",
     landing_btn_admin: "Admin Area",
     hero_pill_tag: "NEXT-GEN ELECTRIC 3-WHEELER FLEET PLATFORM",
@@ -493,9 +495,11 @@ const i18n = {
     btn_back_website: "ওয়েবসাইটে ফিরে যান",
     
     // Landing Page Bengali Translations
+    landing_nav_home: "হোম",
     landing_nav_about: "পরিচিতি",
     landing_nav_features: "ফিচারসমূহ",
-    landing_nav_telematics: "জিপিএস ট্র্যাকিং",
+    landing_nav_calc: "ক্যালকুলেটর",
+    landing_nav_telematics: "জিপিএস",
     landing_nav_shareholders: "অংশীদার ও তহবিল",
     landing_btn_admin: "অ্যাডমিন প্যানেল",
     hero_pill_tag: "বৈদ্যুতিক থ্রি-হুইলার ও ফ্লিট অপারেটিং সিস্টেম",
@@ -895,7 +899,7 @@ function triggerLandingRadarMode(mode) {
     showToast(state.lang === 'bn' ? 'সবগুলো গাড়িতে লাইভ জিপিএস পিং সফল!' : 'Live GPS ping dispatched to all fleet units!', 'emerald');
     setTimeout(() => {
       if (sweep) sweep.style.animationDuration = '4s';
-      if (pill) pill.innerHTML = `<i class="fa-solid fa-circle text-emerald"></i> <span>${state.lang === 'bn' ? 'সব গাড়ি সুরক্ষিত' : 'ALL 3 UNITS SAFE'}</span>`;
+      if (pill) pill.innerHTML = `<i class="fa-solid fa-circle-check text-emerald"></i> <span>${state.lang === 'bn' ? 'সব গাড়ি সুরক্ষিত' : 'FLEET GPS SECURED'}</span>`;
     }, 2500);
   } else if (mode === 'geofence') {
     if (pill) pill.innerHTML = `<i class="fa-solid fa-shield-halved text-emerald"></i> <span>${state.lang === 'bn' ? 'জিওফেন্স এলাকা নিরাপদ' : 'GEOFENCE SAFE ZONE VERIFIED'}</span>`;

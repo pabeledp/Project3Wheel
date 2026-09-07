@@ -386,10 +386,11 @@
 
       <div class="interactive-calc-card">
         <div class="calc-inputs-col">
-          <div class="calc-input-group">
+          <!-- Fleet Size Slider Card -->
+          <div class="calc-input-glass-card">
             <div class="calc-label-row">
-              <span data-i18n="calc_lbl_fleet_size">Active Fleet Size:</span>
-              <strong id="calcFleetSizeDisplay" class="text-blue">10 Vehicles</strong>
+              <span class="calc-label-title"><i class="fa-solid fa-van-shuttle text-blue"></i> <span data-i18n="calc_lbl_fleet_size">Active Fleet Size:</span></span>
+              <strong id="calcFleetSizeDisplay" class="calc-val-badge badge-blue">10 Vehicles</strong>
             </div>
             <input type="range" min="1" max="50" value="10" class="calc-slider" id="calcFleetSize" oninput="updateLandingRoiCalculator()">
             <div class="calc-slider-scale">
@@ -399,10 +400,11 @@
             </div>
           </div>
 
-          <div class="calc-input-group">
+          <!-- Target Daily Joma Card -->
+          <div class="calc-input-glass-card">
             <div class="calc-label-row">
-              <span data-i18n="calc_lbl_daily_rate">Target Daily Joma / Vehicle:</span>
-              <strong id="calcRateDisplay" class="text-emerald">৳350</strong>
+              <span class="calc-label-title"><i class="fa-solid fa-money-bill-wave text-emerald"></i> <span data-i18n="calc_lbl_daily_rate">Target Daily Joma / Vehicle:</span></span>
+              <strong id="calcRateDisplay" class="calc-val-badge badge-emerald">৳350</strong>
             </div>
             <input type="range" min="100" max="800" step="10" value="350" class="calc-slider" id="calcRate" oninput="updateLandingRoiCalculator()">
             <div class="calc-slider-scale">
@@ -412,10 +414,11 @@
             </div>
           </div>
 
-          <div class="calc-input-group">
+          <!-- Garage Overhead Card -->
+          <div class="calc-input-glass-card">
             <div class="calc-label-row">
-              <span data-i18n="calc_lbl_overhead">Garage Overhead & Power / Vehicle:</span>
-              <strong id="calcOverheadDisplay" class="text-purple">৳130</strong>
+              <span class="calc-label-title"><i class="fa-solid fa-bolt text-purple"></i> <span data-i18n="calc_lbl_overhead">Garage Overhead & Power / Vehicle:</span></span>
+              <strong id="calcOverheadDisplay" class="calc-val-badge badge-purple">৳130</strong>
             </div>
             <input type="range" min="0" max="400" step="10" value="130" class="calc-slider" id="calcOverhead" oninput="updateLandingRoiCalculator()">
             <div class="calc-slider-scale">
@@ -428,33 +431,32 @@
 
         <div class="calc-results-col">
           <div class="calc-result-header">
-            <span class="badge-pill badge-emerald"><i class="fa-solid fa-calculator"></i> 30-DAY PROJECTION</span>
+            <span class="badge-pill badge-emerald"><i class="fa-solid fa-chart-line"></i> 30-DAY PROJECTION</span>
           </div>
 
           <div class="calc-metrics-stack">
-            <div class="calc-metric-row">
-              <span data-i18n="calc_gross_revenue">Monthly Gross Collections:</span>
+            <div class="calc-metric-glass-row">
+              <span class="lbl"><i class="fa-solid fa-circle-dollar-to-slot text-emerald"></i> <span data-i18n="calc_gross_revenue">Monthly Gross Collections:</span></span>
               <strong id="calcGrossRev" class="text-emerald">৳105,000</strong>
             </div>
-            <div class="calc-metric-row">
-              <span data-i18n="calc_garage_costs">Monthly Garage & Power Costs:</span>
+            <div class="calc-metric-glass-row">
+              <span class="lbl"><i class="fa-solid fa-receipt text-purple"></i> <span data-i18n="calc_garage_costs">Monthly Garage & Power Costs:</span></span>
               <strong id="calcGarageCosts" class="text-purple">৳39,000</strong>
             </div>
-            <div class="calc-metric-divider"></div>
-            <div class="calc-net-profit-box">
+            <div class="calc-net-profit-glass-card">
               <span class="lbl" data-i18n="calc_net_surplus">Estimated Net Owner Surplus</span>
-              <h3 id="calcNetProfit" class="text-blue">৳66,000 <small>/ month</small></h3>
+              <h3 id="calcNetProfit" class="net-profit-amount">৳66,000 <small>/ month</small></h3>
             </div>
           </div>
 
-          <button class="btn-hero-primary btn-block" onclick="openAdminArea()" style="margin-top: 16px; justify-content: center;">
+          <button class="btn-hero-primary btn-block" onclick="openAdminArea()" style="justify-content: center;">
             <i class="fa-solid fa-lock"></i> <span data-i18n="calc_btn_manage">Manage Real Fleet in Admin</span>
           </button>
         </div>
       </div>
     </section>
 
-    <!-- GPS Telematics Highlight Section with Interactive Radar Controls -->
+    <!-- GPS Telematics Highlight Section with Integrated Apple Liquid Glass Radar -->
     <section class="landing-section telematics-section" id="telematics">
       <div class="telematics-container">
         <div class="telematics-info">
@@ -484,25 +486,30 @@
         </div>
 
         <div class="telematics-visual">
-          <div class="gps-radar-preview" id="landingGpsRadar">
-            <div class="radar-circle circle-1"></div>
-            <div class="radar-circle circle-2"></div>
-            <div class="radar-circle circle-3"></div>
-            <div class="radar-sweep" id="landingRadarSweep"></div>
-            <div class="radar-node node-1" id="radarNode1" title="Fleet Unit 1">
-              <i class="fa-solid fa-van-shuttle"></i>
-              <span>Active EV (Zone A)</span>
-            </div>
-            <div class="radar-node node-2" id="radarNode2" title="Fleet Unit 2">
-              <i class="fa-solid fa-van-shuttle"></i>
-              <span>Active EV (24 km/h)</span>
-            </div>
-            <div class="radar-node node-3" id="radarNode3" title="Central Hub">
-              <i class="fa-solid fa-warehouse"></i>
-              <span>Garage Hub</span>
-            </div>
-            <div class="radar-status-pill" id="radarStatusPill">
-              <i class="fa-solid fa-circle text-emerald"></i> <span>ALL VEHICLES PROTECTED</span>
+          <div class="gps-radar-frame">
+            <div class="gps-radar-preview" id="landingGpsRadar">
+              <div class="radar-grid-bg"></div>
+              <div class="radar-circle circle-1"></div>
+              <div class="radar-circle circle-2"></div>
+              <div class="radar-circle circle-3"></div>
+              <div class="radar-crosshair-h"></div>
+              <div class="radar-crosshair-v"></div>
+              <div class="radar-sweep" id="landingRadarSweep"></div>
+              <div class="radar-node node-1" id="radarNode1" title="Fleet Unit 1">
+                <i class="fa-solid fa-van-shuttle"></i>
+                <span>Active EV (Zone A)</span>
+              </div>
+              <div class="radar-node node-2" id="radarNode2" title="Fleet Unit 2">
+                <i class="fa-solid fa-van-shuttle"></i>
+                <span>Active EV (24 km/h)</span>
+              </div>
+              <div class="radar-node node-3" id="radarNode3" title="Central Hub">
+                <i class="fa-solid fa-warehouse"></i>
+                <span>Garage Hub</span>
+              </div>
+              <div class="radar-status-pill" id="radarStatusPill">
+                <i class="fa-solid fa-circle-check text-emerald"></i> <span>FLEET GPS SECURED</span>
+              </div>
             </div>
           </div>
         </div>
@@ -593,6 +600,34 @@
         </div>
       </div>
     </footer>
+
+    <!-- Public Landing Mobile Bottom Navigation Dock (Apple Liquid Glass) -->
+    <nav class="landing-mobile-bottom-dock" id="landingMobileBottomDock">
+      <a href="#hero" class="dock-nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i class="fa-solid fa-house"></i>
+        <span data-i18n="landing_nav_home">Home</span>
+      </a>
+      <a href="#about" class="dock-nav-item">
+        <i class="fa-solid fa-circle-info"></i>
+        <span data-i18n="landing_nav_about">About</span>
+      </a>
+      <a href="#features" class="dock-nav-item">
+        <i class="fa-solid fa-layer-group"></i>
+        <span data-i18n="landing_nav_features">Features</span>
+      </a>
+      <a href="#calculator" class="dock-nav-item">
+        <i class="fa-solid fa-calculator"></i>
+        <span data-i18n="landing_nav_calc">ROI Calc</span>
+      </a>
+      <a href="#telematics" class="dock-nav-item">
+        <i class="fa-solid fa-satellite"></i>
+        <span data-i18n="landing_nav_telematics">GPS</span>
+      </a>
+      <button class="dock-nav-item dock-admin-btn" onclick="openAdminArea()">
+        <i class="fa-solid fa-lock"></i>
+        <span data-i18n="landing_btn_admin">Admin</span>
+      </button>
+    </nav>
   </div>
 
   <!-- Mobile Drawer Overlay Backdrop -->
