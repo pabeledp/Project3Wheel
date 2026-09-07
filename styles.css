@@ -2299,16 +2299,27 @@ body.lang-bn {
   }
 }
 
-/* ==================== DEVELOPER CREDIT FOOTER ==================== */
+/* ==================== DEVELOPER CREDIT FIXED FOOTER ==================== */
 .developer-credit {
-  display: flex;
-  justify-content: flex-end;
+  position: fixed;
+  bottom: 12px;
+  right: 20px;
+  z-index: 850;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 16px 24px 32px;
+  gap: 5px;
+  padding: 5px 12px;
+  background: rgba(13, 17, 28, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
   font-size: 11px;
   color: #94A3B8;
   letter-spacing: 0.3px;
+  pointer-events: auto;
+  user-select: none;
 }
 
 .developer-credit a {
@@ -2323,4 +2334,14 @@ body.lang-bn {
   text-decoration: underline;
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
+
+@media (max-width: 768px) {
+  .developer-credit {
+    bottom: 74px; /* Stacked right above mobile bottom dock */
+    right: 12px;
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+}
+
 
