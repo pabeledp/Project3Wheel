@@ -234,13 +234,26 @@ const i18n = {
     hero_btn_explore: "Explore Features",
     hero_stat_1: "Automated Collections",
     hero_stat_2: "Smart Telematics",
-    hero_stat_3: "Garage Rent Tracking",
+    hero_stat_3: "Garage Cost Log",
     hero_stat_4: "Multi-Partner Equity",
     lbl_assigned_driver: "Assigned Pilot",
-    lbl_daily_joma_target: "Daily Target",
-    lbl_rent_share: "Garage Rent",
+    lbl_daily_joma_target: "Collection Model",
+    lbl_rent_share: "Garage Overhead",
     lbl_collection_status: "Collection Status",
-    hero_interactive_action: "Enter Admin Area",
+    hero_interactive_action: "Open Admin Area",
+    btn_sim_accelerate: "Simulate Speed",
+    btn_ping_fleet: "Ping Fleet Units",
+    btn_check_geofence: "Geofence Status",
+    calc_sec_tag: "INTERACTIVE SIMULATOR",
+    calc_sec_title: "Fleet Revenue & Profit Simulator",
+    calc_sec_subtitle: "Adjust the interactive controls below to simulate your fleet's monthly gross collection, garage overheads, and estimated net owner profit.",
+    calc_lbl_fleet_size: "Active Fleet Size:",
+    calc_lbl_daily_rate: "Target Daily Joma / Vehicle:",
+    calc_lbl_overhead: "Garage Overhead & Power / Vehicle:",
+    calc_gross_revenue: "Monthly Gross Collections:",
+    calc_garage_costs: "Monthly Garage & Power Costs:",
+    calc_net_surplus: "Estimated Net Owner Surplus",
+    calc_btn_manage: "Manage Real Fleet in Admin",
     about_tag: "ABOUT PROJECT 3 WHEEL",
     about_title: "Modernizing Electric Mobility & Garage Eco-System",
     about_subtitle: "Project 3 Wheel is Bangladesh's pioneering operating platform purpose-built for electric rickshaws, mishuks, easy-bikes, and charging garage hubs.",
@@ -254,7 +267,7 @@ const i18n = {
     features_title: "Everything You Need to Run Your Fleet Hub",
     features_subtitle: "A complete all-in-one suite covering collection logs, expense tracking, shareholder dividends, driver management, and GPS intelligence.",
     feat_1_title: "Automated Daily Joma & Rent",
-    feat_1_desc: "Instant 1-tap logging for Full (৳350), Partial (৳200), or Unpaid collections. Automatic ৳130/day garage rent deduction keeps profit calculations exact.",
+    feat_1_desc: "Instant 1-tap logging for Full, Partial, or Unpaid deposits. Automatic daily garage rent and overhead cost deductions keep net profit calculations 100% exact.",
     feat_2_title: "Live GPS & Route Telematics",
     feat_2_desc: "Simulated and live GPS tracking for every vehicle. Monitor speed, battery SoC voltage, route coverage, and get instant geofencing security alerts.",
     feat_3_title: "Shareholder & Equity Ledger",
@@ -494,10 +507,23 @@ const i18n = {
     hero_stat_3: "গ্যারেজ ভাড়া অটো-হিসাব",
     hero_stat_4: "স্বচ্ছ অংশীদার তহবিল",
     lbl_assigned_driver: "নির্ধারিত চালক",
-    lbl_daily_joma_target: "দৈনিক জমা লক্ষ্য",
-    lbl_rent_share: "গ্যারেজ ভাড়া",
+    lbl_daily_joma_target: "কালেকশন মডেল",
+    lbl_rent_share: "গ্যারেজ ওভারহেড",
     lbl_collection_status: "জমার অবস্থা",
     hero_interactive_action: "অ্যাডমিন প্যানেলে যান",
+    btn_sim_accelerate: "গতি সিমুলেট করুন",
+    btn_ping_fleet: "ফ্লিট পিং করুন",
+    btn_check_geofence: "জিওফেন্স স্ট্যাটাস",
+    calc_sec_tag: "ইন্টারেক্টিভ সিমুলেটর",
+    calc_sec_title: "ফ্লিট আয় ও নিট লাভ ক্যালকুলেটর",
+    calc_sec_subtitle: "আপনার গাড়ির সংখ্যা, দৈনিক জমা রেট ও গ্যারেজ খরচের স্লাইডার পরিবর্তন করে মাসিক মোট জমা ও সম্ভাব্য নিট লাভ লাইভ দেখুন।",
+    calc_lbl_fleet_size: "মোট সক্রিয় গাড়ি:",
+    calc_lbl_daily_rate: "প্রতি গাড়ির দৈনিক জমা লক্ষ্য:",
+    calc_lbl_overhead: "প্রতি গাড়ির গ্যারেজ ভাড়া ও বিদ্যুৎ খরচ:",
+    calc_gross_revenue: "মাসিক মোট কালেকশন:",
+    calc_garage_costs: "মাসিক গ্যারেজ ও বিদ্যুৎ খরচ:",
+    calc_net_surplus: "সম্ভাব্য মাসিক নিট লাভ",
+    calc_btn_manage: "অ্যাডমিন প্যানেলে ফ্লিট পরিচালনা করুন",
     about_tag: "প্রজেক্ট ৩ হুইল পরিচিতি",
     about_title: "বৈদ্যুতিক থ্রি-হুইলার ইকোসিস্টেমের ডিজিটাল রূপান্তর",
     about_subtitle: "প্রজেক্ট ৩ হুইল হলো বাংলাদেশে ব্যাটারিচালিত রিকশা, মিশুক, ইজিবাইক ও চার্জিং গ্যারেজের জন্য বিশেষভাবে তৈরি প্রথম স্বয়ংক্রিয় অপারেটিং প্ল্যাটফর্ম।",
@@ -511,7 +537,7 @@ const i18n = {
     features_title: "গ্যারেজ ও ফ্লিট পরিচালনার সব প্রয়োজনীয় টুলস",
     features_subtitle: "দৈনিক কালেকশন, খরচের হিসাব, অংশীদারদের লভ্যাংশ, ড্রাইভার ডিরেক্টরি এবং জিপিএস ট্র্যাকিং—সব এক প্ল্যাটফর্মে।",
     feat_1_title: "স্বয়ংক্রিয় দৈনিক জমা ও গ্যারেজ ভাড়া",
-    feat_1_desc: "এক ক্লিকে ফুল (৳৩৫০), হাফ (৳২০০) বা বাকি জমা এন্ট্রি। সাথে দৈনিক ৳১৩০ গ্যারেজ ভাড়া অটোমেটিক মাইনাস হয়ে প্রকৃত লাভ হিসাব হয়।",
+    feat_1_desc: "এক ক্লিকে ফুল, হাফ বা বাকি জমা এন্ট্রি। সাথে গ্যারেজ ভাড়া ও পরিচালনা খরচ স্বয়ংক্রিয়ভাবে বাদ হয়ে প্রকৃত নেট লাভ নির্ভুলভাবে হিসাব হয়।",
     feat_2_title: "লাইভ জিপিএস ও গতি ট্র্যাকিং",
     feat_2_desc: "প্রতিটি গাড়ির লাইভ গতিবিধি, ব্যাটারি ভোল্টেজ এবং নির্দিষ্ট সীমানা অতিক্রম করলে স্বয়ংক্রিয় নোটিফিকেশন সুবিধা।",
     feat_3_title: "শেয়ারহোল্ডার ও তহবিল লেজার",
@@ -596,6 +622,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   renderAll();
+  updateLandingRoiCalculator();
 });
 
 // --- Google-Style Apps Menu Trigger ---
@@ -796,6 +823,154 @@ function closeAuthModal() {
   const authOverlay = document.getElementById('authOverlay');
   if (authOverlay) {
     authOverlay.style.display = 'none';
+  }
+}
+
+// --- Landing Page Interactive Engine ---
+const landingFleetUnits = {
+  R01: {
+    title: 'FLEET UNIT R-01',
+    status: 'ACTIVE ROAD',
+    statusClass: 'badge-emerald',
+    battery: '92% (48.8V)',
+    speed: '24 km/h',
+    location: 'Sector 11 (Zone A)',
+    pilot: 'Pilot D-101 (Verified)',
+    rate: 'Standard Daily Joma',
+    rent: 'Daily Fixed Deduct',
+    collection: 'Deposited',
+  },
+  R02: {
+    title: 'FLEET UNIT R-02',
+    status: 'IN ROUTE',
+    statusClass: 'badge-blue',
+    battery: '78% (47.6V)',
+    speed: '28 km/h',
+    location: 'Main Highway Route 4',
+    pilot: 'Pilot D-102 (Verified)',
+    rate: 'Custom Target Rate',
+    rent: 'Daily Fixed Deduct',
+    collection: 'Partially Deposited',
+  },
+  R03: {
+    title: 'FLEET UNIT R-03',
+    status: 'CHARGING HUB',
+    statusClass: 'badge-purple',
+    battery: '98% (52.4V)',
+    speed: '0 km/h (Docked)',
+    location: 'Central Garage Bay 2',
+    pilot: 'Pilot D-103 (Standby)',
+    rate: 'Scheduled Shift',
+    rent: 'Daily Fixed Deduct',
+    collection: 'Off-Peak Shift',
+  }
+};
+
+let currentLandingUnit = 'R01';
+
+function selectLandingFleetUnit(unitId) {
+  currentLandingUnit = unitId;
+  const data = landingFleetUnits[unitId];
+  if (!data) return;
+
+  document.querySelectorAll('.unit-chip').forEach(c => c.classList.remove('active'));
+  document.getElementById(`chip${unitId}`)?.classList.add('active');
+
+  const titleEl = document.getElementById('landingUnitTitle');
+  const statusEl = document.getElementById('landingUnitStatus');
+  const batValEl = document.getElementById('landingUnitBatVal');
+  const speedValEl = document.getElementById('landingSpeedVal');
+  const locValEl = document.getElementById('landingLocVal');
+  const pilotValEl = document.getElementById('landingPilotVal');
+  const rateValEl = document.getElementById('landingRateVal');
+  const rentValEl = document.getElementById('landingRentVal');
+  const statusValEl = document.getElementById('landingStatusVal');
+
+  if (titleEl) titleEl.textContent = data.title;
+  if (statusEl) {
+    statusEl.textContent = data.status;
+    statusEl.className = `badge-pill ${data.statusClass}`;
+  }
+  if (batValEl) batValEl.textContent = data.battery;
+  if (speedValEl) speedValEl.textContent = data.speed;
+  if (locValEl) locValEl.textContent = data.location;
+  if (pilotValEl) pilotValEl.textContent = data.pilot;
+  if (rateValEl) rateValEl.textContent = data.rate;
+  if (rentValEl) rentValEl.textContent = data.rent;
+  if (statusValEl) statusValEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${data.collection}`;
+}
+
+let isLandingSpeedSimulating = false;
+function accelerateLandingUnit() {
+  const speedValEl = document.getElementById('landingSpeedVal');
+  const batValEl = document.getElementById('landingUnitBatVal');
+  const imgEl = document.getElementById('landingRickshawImg');
+  const btn = document.getElementById('btnSimSpeed');
+
+  if (isLandingSpeedSimulating) return;
+  isLandingSpeedSimulating = true;
+
+  if (btn) btn.innerHTML = `<i class="fa-solid fa-gauge-high text-emerald"></i> <span>${state.lang === 'bn' ? 'গতি বাড়ছে...' : 'Accelerating...'}</span>`;
+  if (imgEl) imgEl.style.transform = 'scale(1.08) rotate(-2deg)';
+
+  let curSpeed = 24;
+  const interval = setInterval(() => {
+    curSpeed += 4;
+    if (speedValEl) speedValEl.textContent = `${curSpeed} km/h`;
+    if (curSpeed >= 40) {
+      clearInterval(interval);
+      setTimeout(() => {
+        if (speedValEl) speedValEl.textContent = landingFleetUnits[currentLandingUnit]?.speed || '24 km/h';
+        if (imgEl) imgEl.style.transform = '';
+        if (btn) btn.innerHTML = `<i class="fa-solid fa-bolt text-amber"></i> <span>${state.lang === 'bn' ? 'গতি সিমুলেট করুন' : 'Simulate Speed'}</span>`;
+        isLandingSpeedSimulating = false;
+        showToast(state.lang === 'bn' ? 'লাইভ টেলিমেটিক্স গতি সিমুলেশন সম্পন্ন!' : 'Live telemetry speed simulation complete!', 'blue');
+      }, 1000);
+    }
+  }, 120);
+}
+
+function updateLandingRoiCalculator() {
+  const fleetSize = Number(document.getElementById('calcFleetSize')?.value || 10);
+  const dailyRate = Number(document.getElementById('calcRate')?.value || 350);
+  const overhead = Number(document.getElementById('calcOverhead')?.value || 130);
+
+  const fleetDisplay = document.getElementById('calcFleetSizeDisplay');
+  const rateDisplay = document.getElementById('calcRateDisplay');
+  const overheadDisplay = document.getElementById('calcOverheadDisplay');
+
+  if (fleetDisplay) fleetDisplay.textContent = `${fleetSize} ${state.lang === 'bn' ? 'টি গাড়ি' : 'Vehicles'}`;
+  if (rateDisplay) rateDisplay.textContent = formatBDT(dailyRate);
+  if (overheadDisplay) overheadDisplay.textContent = formatBDT(overhead);
+
+  const grossMonthly = fleetSize * dailyRate * 30;
+  const costsMonthly = fleetSize * overhead * 30;
+  const netMonthly = Math.max(0, grossMonthly - costsMonthly);
+
+  const grossEl = document.getElementById('calcGrossRev');
+  const costsEl = document.getElementById('calcGarageCosts');
+  const netEl = document.getElementById('calcNetProfit');
+
+  if (grossEl) grossEl.textContent = formatBDT(grossMonthly);
+  if (costsEl) costsEl.textContent = formatBDT(costsMonthly);
+  if (netEl) netEl.innerHTML = `${formatBDT(netMonthly)} <small>/ ${state.lang === 'bn' ? 'প্রতি মাসে' : 'month'}</small>`;
+}
+
+function triggerLandingRadarMode(mode) {
+  const sweep = document.getElementById('landingRadarSweep');
+  const pill = document.getElementById('radarStatusPill');
+
+  if (mode === 'ping') {
+    if (sweep) sweep.style.animationDuration = '1.2s';
+    if (pill) pill.innerHTML = `<i class="fa-solid fa-satellite text-blue"></i> <span>${state.lang === 'bn' ? 'পিং পাঠানো হচ্ছে...' : 'PINGING FLEET TELEMATICS...'}</span>`;
+    showToast(state.lang === 'bn' ? 'সবগুলো গাড়িতে লাইভ জিপিএস পিং সফল!' : 'Live GPS ping dispatched to all fleet units!', 'emerald');
+    setTimeout(() => {
+      if (sweep) sweep.style.animationDuration = '4s';
+      if (pill) pill.innerHTML = `<i class="fa-solid fa-circle text-emerald"></i> <span>${state.lang === 'bn' ? 'সব গাড়ি সুরক্ষিত' : 'ALL 3 UNITS SAFE'}</span>`;
+    }, 2500);
+  } else if (mode === 'geofence') {
+    if (pill) pill.innerHTML = `<i class="fa-solid fa-shield-halved text-emerald"></i> <span>${state.lang === 'bn' ? 'জিওফেন্স এলাকা নিরাপদ' : 'GEOFENCE SAFE ZONE VERIFIED'}</span>`;
+    showToast(state.lang === 'bn' ? 'সব গাড়ি নির্ধারিত জোনের ভেতর সুরক্ষিত রয়েছে' : 'All fleet units are inside verified boundary zone', 'emerald');
   }
 }
 

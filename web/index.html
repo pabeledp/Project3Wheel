@@ -182,7 +182,7 @@
           </a>
         </div>
 
-        <!-- Live Simulated Metrics Bar -->
+        <!-- Live Key Pillars Bar -->
         <div class="hero-stats-grid">
           <div class="hero-stat-card">
             <div class="hero-stat-val text-emerald">100%</div>
@@ -193,8 +193,8 @@
             <div class="hero-stat-lbl" data-i18n="hero_stat_2">Smart Telematics</div>
           </div>
           <div class="hero-stat-card">
-            <div class="hero-stat-val text-purple">৳130/day</div>
-            <div class="hero-stat-lbl" data-i18n="hero_stat_3">Garage Rent Tracking</div>
+            <div class="hero-stat-val text-purple">Daily Cost</div>
+            <div class="hero-stat-lbl" data-i18n="hero_stat_3">Garage Rent Auto-Log</div>
           </div>
           <div class="hero-stat-card">
             <div class="hero-stat-val text-amber">Zero-Loss</div>
@@ -203,51 +203,62 @@
         </div>
       </div>
 
-      <!-- Hero Interactive Preview Visual Card -->
+      <!-- Hero Interactive Preview Visual Card with Live Fleet Switcher -->
       <div class="landing-hero-visual">
         <div class="hero-liquid-card">
+          <!-- Interactive Unit Selector Chips -->
+          <div class="hero-unit-chips">
+            <button type="button" class="unit-chip active" id="chipR01" onclick="selectLandingFleetUnit('R01')">Unit R-01</button>
+            <button type="button" class="unit-chip" id="chipR02" onclick="selectLandingFleetUnit('R02')">Unit R-02</button>
+            <button type="button" class="unit-chip" id="chipR03" onclick="selectLandingFleetUnit('R03')">Unit R-03</button>
+          </div>
+
           <div class="hero-card-header">
             <div class="hero-card-title">
-              <span class="unit-pulse"></span>
-              <h4>FLEET UNIT R-01</h4>
-              <span class="badge-pill badge-emerald">ACTIVE ROAD</span>
+              <span class="unit-pulse" id="landingUnitPulse"></span>
+              <h4 id="landingUnitTitle">FLEET UNIT R-01</h4>
+              <span class="badge-pill badge-emerald" id="landingUnitStatus">ACTIVE ROAD</span>
             </div>
             <div class="hero-card-battery">
-              <i class="fa-solid fa-battery-three-quarters text-emerald"></i>
-              <span>92% (48.8V)</span>
+              <i class="fa-solid fa-battery-three-quarters text-emerald" id="landingUnitBatIcon"></i>
+              <span id="landingUnitBatVal">92% (48.8V)</span>
             </div>
           </div>
 
           <div class="hero-vehicle-centerpiece">
-            <img src="assets/rickshaw_white.png" alt="Rickshaw Preview" class="hero-rickshaw-img">
+            <img src="assets/rickshaw_white.png" alt="Rickshaw Preview" class="hero-rickshaw-img" id="landingRickshawImg">
             <div class="hero-telemetry-overlay">
-              <div class="telemetry-badge"><i class="fa-solid fa-gauge-simple-high"></i> 24 km/h</div>
-              <div class="telemetry-badge"><i class="fa-solid fa-location-dot"></i> Dhaka Fleet Hub</div>
+              <div class="telemetry-badge" id="landingSpeedBadge"><i class="fa-solid fa-gauge-simple-high"></i> <span id="landingSpeedVal">24 km/h</span></div>
+              <div class="telemetry-badge" id="landingLocBadge"><i class="fa-solid fa-location-dot"></i> <span id="landingLocVal">Sector 11 (Zone A)</span></div>
             </div>
           </div>
 
           <div class="hero-card-data-grid">
             <div class="hero-data-item">
               <span class="lbl" data-i18n="lbl_assigned_driver">Assigned Pilot</span>
-              <strong class="val">Mohammad Selim</strong>
+              <strong class="val" id="landingPilotVal">Pilot D-101 (Verified)</strong>
             </div>
             <div class="hero-data-item">
-              <span class="lbl" data-i18n="lbl_daily_joma_target">Daily Target</span>
-              <strong class="val text-blue">৳350 / day</strong>
+              <span class="lbl" data-i18n="lbl_daily_joma_target">Collection Model</span>
+              <strong class="val text-blue" id="landingRateVal">Standard Daily Joma</strong>
             </div>
             <div class="hero-data-item">
-              <span class="lbl" data-i18n="lbl_rent_share">Garage Rent</span>
-              <strong class="val text-purple">৳130 / day</strong>
+              <span class="lbl" data-i18n="lbl_rent_share">Garage Overhead</span>
+              <strong class="val text-purple" id="landingRentVal">Daily Fixed Deduct</strong>
             </div>
             <div class="hero-data-item">
               <span class="lbl" data-i18n="lbl_collection_status">Collection Status</span>
-              <strong class="val text-emerald"><i class="fa-solid fa-circle-check"></i> Paid</strong>
+              <strong class="val text-emerald" id="landingStatusVal"><i class="fa-solid fa-circle-check"></i> Deposited</strong>
             </div>
           </div>
 
-          <div class="hero-card-interactive-footer">
-            <button class="hero-interactive-btn" onclick="openAdminArea()">
-              <i class="fa-solid fa-sliders"></i> <span data-i18n="hero_interactive_action">Open Full Fleet Hub</span>
+          <!-- Interactive Simulator Controls -->
+          <div class="hero-interactive-controls">
+            <button type="button" class="btn-glass btn-sm" onclick="accelerateLandingUnit()" id="btnSimSpeed">
+              <i class="fa-solid fa-bolt text-amber"></i> <span data-i18n="btn_sim_accelerate">Simulate Speed</span>
+            </button>
+            <button type="button" class="btn-glass btn-sm btn-primary" onclick="openAdminArea()">
+              <i class="fa-solid fa-sliders"></i> <span data-i18n="hero_interactive_action">Open Admin Area</span>
             </button>
           </div>
         </div>
@@ -314,7 +325,7 @@
           </div>
           <h4 data-i18n="feat_1_title">Automated Daily Joma & Rent</h4>
           <p data-i18n="feat_1_desc">
-            Instant 1-tap logging for Full (৳350), Partial (৳200), or Unpaid collections. Automatic ৳130/day garage rent deduction keeps profit calculations exact.
+            Instant 1-tap logging for Full, Partial, or Unpaid deposits. Automatic daily garage rent and overhead cost deductions keep net profit calculations 100% exact.
           </p>
         </div>
 
@@ -370,7 +381,87 @@
       </div>
     </section>
 
-    <!-- GPS Telematics Highlight Section -->
+    <!-- Interactive Live Fleet Revenue & Profit Calculator -->
+    <section class="landing-section calculator-section" id="calculator">
+      <div class="landing-section-header">
+        <span class="section-tag" data-i18n="calc_sec_tag">INTERACTIVE SIMULATOR</span>
+        <h2 class="section-title" data-i18n="calc_sec_title">Fleet Revenue & Profit Simulator</h2>
+        <p class="section-subtitle" data-i18n="calc_sec_subtitle">
+          Adjust the interactive controls below to simulate your fleet's monthly gross collection, garage overheads, and estimated net owner profit.
+        </p>
+      </div>
+
+      <div class="interactive-calc-card">
+        <div class="calc-inputs-col">
+          <div class="calc-input-group">
+            <div class="calc-label-row">
+              <span data-i18n="calc_lbl_fleet_size">Active Fleet Size:</span>
+              <strong id="calcFleetSizeDisplay" class="text-blue">10 Vehicles</strong>
+            </div>
+            <input type="range" min="1" max="50" value="10" class="calc-slider" id="calcFleetSize" oninput="updateLandingRoiCalculator()">
+            <div class="calc-slider-scale">
+              <span>1 Unit</span>
+              <span>25 Units</span>
+              <span>50 Units</span>
+            </div>
+          </div>
+
+          <div class="calc-input-group">
+            <div class="calc-label-row">
+              <span data-i18n="calc_lbl_daily_rate">Target Daily Joma / Vehicle:</span>
+              <strong id="calcRateDisplay" class="text-emerald">৳350</strong>
+            </div>
+            <input type="range" min="100" max="800" step="10" value="350" class="calc-slider" id="calcRate" oninput="updateLandingRoiCalculator()">
+            <div class="calc-slider-scale">
+              <span>৳100</span>
+              <span>৳450</span>
+              <span>৳800</span>
+            </div>
+          </div>
+
+          <div class="calc-input-group">
+            <div class="calc-label-row">
+              <span data-i18n="calc_lbl_overhead">Garage Overhead & Power / Vehicle:</span>
+              <strong id="calcOverheadDisplay" class="text-purple">৳130</strong>
+            </div>
+            <input type="range" min="0" max="400" step="10" value="130" class="calc-slider" id="calcOverhead" oninput="updateLandingRoiCalculator()">
+            <div class="calc-slider-scale">
+              <span>৳0</span>
+              <span>৳200</span>
+              <span>৳400</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-results-col">
+          <div class="calc-result-header">
+            <span class="badge-pill badge-emerald"><i class="fa-solid fa-calculator"></i> 30-DAY PROJECTION</span>
+          </div>
+
+          <div class="calc-metrics-stack">
+            <div class="calc-metric-row">
+              <span data-i18n="calc_gross_revenue">Monthly Gross Collections:</span>
+              <strong id="calcGrossRev" class="text-emerald">৳105,000</strong>
+            </div>
+            <div class="calc-metric-row">
+              <span data-i18n="calc_garage_costs">Monthly Garage & Power Costs:</span>
+              <strong id="calcGarageCosts" class="text-purple">৳39,000</strong>
+            </div>
+            <div class="calc-metric-divider"></div>
+            <div class="calc-net-profit-box">
+              <span class="lbl" data-i18n="calc_net_surplus">Estimated Net Owner Surplus</span>
+              <h3 id="calcNetProfit" class="text-blue">৳66,000 <small>/ month</small></h3>
+            </div>
+          </div>
+
+          <button class="btn-hero-primary btn-block" onclick="openAdminArea()" style="margin-top: 16px; justify-content: center;">
+            <i class="fa-solid fa-lock"></i> <span data-i18n="calc_btn_manage">Manage Real Fleet in Admin</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GPS Telematics Highlight Section with Interactive Radar Controls -->
     <section class="landing-section telematics-section" id="telematics">
       <div class="telematics-container">
         <div class="telematics-info">
@@ -384,28 +475,41 @@
             <li><i class="fa-solid fa-check-circle text-emerald"></i> <span data-i18n="gps_point_2">Battery voltage & state-of-charge (SoC) monitor</span></li>
             <li><i class="fa-solid fa-check-circle text-emerald"></i> <span data-i18n="gps_point_3">Geofencing & boundary anti-theft alerts</span></li>
           </ul>
-          <button class="btn-hero-primary" onclick="openAdminArea()" style="margin-top: 20px;">
-            <i class="fa-solid fa-satellite"></i> <span data-i18n="gps_btn_track">View Telematics Hub</span>
-          </button>
+
+          <!-- Interactive Radar Simulator Buttons -->
+          <div class="telematics-interactive-actions">
+            <button type="button" class="btn-glass btn-sm" onclick="triggerLandingRadarMode('ping')" id="btnRadarPing">
+              <i class="fa-solid fa-satellite-dish text-blue"></i> <span data-i18n="btn_ping_fleet">Ping Fleet Units</span>
+            </button>
+            <button type="button" class="btn-glass btn-sm" onclick="triggerLandingRadarMode('geofence')" id="btnRadarGeofence">
+              <i class="fa-solid fa-shield text-emerald"></i> <span data-i18n="btn_check_geofence">Geofence Status</span>
+            </button>
+            <button type="button" class="btn-glass btn-sm btn-primary" onclick="openAdminArea()">
+              <i class="fa-solid fa-location-crosshairs"></i> <span data-i18n="gps_btn_track">View Telematics Hub</span>
+            </button>
+          </div>
         </div>
 
         <div class="telematics-visual">
-          <div class="gps-radar-preview">
+          <div class="gps-radar-preview" id="landingGpsRadar">
             <div class="radar-circle circle-1"></div>
             <div class="radar-circle circle-2"></div>
             <div class="radar-circle circle-3"></div>
-            <div class="radar-sweep"></div>
-            <div class="radar-node node-1" title="R-01 Active">
+            <div class="radar-sweep" id="landingRadarSweep"></div>
+            <div class="radar-node node-1" id="radarNode1" title="R-01 Active">
               <i class="fa-solid fa-van-shuttle"></i>
               <span>R-01 (Active)</span>
             </div>
-            <div class="radar-node node-2" title="R-02 Active">
+            <div class="radar-node node-2" id="radarNode2" title="R-02 Active">
               <i class="fa-solid fa-van-shuttle"></i>
               <span>R-02 (22 km/h)</span>
             </div>
-            <div class="radar-node node-3" title="R-03 Hub">
+            <div class="radar-node node-3" id="radarNode3" title="R-03 Hub">
               <i class="fa-solid fa-warehouse"></i>
               <span>Garage Hub</span>
+            </div>
+            <div class="radar-status-pill" id="radarStatusPill">
+              <i class="fa-solid fa-circle text-emerald"></i> <span>ALL 3 UNITS SAFE</span>
             </div>
           </div>
         </div>
