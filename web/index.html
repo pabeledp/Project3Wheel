@@ -203,25 +203,18 @@
         </div>
       </div>
 
-      <!-- Hero Interactive Preview Visual Card with Live Fleet Switcher -->
+      <!-- Hero Interactive Preview Visual Card -->
       <div class="landing-hero-visual">
         <div class="hero-liquid-card">
-          <!-- Interactive Unit Selector Chips -->
-          <div class="hero-unit-chips">
-            <button type="button" class="unit-chip active" id="chipR01" onclick="selectLandingFleetUnit('R01')">Unit R-01</button>
-            <button type="button" class="unit-chip" id="chipR02" onclick="selectLandingFleetUnit('R02')">Unit R-02</button>
-            <button type="button" class="unit-chip" id="chipR03" onclick="selectLandingFleetUnit('R03')">Unit R-03</button>
-          </div>
-
           <div class="hero-card-header">
             <div class="hero-card-title">
               <span class="unit-pulse" id="landingUnitPulse"></span>
-              <h4 id="landingUnitTitle">FLEET UNIT R-01</h4>
+              <h4 id="landingUnitTitle" data-i18n="hero_card_unit_title">LIVE VEHICLE TELEMETRICS</h4>
               <span class="badge-pill badge-emerald" id="landingUnitStatus">ACTIVE ROAD</span>
             </div>
             <div class="hero-card-battery">
               <i class="fa-solid fa-battery-three-quarters text-emerald" id="landingUnitBatIcon"></i>
-              <span id="landingUnitBatVal">92% (48.8V)</span>
+              <span id="landingUnitBatVal">94% (49.2V)</span>
             </div>
           </div>
 
@@ -496,20 +489,20 @@
             <div class="radar-circle circle-2"></div>
             <div class="radar-circle circle-3"></div>
             <div class="radar-sweep" id="landingRadarSweep"></div>
-            <div class="radar-node node-1" id="radarNode1" title="R-01 Active">
+            <div class="radar-node node-1" id="radarNode1" title="Fleet Unit 1">
               <i class="fa-solid fa-van-shuttle"></i>
-              <span>R-01 (Active)</span>
+              <span>Active EV (Zone A)</span>
             </div>
-            <div class="radar-node node-2" id="radarNode2" title="R-02 Active">
+            <div class="radar-node node-2" id="radarNode2" title="Fleet Unit 2">
               <i class="fa-solid fa-van-shuttle"></i>
-              <span>R-02 (22 km/h)</span>
+              <span>Active EV (24 km/h)</span>
             </div>
-            <div class="radar-node node-3" id="radarNode3" title="R-03 Hub">
+            <div class="radar-node node-3" id="radarNode3" title="Central Hub">
               <i class="fa-solid fa-warehouse"></i>
               <span>Garage Hub</span>
             </div>
             <div class="radar-status-pill" id="radarStatusPill">
-              <i class="fa-solid fa-circle text-emerald"></i> <span>ALL 3 UNITS SAFE</span>
+              <i class="fa-solid fa-circle text-emerald"></i> <span>ALL VEHICLES PROTECTED</span>
             </div>
           </div>
         </div>

@@ -236,6 +236,7 @@ const i18n = {
     hero_stat_2: "Smart Telematics",
     hero_stat_3: "Garage Cost Log",
     hero_stat_4: "Multi-Partner Equity",
+    hero_card_unit_title: "LIVE VEHICLE TELEMETRICS",
     lbl_assigned_driver: "Assigned Pilot",
     lbl_daily_joma_target: "Collection Model",
     lbl_rent_share: "Garage Overhead",
@@ -506,6 +507,7 @@ const i18n = {
     hero_stat_2: "স্মার্ট জিপিএস ট্র্যাকিং",
     hero_stat_3: "গ্যারেজ ভাড়া অটো-হিসাব",
     hero_stat_4: "স্বচ্ছ অংশীদার তহবিল",
+    hero_card_unit_title: "লাইভ ফ্লিট টেলিমেটিক্স",
     lbl_assigned_driver: "নির্ধারিত চালক",
     lbl_daily_joma_target: "কালেকশন মডেল",
     lbl_rent_share: "গ্যারেজ ওভারহেড",
@@ -827,79 +829,6 @@ function closeAuthModal() {
 }
 
 // --- Landing Page Interactive Engine ---
-const landingFleetUnits = {
-  R01: {
-    title: 'FLEET UNIT R-01',
-    status: 'ACTIVE ROAD',
-    statusClass: 'badge-emerald',
-    battery: '92% (48.8V)',
-    speed: '24 km/h',
-    location: 'Sector 11 (Zone A)',
-    pilot: 'Pilot D-101 (Verified)',
-    rate: 'Standard Daily Joma',
-    rent: 'Daily Fixed Deduct',
-    collection: 'Deposited',
-  },
-  R02: {
-    title: 'FLEET UNIT R-02',
-    status: 'IN ROUTE',
-    statusClass: 'badge-blue',
-    battery: '78% (47.6V)',
-    speed: '28 km/h',
-    location: 'Main Highway Route 4',
-    pilot: 'Pilot D-102 (Verified)',
-    rate: 'Custom Target Rate',
-    rent: 'Daily Fixed Deduct',
-    collection: 'Partially Deposited',
-  },
-  R03: {
-    title: 'FLEET UNIT R-03',
-    status: 'CHARGING HUB',
-    statusClass: 'badge-purple',
-    battery: '98% (52.4V)',
-    speed: '0 km/h (Docked)',
-    location: 'Central Garage Bay 2',
-    pilot: 'Pilot D-103 (Standby)',
-    rate: 'Scheduled Shift',
-    rent: 'Daily Fixed Deduct',
-    collection: 'Off-Peak Shift',
-  }
-};
-
-let currentLandingUnit = 'R01';
-
-function selectLandingFleetUnit(unitId) {
-  currentLandingUnit = unitId;
-  const data = landingFleetUnits[unitId];
-  if (!data) return;
-
-  document.querySelectorAll('.unit-chip').forEach(c => c.classList.remove('active'));
-  document.getElementById(`chip${unitId}`)?.classList.add('active');
-
-  const titleEl = document.getElementById('landingUnitTitle');
-  const statusEl = document.getElementById('landingUnitStatus');
-  const batValEl = document.getElementById('landingUnitBatVal');
-  const speedValEl = document.getElementById('landingSpeedVal');
-  const locValEl = document.getElementById('landingLocVal');
-  const pilotValEl = document.getElementById('landingPilotVal');
-  const rateValEl = document.getElementById('landingRateVal');
-  const rentValEl = document.getElementById('landingRentVal');
-  const statusValEl = document.getElementById('landingStatusVal');
-
-  if (titleEl) titleEl.textContent = data.title;
-  if (statusEl) {
-    statusEl.textContent = data.status;
-    statusEl.className = `badge-pill ${data.statusClass}`;
-  }
-  if (batValEl) batValEl.textContent = data.battery;
-  if (speedValEl) speedValEl.textContent = data.speed;
-  if (locValEl) locValEl.textContent = data.location;
-  if (pilotValEl) pilotValEl.textContent = data.pilot;
-  if (rateValEl) rateValEl.textContent = data.rate;
-  if (rentValEl) rentValEl.textContent = data.rent;
-  if (statusValEl) statusValEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${data.collection}`;
-}
-
 let isLandingSpeedSimulating = false;
 function accelerateLandingUnit() {
   const speedValEl = document.getElementById('landingSpeedVal');
@@ -920,7 +849,7 @@ function accelerateLandingUnit() {
     if (curSpeed >= 40) {
       clearInterval(interval);
       setTimeout(() => {
-        if (speedValEl) speedValEl.textContent = landingFleetUnits[currentLandingUnit]?.speed || '24 km/h';
+        if (speedValEl) speedValEl.textContent = '24 km/h';
         if (imgEl) imgEl.style.transform = '';
         if (btn) btn.innerHTML = `<i class="fa-solid fa-bolt text-amber"></i> <span>${state.lang === 'bn' ? 'গতি সিমুলেট করুন' : 'Simulate Speed'}</span>`;
         isLandingSpeedSimulating = false;
