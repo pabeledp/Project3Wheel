@@ -184,10 +184,10 @@
       <!-- User Profile & Role Switcher -->
       <div class="sidebar-footer">
         <div class="user-card" onclick="openUserProfileModal()" title="Click to view & edit profile" style="cursor: pointer;">
-          <div class="avatar" id="userAvatar">H</div>
+          <div class="avatar" id="userAvatar">U</div>
           <div class="user-info" style="flex: 1;">
             <div style="display: flex; align-items: center; justify-content: space-between;">
-              <h4 id="userName">Habib Rahman</h4>
+              <h4 id="userName">—</h4>
               <i class="fa-solid fa-pen-to-square" style="font-size: 11px; color: var(--blue-light);"></i>
             </div>
             <span class="badge-pill" id="userRoleBadge">OWNER</span>
@@ -717,6 +717,11 @@
           </div>
         </section>
 
+        <!-- Developer Credit Footer -->
+        <footer class="developer-credit">
+          <span>Developed by </span><a href="https://www.framempire.com" target="_blank" rel="noopener noreferrer">FramEmpire</a>
+        </footer>
+
       </div>
     </main>
   </div>
@@ -785,9 +790,9 @@
     <!-- Quick Profile & Role Switch in Mobile More Sheet -->
     <div class="more-sheet-profile">
       <div style="display: flex; align-items: center; gap: 8px; cursor: pointer;" onclick="openModalAndCloseMore('userProfileModal')">
-        <div class="avatar" style="width: 32px; height: 32px; font-size: 11px;">H</div>
+        <div class="avatar" style="width: 32px; height: 32px; font-size: 11px;">U</div>
         <div>
-          <h5 style="font-size: 11px; font-weight: 700; color: white;" id="mobUserName">Habib Rahman</h5>
+          <h5 style="font-size: 11px; font-weight: 700; color: white;" id="mobUserName">—</h5>
           <span style="font-size: 9px; color: var(--text-secondary);" id="mobUserRole">OWNER</span>
         </div>
       </div>
@@ -831,7 +836,7 @@
         </div>
         <p id="scannedRickshawModel" style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Mishuk Classic 48V</p>
         <div class="scanned-info-grid">
-          <div><span data-i18n="lbl_driver">Driver:</span> <strong id="scannedDriverName">Karim Ullah</strong></div>
+          <div><span data-i18n="lbl_driver">Driver:</span> <strong id="scannedDriverName">—</strong></div>
           <div><span data-i18n="lbl_agreed_rate">Agreed Joma:</span> <strong id="scannedDriverAgreedRate">৳350 / day</strong></div>
           <div><span data-i18n="lbl_due">Due Balance:</span> <strong id="scannedDriverDue" class="text-crimson">৳0</strong></div>
         </div>
@@ -877,7 +882,7 @@
           <div class="avatar" style="width: 32px; height: 32px; font-size: 12px; background: var(--grad-primary);">D</div>
           <div>
             <div style="font-size: 10px; color: var(--text-tertiary);" data-i18n="lbl_driver_info">Driver Information</div>
-            <strong id="formDriverName" style="font-size: 13px;">Karim Ullah</strong>
+            <strong id="formDriverName" style="font-size: 13px;">—</strong>
           </div>
           <span class="badge-pill badge-emerald" id="formDriverDueBadge" style="margin-left: auto;">DUE: ৳0</span>
         </div>
@@ -913,7 +918,7 @@
           <div class="garage-rent-input-wrapper" id="garageRentInputGroup">
             <span class="lbl" data-i18n="lbl_rent_amount">Garage Rent Amount:</span>
             <div class="garage-rent-input-box">
-              <input type="number" class="glass-input-sm" id="formGarageRentAmount" value="100" min="0">
+              <input type="number" class="glass-input-sm" id="formGarageRentAmount" value="130" min="0">
               <span class="garage-unit-tag">৳/day</span>
             </div>
           </div>
@@ -965,10 +970,6 @@
           <label data-i18n="lbl_paid_by">Paid By / Spender (কে খরচ দিয়েছেন)</label>
           <select class="glass-select" id="formExpSpender">
             <option value="Garage Fund (গ্যারেজ তহবিল)">Garage Fund (গ্যারেজ তহবিল)</option>
-            <option value="Habib Rahman (মালিক)">Habib Rahman (মালিক)</option>
-            <option value="Selim Mia (ম্যানেজার)">Selim Mia (ম্যানেজার)</option>
-            <option value="Driver (চালক নিজে)">Driver (চালক নিজে)</option>
-            <option value="Shareholder - Al-Haj Moksed (শেয়ারহোল্ডার)">Shareholder - Al-Haj Moksed (শেয়ারহোল্ডার)</option>
           </select>
         </div>
 
@@ -1161,14 +1162,14 @@
         <div class="driver-profile-preview">
           <div class="avatar" style="width: 32px; height: 32px; font-size: 12px; background: var(--grad-emerald);">D</div>
           <div>
-            <strong id="quickCollectDriverName">Karim Ullah</strong>
-            <div style="font-size: 11px; color: var(--crimson-light);"><span data-i18n="lbl_current_due">Current Due:</span> <span id="quickCollectCurrentDue">৳500</span></div>
+            <strong id="quickCollectDriverName">—</strong>
+            <div style="font-size: 11px; color: var(--crimson-light);"><span data-i18n="lbl_current_due">Current Due:</span> <span id="quickCollectCurrentDue">৳0</span></div>
           </div>
         </div>
 
         <div class="form-group">
           <label data-i18n="lbl_payment_amount">Payment Amount (৳)</label>
-          <input type="number" class="glass-input" id="quickCollectAmount" value="500" required>
+          <input type="number" class="glass-input" id="quickCollectAmount" value="0" required>
         </div>
 
         <button type="submit" class="btn-glass btn-emerald btn-block" style="margin-top: 20px;">
@@ -1189,10 +1190,10 @@
       <div class="sms-preview-box">
         <div class="sms-recipient-info">
           <span data-i18n="lbl_recipient">Recipient:</span>
-          <strong id="smsRecipient">Rafiqul Islam (01812345678)</strong>
+          <strong id="smsRecipient">—</strong>
         </div>
         <div class="bangla-sms-card">
-          <p id="smsBengaliText">শ্রদ্ধেয় রফিকুল ইসলাম ভাই, প্রজেক্ট ৩ হুইল গ্যারেজে আপনার বকেয়া পাওনা ৳৭০০ টাকা। অনুগ্রহ করে দ্রুত পরিশোধ করুন। ধন্যবাদ।</p>
+          <p id="smsBengaliText">সম্মানিত চালক ভাই, আপনার বকেয়া ভাড়া দ্রুত পরিশোধ করার জন্য অনুরোধ করা হচ্ছে।</p>
         </div>
         <div class="gateway-tag">
           <i class="fa-solid fa-satellite-dish"></i> Gateway: Greenweb / BdSMS API
@@ -1401,24 +1402,24 @@
         <div class="id-card-body">
           <div class="id-card-info-grid">
             <div class="id-card-driver-label">DRIVER / PILOT NAME</div>
-            <div class="id-card-driver-name" id="idCardDriverName">Karim Ullah</div>
+            <div class="id-card-driver-name" id="idCardDriverName">—</div>
             
             <div class="id-card-details-table">
               <div class="id-card-row">
                 <span class="lbl">ID NO</span>
-                <span class="val" id="idCardDriverId">D-101</span>
+                <span class="val" id="idCardDriverId">—</span>
               </div>
               <div class="id-card-row">
                 <span class="lbl">PHONE</span>
-                <span class="val" id="idCardDriverPhone">01711223344</span>
+                <span class="val" id="idCardDriverPhone">—</span>
               </div>
               <div class="id-card-row">
                 <span class="lbl">UNIT</span>
-                <span class="id-card-badge-rickshaw" id="idCardDriverRickshaw">R-01</span>
+                <span class="id-card-badge-rickshaw" id="idCardDriverRickshaw">—</span>
               </div>
               <div class="id-card-row">
                 <span class="lbl">NID NO</span>
-                <span class="val" id="idCardDriverNid">19882691234567890</span>
+                <span class="val" id="idCardDriverNid">—</span>
               </div>
             </div>
           </div>
@@ -1430,7 +1431,7 @@
         </div>
 
         <div class="id-card-footer">
-          <span id="idCardGarageHub">HUB: MY ELECTRIC GARAGE</span>
+          <span id="idCardGarageHub">HUB: GARAGE</span>
           <span>QR VERIFIED PILOT</span>
         </div>
       </div>

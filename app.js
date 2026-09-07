@@ -845,13 +845,18 @@ function saveUserProfile(e) {
 }
 
 function updateUserProfileDisplay() {
-  const name = state.currentUser.name || 'Habib Rahman';
+  const name = state.currentUser.name || (state.lang === 'bn' ? 'ব্যবহারকারী' : 'User');
   const role = state.currentUser.role || 'owner';
 
   const nameEl = document.getElementById('userName');
   const avatarEl = document.getElementById('userAvatar');
   if (nameEl) nameEl.textContent = name;
-  if (avatarEl) avatarEl.textContent = name[0].toUpperCase();
+  if (avatarEl) avatarEl.textContent = (name && name !== '—' ? name[0] : 'U').toUpperCase();
+
+  const mobNameEl = document.getElementById('mobUserName');
+  const mobRoleEl = document.getElementById('mobUserRole');
+  if (mobNameEl) mobNameEl.textContent = name;
+  if (mobRoleEl) mobRoleEl.textContent = role.toUpperCase();
 
   const roleBadge = document.getElementById('userRoleBadge');
   if (roleBadge) {
@@ -1336,7 +1341,7 @@ function onTodayStatusChange(driverId, newStatus) {
         expected: agreedRate,
         paid: paid,
         due: due,
-        garageRent: 100,
+        garageRent: 130,
         status: 'paid',
         recordedBy: state.currentUser.name || 'Owner',
       });
@@ -1362,7 +1367,7 @@ function onTodayStatusChange(driverId, newStatus) {
         expected: agreedRate,
         paid: paid,
         due: due,
-        garageRent: 100,
+        garageRent: 130,
         status: 'due',
         recordedBy: state.currentUser.name || 'Owner',
       });
@@ -1388,7 +1393,7 @@ function onTodayStatusChange(driverId, newStatus) {
         expected: agreedRate,
         paid: paid,
         due: due,
-        garageRent: 100,
+        garageRent: 130,
         status: 'unpaid',
         recordedBy: state.currentUser.name || 'Owner',
       });
@@ -1435,7 +1440,7 @@ function renderCollectionsTable() {
       <td>${formatBDT(c.expected)}</td>
       <td><strong class="text-emerald">${formatBDT(c.paid)}</strong></td>
       <td>${formatBDT(c.due)}</td>
-      <td><span class="garage-rent-badge">${formatBDT(c.garageRent || 100)}</span></td>
+      <td><span class="garage-rent-badge">${formatBDT(c.garageRent || 130)}</span></td>
       <td>
         <span class="badge-pill ${c.status === 'paid' ? 'badge-emerald' : (c.status === 'due' ? 'badge-amber' : 'badge-crimson')}">
           ${c.status.toUpperCase()}
@@ -2234,7 +2239,7 @@ function submitCollection(e) {
   const status = due <= 0 ? 'paid' : (paid > 0 ? 'due' : 'unpaid');
 
   const includeGarageRent = document.getElementById('includeGarageRentCheck')?.checked || false;
-  const garageRentAmount = includeGarageRent ? Number(document.getElementById('formGarageRentAmount')?.value || 100) : 0;
+  const garageRentAmount = includeGarageRent ? Number(document.getElementById('formGarageRentAmount')?.value || 130) : 0;
 
   const newRecord = {
     id: `COL-${Date.now()}`,
@@ -2417,11 +2422,6 @@ function openModalAndCloseMore(modalId) {
 function toggleRole() {
   const newRole = state.currentUser.role === 'owner' ? 'manager' : 'owner';
   state.currentUser.role = newRole;
-  if (newRole === 'manager') {
-    state.currentUser.name = 'Selim Mia';
-  } else {
-    state.currentUser.name = 'Habib Rahman';
-  }
   saveToStorage('user_profile', state.currentUser);
   updateUserProfileDisplay();
   renderAll();
@@ -2540,7 +2540,7 @@ function exportDailyCollectionsPdf() {
     'Tk ' + c.expected,
     'Tk ' + c.paid,
     'Tk ' + c.due,
-    'Tk ' + (c.garageRent || 100),
+    'Tk ' + (c.garageRent || 130),
     c.status.toUpperCase(),
   ]);
 
@@ -2599,7 +2599,7 @@ function exportFullExcel() {
     'Expected Joma': c.expected,
     'Paid Amount': c.paid,
     'Remaining Due': c.due,
-    'Garage Rent': c.garageRent || 100,
+    'Garage Rent': c.garageRent || 130,
     'Status': c.status.toUpperCase(),
     'Logged By': c.recordedBy,
   }));
