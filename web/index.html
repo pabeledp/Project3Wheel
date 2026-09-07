@@ -596,13 +596,21 @@
                   <strong class="text-emerald" id="pnlTotalRev">৳0</strong>
                 </div>
                 <div class="pnl-row">
-                  <span data-i18n="pnl_total_expenses">Total Expenses (Rent + Repair)</span>
+                  <span data-i18n="pnl_total_expenses">Total Expenses (All Sources)</span>
                   <strong class="text-crimson" id="pnlTotalExp">৳0</strong>
+                </div>
+                <div class="pnl-row" style="font-size: 12px; color: var(--text-secondary);">
+                  <span data-i18n="pnl_fund_expenses">Expenses Paid from Garage Fund</span>
+                  <strong class="text-crimson" id="pnlFundExp">৳0</strong>
                 </div>
                 <div class="pnl-divider"></div>
                 <div class="pnl-row highlight">
-                  <span data-i18n="pnl_net_profit">Owner's Net Profit</span>
+                  <span data-i18n="pnl_net_profit">Owner Net Operating Surplus</span>
                   <strong class="text-blue" id="pnlNetProfit">৳0</strong>
+                </div>
+                <div class="pnl-row" style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+                  <span style="color: var(--emerald-light); font-size: 13px;" data-i18n="pnl_net_garage_fund">Net Available Garage Cash Fund</span>
+                  <strong class="text-emerald" id="pnlNetGarageFund">৳0</strong>
                 </div>
               </div>
             </div>
@@ -621,19 +629,61 @@
           </div>
         </section>
 
-        <!-- 6. SHAREHOLDERS VIEW -->
+        <!-- 6. OWNERS & SHAREHOLDERS VIEW -->
         <section class="tab-pane" id="tab-shareholders">
+          <!-- Owners & Shareholders Capital & Garage Fund Metrics -->
+          <div class="metrics-grid" style="margin-bottom: 20px;">
+            <div class="glass-card metric-card glow-blue">
+              <div class="card-header">
+                <span class="card-label" data-i18n="metric_total_invested_capital">Total Invested Capital</span>
+                <div class="icon-circle icon-blue"><i class="fa-solid fa-vault"></i></div>
+              </div>
+              <div class="metric-val text-blue" id="metricTotalCapital">৳0</div>
+              <div class="card-footer">
+                <span class="trend-pill trend-up"><i class="fa-solid fa-shield-halved"></i> <span data-i18n="lbl_equity_pool">Capital Pool</span></span>
+                <span class="sub-label" id="metricShareholdersCount">0 Owners</span>
+              </div>
+            </div>
+
+            <div class="glass-card metric-card glow-emerald">
+              <div class="card-header">
+                <span class="card-label" data-i18n="metric_net_garage_fund">Net Available Garage Fund</span>
+                <div class="icon-circle icon-emerald"><i class="fa-solid fa-building-columns"></i></div>
+              </div>
+              <div class="metric-val text-emerald" id="metricNetGarageFund">৳0</div>
+              <div class="card-footer">
+                <span class="trend-pill trend-up"><i class="fa-solid fa-wallet"></i> <span data-i18n="lbl_operating_cash">Operating Cash</span></span>
+                <span class="sub-label" data-i18n="lbl_inflow_minus_fund_exp">Inflow - Fund Exp</span>
+              </div>
+            </div>
+
+            <div class="glass-card metric-card glow-crimson">
+              <div class="card-header">
+                <span class="card-label" data-i18n="metric_fund_expenses">Expenses from Garage Fund</span>
+                <div class="icon-circle icon-crimson"><i class="fa-solid fa-arrow-down-wide-short"></i></div>
+              </div>
+              <div class="metric-val text-crimson" id="metricGarageFundExpenses">৳0</div>
+              <div class="card-footer">
+                <span class="trend-pill trend-down"><i class="fa-solid fa-receipt"></i> <span data-i18n="lbl_deducted">Deducted</span></span>
+                <span class="sub-label" id="metricFundExpCount">0 transactions</span>
+              </div>
+            </div>
+          </div>
+
           <div class="glass-card">
             <div class="table-header-row">
               <div>
-                <h3 data-i18n="shareholders_title">Shareholders & Equity Distribution</h3>
+                <h3 data-i18n="shareholders_title">Owners & Shareholders (মালিক ও অংশীদার)</h3>
                 <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;" data-i18n="shareholders_subtitle">
-                  Manage investors, capital investment, equity shares and dividend payouts
+                  Manage owners, capital contributions, equity shares, fund injections and dividend payouts
                 </p>
               </div>
               <div class="table-actions">
+                <button class="btn-glass btn-emerald btn-sm" onclick="openAddCapitalModal()">
+                  <i class="fa-solid fa-hand-holding-dollar"></i> <span data-i18n="btn_add_capital">Add Fund / Capital</span>
+                </button>
                 <button class="btn-glass btn-blue btn-sm" style="background: rgba(10, 132, 255, 0.2); border-color: rgba(10, 132, 255, 0.4); color: var(--blue-light);" onclick="openModal('addShareholderModal')">
-                  <i class="fa-solid fa-user-plus"></i> <span data-i18n="btn_add_shareholder">Add Shareholder</span>
+                  <i class="fa-solid fa-user-plus"></i> <span data-i18n="btn_add_shareholder">Add Owner / Shareholder</span>
                 </button>
               </div>
             </div>
@@ -1216,13 +1266,13 @@
   <div class="modal-backdrop" id="addShareholderModal">
     <div class="glass-modal-sheet">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-handshake text-blue"></i> <span data-i18n="modal_add_shareholder">Add New Shareholder / Investor</span></h3>
+        <h3><i class="fa-solid fa-handshake text-blue"></i> <span data-i18n="modal_add_shareholder">Add New Owner / Shareholder</span></h3>
         <button class="close-btn" onclick="closeModal('addShareholderModal')">&times;</button>
       </div>
 
       <form id="addShareholderForm" onsubmit="submitNewShareholder(event)">
         <div class="form-group">
-          <label data-i18n="lbl_shareholder_name">Shareholder Name</label>
+          <label data-i18n="lbl_shareholder_name">Owner / Shareholder Name</label>
           <input type="text" class="glass-input" id="newShareholderName" placeholder="e.g. Al-Haj Moksed Ali" required>
         </div>
 
@@ -1237,7 +1287,7 @@
             <input type="number" step="0.1" min="1" max="100" class="glass-input" id="newShareholderEquity" placeholder="25" required>
           </div>
           <div class="form-group" style="flex: 1;">
-            <label data-i18n="lbl_invested_amount">Invested Capital (৳)</label>
+            <label data-i18n="lbl_invested_amount">Initial Invested Capital (৳)</label>
             <input type="number" class="glass-input" id="newShareholderInvestment" placeholder="500000" required>
           </div>
         </div>
@@ -1248,9 +1298,82 @@
         </div>
 
         <button type="submit" class="btn-glass btn-primary btn-block" style="margin-top: 16px;">
-          <i class="fa-solid fa-check"></i> <span data-i18n="btn_save_shareholder">Register Shareholder</span>
+          <i class="fa-solid fa-check"></i> <span data-i18n="btn_save_shareholder">Register Owner / Shareholder</span>
         </button>
       </form>
+    </div>
+  </div>
+
+  <!-- 10B. ADD CAPITAL / FUND CONTRIBUTION MODAL -->
+  <div class="modal-backdrop" id="addCapitalModal">
+    <div class="glass-modal-sheet">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-hand-holding-dollar text-emerald"></i> <span data-i18n="modal_add_capital_title">Add Fund / Capital Contribution</span></h3>
+        <button class="close-btn" onclick="closeModal('addCapitalModal')">&times;</button>
+      </div>
+
+      <form id="addCapitalForm" onsubmit="submitCapitalInjection(event)">
+        <div class="form-group">
+          <label data-i18n="lbl_select_shareholder">Select Owner / Shareholder</label>
+          <select class="glass-select" id="capitalShareholderSelect" required>
+            <!-- Injected dynamically via JS -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_fund_amount">Injected Fund Amount (৳)</label>
+          <input type="number" min="1" class="glass-input" id="capitalAmount" placeholder="e.g. 50000" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_purpose_note">Purpose / Note (উদ্দেশ্য বা নোট)</label>
+          <input type="text" class="glass-input" id="capitalPurpose" placeholder="e.g. New Battery Purchase / Fleet Expansion Fund" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="lbl_date">Contribution Date</label>
+          <input type="date" class="glass-input" id="capitalDate" required>
+        </div>
+
+        <button type="submit" class="btn-glass btn-emerald btn-block" style="margin-top: 18px;">
+          <i class="fa-solid fa-check"></i> <span data-i18n="btn_confirm_fund_injection">Confirm Fund Injection</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 10C. VIEW FUND INJECTION & CONTRIBUTION HISTORY MODAL -->
+  <div class="modal-backdrop" id="viewFundHistoryModal">
+    <div class="glass-modal-sheet" style="max-width: 580px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="avatar" id="fundHistoryAvatar" style="width: 34px; height: 34px; font-size: 13px; background: var(--grad-emerald);">M</div>
+          <div>
+            <h3 id="fundHistoryOwnerName" style="font-size: 16px;">Al-Haj Moksed Ali</h3>
+            <span style="font-size: 11px; color: var(--text-secondary);" id="fundHistorySub">Capital & Fund Contribution Ledger</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('viewFundHistoryModal')">&times;</button>
+      </div>
+
+      <div class="pnl-summary-box" style="margin-bottom: 16px;">
+        <div class="pnl-row">
+          <span data-i18n="lbl_total_contributed">Total Injected Capital</span>
+          <strong class="text-emerald" id="fundHistoryTotalAmount">৳0</strong>
+        </div>
+        <div class="pnl-row">
+          <span data-i18n="lbl_injection_count">Total Contributions</span>
+          <strong class="text-blue" id="fundHistoryCount">0 entries</strong>
+        </div>
+      </div>
+
+      <div style="max-height: 280px; overflow-y: auto;" id="fundHistoryList">
+        <!-- Injected dynamically via JS -->
+      </div>
+
+      <div style="margin-top: 16px; text-align: right;">
+        <button class="btn-glass" onclick="closeModal('viewFundHistoryModal')" data-i18n="btn_cancel">Close</button>
+      </div>
     </div>
   </div>
 

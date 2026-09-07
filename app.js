@@ -12,6 +12,7 @@ const defaultDrivers = [];
 const defaultShareholders = [];
 const defaultCollections = [];
 const defaultExpenses = [];
+const defaultCapitalInjections = [];
 
 const defaultUserProfile = {
   name: '',
@@ -30,7 +31,7 @@ const i18n = {
     nav_expenses: "Expenses",
     nav_drivers: "Driver Directory",
     nav_reports: "P&L Reports",
-    nav_shareholders: "Shareholders",
+    nav_shareholders: "Owners & Shareholders",
     nav_gps: "GPS Telematics",
     badge_soon: "SOON",
     btn_switch_role: "Switch to Manager",
@@ -51,15 +52,31 @@ const i18n = {
     lbl_remember_me: "Remember my login",
     lbl_auto_fill: "Auto Fill",
     btn_sign_in: "Sign In to Fleet Hub",
-    shareholders_title: "Shareholders & Equity Distribution",
-    shareholders_subtitle: "Manage investors, capital investment, equity shares and dividend payouts",
-    btn_add_shareholder: "Add Shareholder",
-    modal_add_shareholder: "Add New Shareholder / Investor",
-    lbl_shareholder_name: "Shareholder Name",
+    shareholders_title: "Owners & Shareholders (মালিক ও অংশীদার)",
+    shareholders_subtitle: "Manage owners, capital contributions, equity shares, fund injections and dividend payouts",
+    btn_add_shareholder: "Add Owner / Shareholder",
+    btn_add_capital: "Add Fund / Capital",
+    modal_add_shareholder: "Add New Owner / Shareholder",
+    modal_add_capital_title: "Add Fund / Capital Contribution",
+    lbl_shareholder_name: "Owner / Shareholder Name",
+    lbl_select_shareholder: "Select Owner / Shareholder",
     lbl_equity_share: "Equity Share (%)",
-    lbl_invested_amount: "Invested Capital (৳)",
+    lbl_invested_amount: "Initial Invested Capital (৳)",
+    lbl_fund_amount: "Injected Fund Amount (৳)",
+    lbl_purpose_note: "Purpose / Note (উদ্দেশ্য বা নোট)",
+    lbl_date: "Contribution Date",
     lbl_assigned_units: "Financed Rickshaws (Optional)",
-    btn_save_shareholder: "Register Shareholder",
+    btn_save_shareholder: "Register Owner / Shareholder",
+    btn_confirm_fund_injection: "Confirm Fund Injection",
+    metric_total_invested_capital: "Total Invested Capital",
+    metric_net_garage_fund: "Net Available Garage Fund",
+    metric_fund_expenses: "Expenses from Garage Fund",
+    lbl_equity_pool: "Capital Pool",
+    lbl_operating_cash: "Operating Cash",
+    lbl_inflow_minus_fund_exp: "Inflow - Fund Exp",
+    lbl_deducted: "Deducted",
+    lbl_total_contributed: "Total Injected Capital",
+    lbl_injection_count: "Total Contributions",
     page_title_dashboard: "Fleet Overview",
     page_subtitle_dashboard: "Real-time collections, garage rent, and net profit",
     cal_today: "Today",
@@ -208,7 +225,7 @@ const i18n = {
     nav_expenses: "গ্যারেজ খরচ",
     nav_drivers: "ড্রাইভার তালিকা",
     nav_reports: "লাভ-ক্ষতি রিপোর্ট",
-    nav_shareholders: "শেয়ারহোল্ডার",
+    nav_shareholders: "মালিক ও শেয়ারহোল্ডার",
     nav_gps: "জিপিএস ট্র্যাকিং",
     badge_soon: "শীঘ্রই",
     btn_switch_role: "ম্যানেজার ভিউ",
@@ -239,15 +256,31 @@ const i18n = {
     lbl_remember_me: "পাসওয়ার্ড মনে রাখুন",
     lbl_auto_fill: "অটো পূরণ",
     btn_sign_in: "লগইন করুন",
-    shareholders_title: "শেয়ারহোল্ডার ও লভ্যাংশ বণ্টন",
-    shareholders_subtitle: "বিনিয়োগকারী, মূলধন বিনিয়োগ, ইকুইটি শেয়ার এবং লভ্যাংশ ব্যবস্থাপনা",
-    btn_add_shareholder: "শেয়ারহোল্ডার যোগ করুন",
-    modal_add_shareholder: "নতুন শেয়ারহোল্ডার নিবন্ধন",
-    lbl_shareholder_name: "শেয়ারহোল্ডারের নাম",
+    shareholders_title: "মালিক ও শেয়ারহোল্ডার (Owners & Capital)",
+    shareholders_subtitle: "মালিক ও শেয়ারহোল্ডারদের মূলধন, তহবিল জমা, লভ্যাংশ ও অর্থায়ন ব্যবস্থাপনা",
+    btn_add_shareholder: "নতুন মালিক / শেয়ারহোল্ডার যোগ",
+    btn_add_capital: "ফান্ড / মূলধন জমা",
+    modal_add_shareholder: "নতুন মালিক / অংশীদার নিবন্ধন",
+    modal_add_capital_title: "মালিক/অংশীদারের তহবিল/মূলধন জমা",
+    lbl_shareholder_name: "মালিক/শেয়ারহোল্ডারের নাম",
+    lbl_select_shareholder: "মালিক / শেয়ারহোল্ডার নির্বাচন করুন",
     lbl_equity_share: "মালিকানা শেয়ার (%)",
-    lbl_invested_amount: "বিনিয়োগকৃত মূলধন (৳)",
+    lbl_invested_amount: "প্রাথমিক মূলধন বিনিয়োগ (৳)",
+    lbl_fund_amount: "জমাকৃত তহবিলের পরিমাণ (৳)",
+    lbl_purpose_note: "উদ্দেশ্য / নোট",
+    lbl_date: "জমার তারিখ",
     lbl_assigned_units: "অর্থায়িত রিকশা (ঐচ্ছিক)",
-    btn_save_shareholder: "শেয়ারহোল্ডার সেভ করুন",
+    btn_save_shareholder: "মালিক / শেয়ারহোল্ডার সেভ করুন",
+    btn_confirm_fund_injection: "তহবিল জমা নিশ্চিত করুন",
+    metric_total_invested_capital: "মোট বিনিয়োগকৃত মূলধন",
+    metric_net_garage_fund: "গ্যারেজের মোট অবশিষ্ট তহবিল",
+    metric_fund_expenses: "গ্যারেজ তহবিল থেকে খরচ",
+    lbl_equity_pool: "ক্যাপিটাল পুল",
+    lbl_operating_cash: "অপারেটিং ক্যাশ",
+    lbl_inflow_minus_fund_exp: "ইনফ্লো - তহবিল খরচ",
+    lbl_deducted: "কর্তনকৃত",
+    lbl_total_contributed: "সর্বমোট জমাকৃত মূলধন",
+    lbl_injection_count: "মোট জমার সংখ্যা",
     page_title_dashboard: "ফ্লিট ওভারভিউ",
     page_subtitle_dashboard: "দৈনিক জমা, গ্যারেজ ভাড়া এবং প্রকৃত লাভের হিসাব",
     cal_today: "আজ",
@@ -413,6 +446,7 @@ let state = {
   shareholders: loadFromStorage('shareholders', defaultShareholders),
   collections: loadFromStorage('collections', defaultCollections),
   expenses: loadFromStorage('expenses', defaultExpenses),
+  capitalInjections: loadFromStorage('capital_injections', defaultCapitalInjections),
   currentSmsTarget: null,
   currentQuickCollectDriver: null,
   activeExpenseCat: 'parts',
@@ -484,6 +518,10 @@ function syncStateFromRemote(remoteData, isInitial = false) {
     state.expenses = remoteData.expenses;
     saveToStorage('expenses', state.expenses);
   }
+  if (Array.isArray(remoteData.capitalInjections)) {
+    state.capitalInjections = remoteData.capitalInjections;
+    saveToStorage('capital_injections', state.capitalInjections);
+  }
   if (remoteData.userProfile && isInitial) {
     state.currentUser.name = remoteData.userProfile.name || state.currentUser.name;
     state.currentUser.garageName = remoteData.userProfile.garageName || state.currentUser.garageName;
@@ -551,6 +589,7 @@ function broadcastFirestoreUpdate() {
   saveToStorage('shareholders', state.shareholders);
   saveToStorage('collections', state.collections);
   saveToStorage('expenses', state.expenses);
+  saveToStorage('capital_injections', state.capitalInjections);
 
   lastLocalMutationTime = Date.now();
 
@@ -564,6 +603,7 @@ function broadcastFirestoreUpdate() {
       shareholders: state.shareholders,
       collections: state.collections,
       expenses: state.expenses,
+      capitalInjections: state.capitalInjections,
       userProfile: {
         name: state.currentUser.name || '',
         garageName: state.currentUser.garageName || '',
@@ -721,6 +761,7 @@ function submitLogin(e) {
           collections: [],
           expenses: [],
           shareholders: [],
+          capitalInjections: [],
           updatedAt: new Date().toISOString()
         }, { merge: true });
       } catch (e) {
@@ -748,6 +789,7 @@ function submitLogin(e) {
   state.collections = [];
   state.expenses = [];
   state.shareholders = [];
+  state.capitalInjections = [];
 
   checkAuthSession();
   renderAll();
@@ -847,7 +889,50 @@ function renderAll() {
   populateFormRickshaws();
   populateDriverRickshaws('newDriverRickshaw');
   populateDriverRickshaws('editDriverRickshaw');
+  populateExpenseSpenders();
   renderRickshawsManageList();
+}
+
+// --- Dynamic Expense Spenders Population ---
+function populateExpenseSpenders() {
+  const select = document.getElementById('formExpSpender');
+  if (!select) return;
+
+  const currentVal = select.value;
+  const isBn = state.lang === 'bn';
+
+  let optionsHtml = `
+    <option value="Garage Fund (গ্যারেজ তহবিল)">${isBn ? 'Garage Fund (গ্যারেজ তহবিল - মেইন ক্যাশ)' : 'Garage Fund (Main Operating Cash)'}</option>
+  `;
+
+  // Add Logged in User if exists
+  if (state.currentUser && state.currentUser.name) {
+    const roleLabel = state.currentUser.role === 'manager' 
+      ? (isBn ? 'ম্যানেজার' : 'Manager') 
+      : (isBn ? 'মালিক' : 'Owner');
+    optionsHtml += `<option value="${state.currentUser.name} (${roleLabel})">${state.currentUser.name} (${roleLabel})</option>`;
+  }
+
+  // Add all dynamically registered Owners & Shareholders
+  if (Array.isArray(state.shareholders) && state.shareholders.length > 0) {
+    state.shareholders.forEach(sh => {
+      // Don't duplicate if same name as current user
+      if (state.currentUser && state.currentUser.name && state.currentUser.name.toLowerCase() === sh.name.toLowerCase()) return;
+      optionsHtml += `<option value="Owner/Shareholder - ${sh.name}">Owner / Shareholder - ${sh.name} (${sh.equity}%)</option>`;
+    });
+  }
+
+  // Add Drivers option
+  optionsHtml += `
+    <option value="Driver (চালক নিজে)">${isBn ? 'Driver (চালক নিজে)' : 'Driver (Self Paid)'}</option>
+  `;
+
+  select.innerHTML = optionsHtml;
+
+  // Restore selection if still present, otherwise default to Garage Fund
+  if (currentVal && select.querySelector(`option[value="${currentVal}"]`)) {
+    select.value = currentVal;
+  }
 }
 
 // --- Bilingual Language Switcher ---
@@ -1028,25 +1113,86 @@ function updateMetrics() {
   const targetRev = filteredCollections.reduce((sum, c) => sum + Number(c.expected || 0), 0);
   const collectionRate = targetRev > 0 ? Math.round((totalRev / targetRev) * 100) : 0;
 
-  document.getElementById('metricTodayRev').textContent = formatBDT(totalRev);
-  document.getElementById('metricGarageRent').textContent = formatBDT(garageRentExp);
-  document.getElementById('metricOtherExp').textContent = formatBDT(otherExp);
-  document.getElementById('metricTodayNet').textContent = formatBDT(netProfit);
-  document.getElementById('metricTotalDues').textContent = formatBDT(totalDues);
+  // --- Real-time Garage Fund & Capital Pool Calculations ---
+  // Inflow to Garage Fund = All Collections Paid + All Capital Injected by Owners
+  const allTimeCollections = state.collections.reduce((sum, c) => sum + Number(c.paid || 0), 0);
+  const allTimeCapitalInjections = (state.capitalInjections || []).reduce((sum, cap) => sum + Number(cap.amount || 0), 0);
+  const allTimeShareholderBaseCapital = state.shareholders.reduce((sum, sh) => sum + Number(sh.investment || 0), 0);
+  
+  // Total Invested Capital by Owners/Shareholders
+  const totalCapitalPool = allTimeShareholderBaseCapital;
 
-  document.getElementById('metricDepositCount').textContent = `${filteredCollections.length} ${state.lang === 'bn' ? 'টি জমা' : 'deposits'}`;
-  document.getElementById('metricGarageCount').textContent = `${filteredCollections.length} ${state.lang === 'bn' ? 'টি রিকশা' : 'vehicles'}`;
-  document.getElementById('metricExpCount').textContent = `${filteredExpenses.length} ${state.lang === 'bn' ? 'টি খরচ' : 'logs'}`;
-  document.getElementById('metricCollectionRate').textContent = `${collectionRate}%`;
-  document.getElementById('metricDefaulterCount').textContent = defaulterCount;
+  // All Expenses Paid from the Garage Fund
+  const isPaidFromGarageFund = (exp) => {
+    const paidBy = (exp.paidBy || '').toLowerCase();
+    return paidBy.includes('garage fund') || paidBy.includes('গ্যারেজ তহবিল') || paidBy === '' || paidBy === 'garage';
+  };
+
+  const allTimeFundExpenses = state.expenses
+    .filter(isPaidFromGarageFund)
+    .reduce((sum, e) => sum + Number(e.amount || 0), 0);
+
+  const fundExpensesCount = state.expenses.filter(isPaidFromGarageFund).length;
+
+  // Net Garage Operating Cash = (Total Collections + Total Injections) - (Garage Fund Expenses)
+  const netAvailableGarageFund = (allTimeCollections + allTimeCapitalInjections) - allTimeFundExpenses;
+
+  // Dashboard Primary Metrics
+  const elRev = document.getElementById('metricTodayRev');
+  if (elRev) elRev.textContent = formatBDT(totalRev);
+  
+  const elRent = document.getElementById('metricGarageRent');
+  if (elRent) elRent.textContent = formatBDT(garageRentExp);
+  
+  const elOther = document.getElementById('metricOtherExp');
+  if (elOther) elOther.textContent = formatBDT(otherExp);
+  
+  const elNet = document.getElementById('metricTodayNet');
+  if (elNet) elNet.textContent = formatBDT(netProfit);
+  
+  const elDues = document.getElementById('metricTotalDues');
+  if (elDues) elDues.textContent = formatBDT(totalDues);
+
+  const elDepCount = document.getElementById('metricDepositCount');
+  if (elDepCount) elDepCount.textContent = `${filteredCollections.length} ${state.lang === 'bn' ? 'টি জমা' : 'deposits'}`;
+  
+  const elGarCount = document.getElementById('metricGarageCount');
+  if (elGarCount) elGarCount.textContent = `${filteredCollections.length} ${state.lang === 'bn' ? 'টি রিকশা' : 'vehicles'}`;
+  
+  const elExpCount = document.getElementById('metricExpCount');
+  if (elExpCount) elExpCount.textContent = `${filteredExpenses.length} ${state.lang === 'bn' ? 'টি খরচ' : 'logs'}`;
+  
+  const elColRate = document.getElementById('metricCollectionRate');
+  if (elColRate) elColRate.textContent = `${collectionRate}%`;
+  
+  const elDefCount = document.getElementById('metricDefaulterCount');
+  if (elDefCount) elDefCount.textContent = defaulterCount;
+
+  // Shareholders & Owners KPI Tab Cards
+  const elTotalCap = document.getElementById('metricTotalCapital');
+  if (elTotalCap) elTotalCap.textContent = formatBDT(totalCapitalPool);
+
+  const elNetFund = document.getElementById('metricNetGarageFund');
+  if (elNetFund) elNetFund.textContent = formatBDT(netAvailableGarageFund);
+
+  const elFundExp = document.getElementById('metricGarageFundExpenses');
+  if (elFundExp) elFundExp.textContent = formatBDT(allTimeFundExpenses);
+
+  const elShCount = document.getElementById('metricShareholdersCount');
+  if (elShCount) elShCount.textContent = `${state.shareholders.length} ${state.lang === 'bn' ? 'জন মালিক' : 'Owners'}`;
+
+  const elFundExpCount = document.getElementById('metricFundExpCount');
+  if (elFundExpCount) elFundExpCount.textContent = `${fundExpensesCount} ${state.lang === 'bn' ? 'টি লেনদেন' : 'transactions'}`;
 
   const trendNet = document.getElementById('trendNetPill');
-  if (netProfit >= 0) {
-    trendNet.className = 'trend-pill trend-up';
-    trendNet.innerHTML = `<i class="fa-solid fa-arrow-trend-up"></i> ${state.lang === 'bn' ? 'উদ্বৃত্ত লাভ' : 'Net Surplus'}`;
-  } else {
-    trendNet.className = 'trend-pill trend-down';
-    trendNet.innerHTML = `<i class="fa-solid fa-arrow-trend-down"></i> ${state.lang === 'bn' ? 'ঘাটতি' : 'Deficit'}`;
+  if (trendNet) {
+    if (netProfit >= 0) {
+      trendNet.className = 'trend-pill trend-up';
+      trendNet.innerHTML = `<i class="fa-solid fa-arrow-trend-up"></i> ${state.lang === 'bn' ? 'উদ্বৃত্ত লাভ' : 'Net Surplus'}`;
+    } else {
+      trendNet.className = 'trend-pill trend-down';
+      trendNet.innerHTML = `<i class="fa-solid fa-arrow-trend-down"></i> ${state.lang === 'bn' ? 'ঘাটতি' : 'Deficit'}`;
+    }
   }
 }
 
@@ -1420,7 +1566,7 @@ function renderDriversGrid() {
   `).join('');
 }
 
-// --- SHAREHOLDERS SECTION ENGINE ---
+// --- SHAREHOLDERS / OWNERS SECTION ENGINE ---
 function renderShareholdersGrid() {
   const grid = document.getElementById('shareholdersGrid');
   if (!grid) return;
@@ -1430,52 +1576,63 @@ function renderShareholdersGrid() {
   const netProfit = Math.max(0, totalRev - totalExp);
 
   if (state.shareholders.length === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-tertiary); padding: 32px;">${state.lang === 'bn' ? 'কোনো শেয়ারহোল্ডার তালিকাভুক্ত নেই।' : 'No shareholders registered yet.'}</div>`;
+    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-tertiary); padding: 32px;">${state.lang === 'bn' ? 'কোনো মালিক বা অংশীদার তালিকাভুক্ত নেই।' : 'No owners or shareholders registered yet.'}</div>`;
     return;
   }
 
   grid.innerHTML = state.shareholders.map(sh => {
     const dividend = Math.round((netProfit * (sh.equity || 0)) / 100);
+    const ownerInjections = (state.capitalInjections || []).filter(ci => ci.shareholderId === sh.id);
+    const totalInjectedExtra = ownerInjections.reduce((sum, ci) => sum + Number(ci.amount || 0), 0);
+    const totalCapital = Number(sh.investment || 0);
 
     return `
       <div class="teammate-card">
         <div class="teammate-top">
           <div class="teammate-identity">
             <div class="teammate-avatar" style="background: var(--grad-primary);">
-              ${sh.name[0]}
+              ${sh.name[0] ? sh.name[0].toUpperCase() : 'O'}
             </div>
             <div class="teammate-names">
               <h4>${sh.name}</h4>
               <span><i class="fa-solid fa-phone" style="font-size: 10px; margin-right: 4px;"></i>${sh.phone}</span>
             </div>
           </div>
-          <span class="badge-pill badge-blue">${sh.equity}% SHARE</span>
+          <span class="badge-pill badge-blue">${sh.equity}% ${state.lang === 'bn' ? 'মালিকানা' : 'EQUITY'}</span>
         </div>
 
         <div class="teammate-details-grid">
           <div class="teammate-detail-item">
-            <span>${state.lang === 'bn' ? 'বিনিয়োগকৃত মূলধন' : 'Invested Capital'}</span>
-            <strong class="text-emerald">${formatBDT(sh.investment)}</strong>
+            <span>${state.lang === 'bn' ? 'মোট মূলধন তহবিল' : 'Total Capital Invested'}</span>
+            <strong class="text-emerald">${formatBDT(totalCapital)}</strong>
           </div>
           <div class="teammate-detail-item">
             <span>${state.lang === 'bn' ? 'মাসিক লভ্যাংশ পাওনা' : 'Monthly Dividend Share'}</span>
             <strong class="text-blue">${formatBDT(dividend)}</strong>
           </div>
           <div class="teammate-detail-item">
-            <span>${state.lang === 'bn' ? 'অর্থায়িত রিকশা' : 'Financed Vehicles'}</span>
-            <strong>${sh.rickshaws || (state.lang === 'bn' ? 'সাধারণ ফ্লিট' : 'General Fleet')}</strong>
+            <span>${state.lang === 'bn' ? 'তহবিল জমার রেকর্ড' : 'Fund Injections'}</span>
+            <strong style="cursor: pointer; text-decoration: underline; color: var(--cyan);" onclick="openFundHistoryModal('${sh.id}')">
+              <i class="fa-solid fa-receipt"></i> ${ownerInjections.length} ${state.lang === 'bn' ? 'টি এন্ট্রি (নোট দেখুন)' : 'entries (View Notes)'}
+            </strong>
           </div>
           <div class="teammate-detail-item">
-            <span>${state.lang === 'bn' ? 'যোগদানের তারিখ' : 'Member Since'}</span>
-            <strong>${sh.joinDate || '2026-01-01'}</strong>
+            <span>${state.lang === 'bn' ? 'অর্থায়িত রিকশা' : 'Financed Vehicles'}</span>
+            <strong>${sh.rickshaws || (state.lang === 'bn' ? 'সাধারণ ফ্লিট' : 'General Fleet')}</strong>
           </div>
         </div>
 
         <div class="teammate-footer">
           <div style="font-size: 10px; color: var(--text-tertiary);">
-            <i class="fa-solid fa-chart-line"></i> Equity: ${sh.equity}% • Cloud Live Connected
+            <i class="fa-solid fa-chart-line"></i> Equity: ${sh.equity}% • Since ${sh.joinDate || '2026-01-01'}
           </div>
-          <div class="teammate-actions">
+          <div class="teammate-actions" style="gap: 6px;">
+            <button class="btn-glass btn-sm" style="color: var(--emerald-light); padding: 5px 10px; font-size: 11px;" onclick="openAddCapitalModal('${sh.id}')" title="Add Fund">
+              <i class="fa-solid fa-plus-circle"></i> <span>${state.lang === 'bn' ? 'ফান্ড যোগ' : 'Add Fund'}</span>
+            </button>
+            <button class="btn-glass btn-sm" style="color: var(--cyan); padding: 5px 10px; font-size: 11px;" onclick="openFundHistoryModal('${sh.id}')" title="View Fund Details & Purpose">
+              <i class="fa-solid fa-eye"></i> <span>${state.lang === 'bn' ? 'হিসাব/নোট' : 'History'}</span>
+            </button>
             <button class="btn-glass btn-sm" style="color: var(--crimson-light);" onclick="deleteShareholder('${sh.id}')" title="Remove">
               <i class="fa-solid fa-trash"></i>
             </button>
@@ -1504,12 +1661,159 @@ function submitNewShareholder(e) {
     joinDate: todayIso,
   };
 
+  // Add initial investment as first capital injection note
+  if (investment > 0) {
+    state.capitalInjections = state.capitalInjections || [];
+    state.capitalInjections.unshift({
+      id: `CAP-INIT-${Date.now()}`,
+      shareholderId: newSh.id,
+      shareholderName: newSh.name,
+      amount: investment,
+      purpose: state.lang === 'bn' ? 'প্রাথমিক মালিকানা মূলধন বিনিয়োগ' : 'Initial Equity Capital Investment',
+      date: todayIso,
+      recordedAt: new Date().toISOString()
+    });
+  }
+
   state.shareholders.push(newSh);
   closeModal('addShareholderModal');
   document.getElementById('addShareholderForm').reset();
   renderAll();
   broadcastFirestoreUpdate();
-  showToast(state.lang === 'bn' ? `শেয়ারহোল্ডার ${name} নিবন্ধিত হয়েছেন` : `Shareholder ${name} added`, 'emerald');
+  showToast(state.lang === 'bn' ? `মালিক/শেয়ারহোল্ডার ${name} নিবন্ধিত হয়েছেন` : `Owner / Shareholder ${name} added`, 'emerald');
+}
+
+function openAddCapitalModal(preselectedShareholderId = null) {
+  const select = document.getElementById('capitalShareholderSelect');
+  if (!select) return;
+
+  if (state.shareholders.length === 0) {
+    alert(state.lang === 'bn' ? 'প্রথমে একজন মালিক বা অংশীদার যোগ করুন।' : 'Please register at least one owner/shareholder first.');
+    openModal('addShareholderModal');
+    return;
+  }
+
+  select.innerHTML = state.shareholders.map(sh => `
+    <option value="${sh.id}" ${preselectedShareholderId === sh.id ? 'selected' : ''}>${sh.name} (${sh.equity}% Equity)</option>
+  `).join('');
+
+  const dateInput = document.getElementById('capitalDate');
+  if (dateInput) dateInput.value = todayIso;
+
+  const form = document.getElementById('addCapitalForm');
+  if (form) form.reset();
+  if (dateInput) dateInput.value = todayIso;
+  if (preselectedShareholderId) select.value = preselectedShareholderId;
+
+  openModal('addCapitalModal');
+}
+
+function submitCapitalInjection(e) {
+  e.preventDefault();
+  const shId = document.getElementById('capitalShareholderSelect').value;
+  const amt = Number(document.getElementById('capitalAmount').value || 0);
+  const purpose = document.getElementById('capitalPurpose').value.trim();
+  const dateVal = document.getElementById('capitalDate').value || todayIso;
+
+  const sh = state.shareholders.find(s => s.id === shId);
+  if (!sh) return;
+
+  const injection = {
+    id: `CAP-${Date.now()}`,
+    shareholderId: sh.id,
+    shareholderName: sh.name,
+    amount: amt,
+    purpose: purpose || (state.lang === 'bn' ? 'তহবিল সংযোজন' : 'Capital Contribution'),
+    date: dateVal,
+    recordedAt: new Date().toISOString()
+  };
+
+  state.capitalInjections = state.capitalInjections || [];
+  state.capitalInjections.unshift(injection);
+
+  // Increase shareholder total investment capital
+  sh.investment = (Number(sh.investment) || 0) + amt;
+
+  closeModal('addCapitalModal');
+  document.getElementById('addCapitalForm').reset();
+  renderAll();
+  broadcastFirestoreUpdate();
+  showToast(state.lang === 'bn' ? `৳${amt} তহবিল সফলভাবে যোগ হয়েছে (${sh.name})` : `Added ৳${amt} fund from ${sh.name}`, 'emerald');
+}
+
+function openFundHistoryModal(shareholderId) {
+  const sh = state.shareholders.find(s => s.id === shareholderId);
+  if (!sh) return;
+
+  const injections = (state.capitalInjections || []).filter(ci => ci.shareholderId === sh.id);
+  const totalInjected = injections.reduce((sum, ci) => sum + Number(ci.amount || 0), 0);
+
+  const elName = document.getElementById('fundHistoryOwnerName');
+  if (elName) elName.textContent = sh.name;
+
+  const elAvatar = document.getElementById('fundHistoryAvatar');
+  if (elAvatar) elAvatar.textContent = sh.name[0] ? sh.name[0].toUpperCase() : 'O';
+
+  const elTotal = document.getElementById('fundHistoryTotalAmount');
+  if (elTotal) elTotal.textContent = formatBDT(totalInjected > 0 ? totalInjected : sh.investment);
+
+  const elCount = document.getElementById('fundHistoryCount');
+  if (elCount) elCount.textContent = `${injections.length} ${state.lang === 'bn' ? 'টি এন্ট্রি' : 'entries'}`;
+
+  const container = document.getElementById('fundHistoryList');
+  if (container) {
+    if (injections.length === 0) {
+      container.innerHTML = `
+        <div style="padding: 24px; text-align: center; color: var(--text-tertiary); background: rgba(255,255,255,0.02); border-radius: 12px;">
+          <i class="fa-solid fa-receipt" style="font-size: 24px; margin-bottom: 8px; opacity: 0.5;"></i>
+          <div>${state.lang === 'bn' ? 'কোনো অতিরিক্ত তহবিল জমার নোট পাওয়া যায়নি।' : 'No extra fund contribution records logged.'}</div>
+          <div style="font-size: 11px; margin-top: 4px; color: var(--emerald-light);">${state.lang === 'bn' ? 'মূলধন বিনিয়োগ:' : 'Base Initial Capital:'} ${formatBDT(sh.investment)}</div>
+        </div>
+      `;
+    } else {
+      container.innerHTML = injections.map((ci, idx) => `
+        <div style="display: flex; align-items: flex-start; justify-content: space-between; padding: 12px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; margin-bottom: 8px;">
+          <div style="flex: 1; padding-right: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="badge-pill badge-emerald" style="font-size: 10px; font-weight: 700;">#${injections.length - idx}</span>
+              <strong style="color: white; font-size: 14px;">${formatBDT(ci.amount)}</strong>
+              <span style="font-size: 11px; color: var(--text-tertiary);">• ${ci.date}</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 5px; line-height: 1.4;">
+              <i class="fa-regular fa-note-sticky text-amber" style="margin-right: 4px;"></i>
+              <strong>${state.lang === 'bn' ? 'নোট / উদ্দেশ্য:' : 'Purpose / Note:'}</strong> ${ci.purpose}
+            </div>
+          </div>
+          <button class="btn-glass btn-sm" style="color: var(--crimson-light); padding: 4px 8px;" onclick="deleteCapitalInjection('${ci.id}')" title="Delete entry">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+  }
+
+  openModal('viewFundHistoryModal');
+}
+
+function deleteCapitalInjection(injectionId) {
+  const idx = (state.capitalInjections || []).findIndex(ci => ci.id === injectionId);
+  if (idx === -1) return;
+
+  const item = state.capitalInjections[idx];
+  if (!confirm(`Delete fund contribution entry of ৳${item.amount} (${item.purpose})?`)) return;
+
+  const sh = state.shareholders.find(s => s.id === item.shareholderId);
+  if (sh) {
+    sh.investment = Math.max(0, (Number(sh.investment) || 0) - Number(item.amount));
+  }
+
+  state.capitalInjections.splice(idx, 1);
+  saveToStorage('capital_injections', state.capitalInjections);
+  renderAll();
+  broadcastFirestoreUpdate();
+  showToast(state.lang === 'bn' ? 'তহবিল এন্ট্রি মুছে ফেলা হয়েছে' : 'Fund entry removed', 'crimson');
+
+  if (sh) openFundHistoryModal(sh.id);
 }
 
 function deleteShareholder(id) {
@@ -1583,9 +1887,32 @@ function renderPnlReports() {
   const totalExp = state.expenses.reduce((sum, e) => sum + Number(e.amount || 0), 0);
   const netProfit = totalRev - totalExp;
 
-  document.getElementById('pnlTotalRev').textContent = formatBDT(totalRev);
-  document.getElementById('pnlTotalExp').textContent = formatBDT(totalExp);
-  document.getElementById('pnlNetProfit').textContent = formatBDT(netProfit);
+  const isPaidFromGarageFund = (exp) => {
+    const paidBy = (exp.paidBy || '').toLowerCase();
+    return paidBy.includes('garage fund') || paidBy.includes('গ্যারেজ তহবিল') || paidBy === '' || paidBy === 'garage';
+  };
+
+  const fundExpenses = state.expenses
+    .filter(isPaidFromGarageFund)
+    .reduce((sum, e) => sum + Number(e.amount || 0), 0);
+
+  const allTimeCapitalInjections = (state.capitalInjections || []).reduce((sum, cap) => sum + Number(cap.amount || 0), 0);
+  const netAvailableGarageFund = (totalRev + allTimeCapitalInjections) - fundExpenses;
+
+  const elRev = document.getElementById('pnlTotalRev');
+  if (elRev) elRev.textContent = formatBDT(totalRev);
+
+  const elExp = document.getElementById('pnlTotalExp');
+  if (elExp) elExp.textContent = formatBDT(totalExp);
+
+  const elFundExp = document.getElementById('pnlFundExp');
+  if (elFundExp) elFundExp.textContent = formatBDT(fundExpenses);
+
+  const elNet = document.getElementById('pnlNetProfit');
+  if (elNet) elNet.textContent = formatBDT(netProfit);
+
+  const elNetFund = document.getElementById('pnlNetGarageFund');
+  if (elNetFund) elNetFund.textContent = formatBDT(netAvailableGarageFund);
 
   const catTotals = {};
   state.expenses.forEach(e => {
